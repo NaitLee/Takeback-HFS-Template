@@ -5,7 +5,8 @@ var noticedpreview = false;
 var givetofais = false;
 // Previewing: Core script
 function _previewfile(url) {
-    var filename = decodeURI(url);
+    var fileurl = decodeURI(url);
+    var filename = spliturllast(fileurl);
     // Judge the file type
     var filetype = 'unknown';
     switch (url.slice(-4).toLowerCase()) {
@@ -42,47 +43,48 @@ function _previewfile(url) {
     switch (filetype) {
         case 'image':
             previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.}&nbsp;<br />\
-                <a href="javascript: slideshow(\'?start\')"><img class="previewimg" id="previewobject" src="'+url+'" /></a><br />';
+                <a href="javascript: slideshow(\'?start\')"><img class="previewimg" id="previewobject" src="'+fileurl+'" /></a><br />';
             break;
         case 'audio':
-            previewcontent = '<audio controls loop autoplay><source src="'+url+'">\
+            previewcontent = '<audio controls loop autoplay><source src="'+fileurl+'">\
                 {.!Sorry, previewing this file is not sopported by your browser.}</audio><br />\
-                <a href="javascript: previewfile(\'?fais\', \''+url+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
+                <a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
             break;
         case 'video':
             previewcontent = '{.!Rotate your device to fullscreen if mobile.}<br />\
-                <video controls loop autoplay class="previewvid" id="previewobject"><source src="'+url+'">\
+                <video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
                 {.!Sorry, previewing this file is not sopported by your browser.}</video><br />';
             break;
         case 'text':
-            previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+url+'">\
+            previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+fileurl+'">\
                 {.!Previewing not supported, please try dowload.}</iframe><br />';
             break;
         case 'flash':
             previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
                 {.!Mobile platforms will not support flash anymore.}&nbsp;<br />\
-                <embed class="previewflashobject" id="previewobject" src="'+url+'" type="application/x-shockwave-flash" />\
+                <embed class="previewflashobject" id="previewobject" src="'+fileurl+'" type="application/x-shockwave-flash" />\
                 <div><a class="previewflashfullscreenexit" href="javascript: previewfile(\'?flashfullscreenexit\');"><abbr title="{.!Exit Fullscreen.}">[X]</abbr></a></div>\
                 <br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
             break;
         case 'workdocument':
-            previewcontent = '{.!To view online, the site should be public to Internet.}<br />\
-                <a href="https://view.officeapps.live.com/op/view.aspx?src='+window.location.href+url+'" target="_blank">\
-                    <span style="color: wheat" >[{.!View online.}]</span> </a>';
+            previewcontent = ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
+                '{.!You can preview this document with Microsoft Office Online service.}<br />\
+                    <a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
+                '{.!Unable to view online: this site is in LAN.}<br />' );
             break;
         default:
             previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try dowload.}</span>&nbsp;<br />';
             break;
     }
-    previewcontent += '<a href="'+url+'" onclick="previewfile(\'?download\', \''+url+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
-        if (filetype=='audio' && givetofais==true) {
+    previewcontent += '<a href="'+filename+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
+    if (filetype=='audio' && givetofais==true) {
         previewfile('?fais', url);
     } else {
-        previewtip.innerHTML = filename;
+        previewtip.innerHTML = spliturllast(fileurl);   // spliturllast() in "addon.pre"
         preview.innerHTML = previewcontent;
         previewfile('?show');
     }
-    console.log('%c\nPreviewing file:\n'+filename+'\nIts type is '+filetype, 'color: teal;');
+    console.log('%c\nPreviewing file:\n'+fileurl+'\nIts type is '+filetype, 'color: teal;');
     if (!noticedpreview && filetype!='unknown') {
         notice('{.!Slide up the screen to see if using a mobile.}', '{.!Preview Opened.}');
         noticedpreview = true;
@@ -107,7 +109,7 @@ function previewfile (ctrl, url) {
             fais('?play', url); previewfile('?close');
             givetofais = true;
             break;
-        // For flash. Though this thing is dying, but there's still mini-games come with flash
+        // For flash. Though this thing is dying, but there are still mini-games come with flash
         case '?flashfullscreen':
             $('.previewflashobject').addClass('flashfullpaged');
             $('.previewflashfullscreenexit').fadeIn();

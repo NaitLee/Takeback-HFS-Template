@@ -66,7 +66,7 @@ filestatics.filelistnodes.forEach(function(filelistnode, index) {
     // Prevent browser from directly downloading a file on click, and preview
     filelistnode.onclick = function(event) {
         event.preventDefault();
-        previewfile('?open', spliturllast(this.href));
+        previewfile('?open', this.href);
     }
     if (['.mp3', '.wav', '.ogg'].indexOf(url.slice(-4).toLowerCase()) != -1) {
         filestatics.musiclist.push(url);

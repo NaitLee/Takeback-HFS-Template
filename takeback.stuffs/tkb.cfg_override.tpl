@@ -1,6 +1,5 @@
 
 [special:import]
-
 {.set ini|use-system-icons=no.}
 {.set ini|log-progress=no.}
 {.set ini|log-dump-request=no.}

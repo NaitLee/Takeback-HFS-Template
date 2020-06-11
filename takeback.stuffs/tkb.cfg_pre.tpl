@@ -20,17 +20,19 @@ UseJquery=0
 
 {.comment|
     Enable image background?
-    Put pictures in (root)/pic/img/bg/ to see them randomly appear
+    Put pictures in your speciefied folder to see them randomly appear
     as the background of your page
 .}
 EnableImageBg=0
+BgFolder=/pic/img/bg/
 
 {.comment| What will the header show?   -- Texts wrapped by {.! .} will be able to be replaced("translated") by defining them like those ones below.}
 EnableHeader=0
 HeaderText={.!HTTP File System.}
 
 {.comment| What will the statustext show? .}
-StatusText=Welcome! Files here are available for view & download!
+EnableStatus=1
+StatusText={.!Files here are available for view & download.}
 
 {.comment| How will Fais looked like? .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫

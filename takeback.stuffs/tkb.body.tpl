@@ -183,6 +183,7 @@ function searchQuery() {
 %sym-slideshow%
 %sym-thumb%
 %sym-fileactions%
+%sym-font%
 </body>
 </html>
 
@@ -283,3 +284,4 @@ item-modified-datetime-formated={.time|format={.!DateTimeFormat.}|when=%item-mod
 .}
 <div class="nofile">{.!It seems nothing here....}</div>
 <script>setTimeout(function () { window.location.href = '../'; }, 12000);</script>
+

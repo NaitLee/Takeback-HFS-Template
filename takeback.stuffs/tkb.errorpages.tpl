@@ -35,6 +35,9 @@ a, a:link, a:hover, a:active, a:visited { color: white; text-decoration: none; t
 a:hover { color: black; background-color: white; }
 </style>
 
+[error-page]
+%content%
+
 [not found]
 {.if|{.match|*.php*;*.js;*.py;*.vbs*;*.exe|%url%.}|{:{.disconnect.}:}.}
 {.add header|Cache-Control: no-cache, max-age=0.}
@@ -52,7 +55,7 @@ a:hover { color: black; background-color: white; }
 </body></html>
 
 [overload]
-{.if|!%user%|{:{.if|{.%url% = /.}|{:{.disconnect.}:}.}:}.}
+{.if not|%user%|{:{.if|{.match|^\/([Ff]ile(\/)?)?$|%url%.}|{:{.disconnect.}:}.}:}.}
 {.add header|Cache-Control: no-cache, max-age=0.}
 <!doctype html>
 <html>

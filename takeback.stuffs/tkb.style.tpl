@@ -379,12 +379,6 @@ table#files a[href^="https://"]::before  {
     color: #5AE
 }
 
-/* 
-a[href^="javascript:"]::before {
-    content: "🔮  ";
-    color: #5AE
-} */
-
 #files {
     background: none;
     border: 0 white solid;
