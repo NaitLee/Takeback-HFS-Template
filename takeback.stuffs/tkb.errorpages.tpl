@@ -102,6 +102,8 @@ a:hover { color: black; background-color: white; }
     {.if|{.can change pwd.} | <button onclick='areanewpass.style.display = "block";'>{.!Change Password.}</button> .}
     <br /><span id="sid" style="display: none;"></span>
     <div id='areanewpass' style="display: none;">
+    <input id="oldpwd" type='password' name='oldpwd' maxlength="32"
+        size="25" placeholder="{.!Input old password....}" /><br />
     <input id="newpwd" type='password' name='newpwd' maxlength="32"
         size="25" placeholder="{.!Input new password....}" /><br />
     <input id="newpwd2" type='password' name='newpwd2' maxlength="32"
@@ -119,8 +121,7 @@ a:hover { color: black; background-color: white; }
             beforeRedirect();
         }
     }
-    </script>
-    <script>
+    var sha256 = function(s) { return SHA256.hash(s); }
     function logout() {fetch("/?mode=logout");/*.then(res => location.reload());*/beforeRedirect(); return false;}
     function changePwd(newpass) {
         var xhr = new XMLHttpRequest();
@@ -136,15 +137,19 @@ a:hover { color: black; background-color: white; }
             } else {
                 if (code == "0") {
                     alert("{.!You cannot change your password!.}");
+                } else if (code == "3") {
+                    alert("{.!Failed: Old password you input is wrong!.}");
+                } else if (code == "4") {
+                    alert("{.!Macro is detected in your input. Please do not attack..}");
                 } else if (xhr.responseText.trim() == "bad session") {
                     alert("{.!Bad session. Try to refresh the page..}");
                 } else {
-                    alert('Unknown error: \n'+xhr.responseText.trim());
+                    alert('{.!Unknown error.}: \n'+xhr.responseText.trim());
                 }
             }
         }
         };
-        xhr.send("token={.cookie|HFS_SID_.}"+"&new="+newpass);
+        xhr.send("token={.cookie|HFS_SID_.}" + "&old=" + sha256(oldpwd.value) + "&new="+btoa(unescape(encodeURIComponent(newpass))));
     }
     </script>
     :}
@@ -154,7 +159,6 @@ a:hover { color: black; background-color: white; }
     <input type='hidden' id='sid' size='16' />
     <input type="checkbox" title='{.!By checking this you also agree to use Cookies.}' style="transform: scale(1.6);" /> {.!Keep me loggedin.}
     <input type='button' style="width: 8em;" onclick='login()' value='{.!Login.}' />
-    <script src='/~sha256.js'></script>
     <script>
     var sha256 = function(s) { return SHA256.hash(s); }
     function login() {
@@ -195,6 +199,7 @@ a:hover { color: black; background-color: white; }
     }
     </script>
 .}
+<script src='/~sha256.js'></script>
 <script>
 function beforeRedirect() {
     var inputs = ['user', 'pw', 'newpwd', 'newpwd2'];
@@ -253,6 +258,9 @@ function beforeRedirect() {
 {.$signin.}
 
 [unauth]
+{.$unauthorized.}
+
+[unauthorized]
 {.if|{.match|*.php*;*.js;*.py;*.vbs*;*.exe|%url%.}|{:{.disconnect.}:}.}
 {.add header|Cache-Control: no-cache, max-age=0.}
 <!doctype html>

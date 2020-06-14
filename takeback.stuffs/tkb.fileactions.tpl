@@ -13,7 +13,7 @@ function del(it) {
         //  otherwise user will face a chance to get a 404, even an innocent ban
         it=='.' ? window.history.go(-1) : location.reload(false);
     };
-    xhr.send("action=delete&files=" + it);
+    xhr.send("action=delete&selection=" + it);
 }
 function _fileaction(method, file, target, handler) {
     if (!handler) handler = function () {}

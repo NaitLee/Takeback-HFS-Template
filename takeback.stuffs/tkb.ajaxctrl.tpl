@@ -75,4 +75,8 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 [ajax.changepwd|no log]
 {.check session.}
 {.break|if={.not|{.can change pwd.}.} |result={.!Forbidden.} (0).}
-{.if|{.length|{.set account||password={.postvar|new.}.}/length.}|{.!OK.} (1)|{.!Failed.} (2).}
+{.comment | {.break|if={.substring|{.chr|123|46.}|{.chr|46|125.}|{.base64decode|{.postvar|new.}.}.}|result={.!Macro detected.} (4).} .}
+{.if | {.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}
+    | {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|{.!OK.} (1)|{.!Failed.} (2).}:}
+    | {:{.!Old password not match.} (3):}
+.}

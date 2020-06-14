@@ -4,5 +4,8 @@
         Licensed under 2-Clause BSD.
 -->
 
+[api level]
+2
+
 [+special:strings]
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
