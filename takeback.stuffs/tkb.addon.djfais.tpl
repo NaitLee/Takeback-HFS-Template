@@ -59,10 +59,10 @@ function _djfais () {
         document.querySelector('span#playerstatus').textContent = "\u2759\u2759 {.!Paused.}: "
     }
     this.audio.onloadedmetadata = function() {
-        musicTitle = decodeURI(self.audio.getAttribute("src"));
-        playertitle.innerHTML = musicTitle + ' ';
+        musicTitle = spliturllast(decodeURI(self.audio.getAttribute("src")));
+        playertitle.innerHTML = musicTitle;
         document.title = musicTitle + " - {.!TitleText.}";
-        playertitle.innerHTML += '[' + new Date(self.audio.duration * 1000).toJSON().slice(14, -5) + ']';
+        playertitle.innerHTML += ' [' + new Date(self.audio.duration * 1000).toJSON().slice(14, -5) + ']';
     }
     this.audio.onended = function() { switchsong('?next'); }
     this.audio.onerror = function() { self.audio.onended() }
