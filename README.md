@@ -3,4 +3,4 @@ A modern filelist template for <a href="https://www.rejetto.com/hfs/">HTTP File 
 
 Build full file by opening the file takeback*.tpl.fbuilder with fb.exe in folder takeback.stuff.
 
-Please wait for further info.
+See <a href="http://rejetto.com/forum/index.php?topic=13287.0">this post</a> for further info.
