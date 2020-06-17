@@ -1,5 +1,5 @@
 
-[upload]
+[upload|public]
 {.add header|Cache-Control: no-cache, max-age=0.}
 <!doctype html>
 <!-- Upload page -->
@@ -64,7 +64,7 @@ function addUpload() {
                     // We should post this ajax message to the upload FOLDER, not the ~upload page.
                     xhr2.open("POST", "./?mode=section&id=ajax.mkdir");
                     xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    xhr2.onload = function() { alert(xhr2.responseText); window.history.go(-1) };
+                    xhr2.onload = function() { alert(xhr2.responseText.trim()); window.history.go(-1) };
                     var hfstoken = '{.cookie|HFS_SID_.}';
                     xhr2.send("&name="+foldername.value+"&token="+hfstoken);
                 }

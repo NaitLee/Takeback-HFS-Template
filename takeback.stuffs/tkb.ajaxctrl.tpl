@@ -12,7 +12,7 @@ escape attr=replace|"|&quot;|$1
 commentNL=if|{.pos|<br|$1.}|$1|{.replace|{.chr|10.}|<br />|$1.}
 add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 
-[ajax.mkdir|no log]
+[ajax.mkdir|no log|public]
 {.check session.}
 {.set|x|{.postvar|name.}.}
 {.break|if={.pos|\|var=x.}{.pos|/|var=x.}|result={.!Illegal action.} (0).}
@@ -23,7 +23,7 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 {.add to log|User %user% created folder "{.^x.}".}
 {.pipe|{.!OK.}.}
 
-[ajax.rename|no log]
+[ajax.rename|no log|public]
 {.check session.}
 {.break|if={.not|{.can rename.}.}|result={.!Forbidden.} (0).}
 {.break|if={.is file protected|{.postvar|from.}.}|result={.!Forbidden.} (1).}
@@ -36,7 +36,7 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 {.add to log|User %user% renamed "{.^x.}" to "{.^y.}".}
 {.pipe|{.!OK.}.}
 
-[ajax.move|no log]
+[ajax.move|no log|public]
 {.check session.}
 {.set|to|{.force ansi|{.postvar|to.}.}.}
 {.break|if={.not|{.and|{.can move.}|{.get|can delete.}|{.get|can upload|path={.^to.}.}/and.}.} |result={.!forbidden.} (0).}
@@ -63,7 +63,7 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 :}.}
 {.add to log|{.^log.}.}
 
-[ajax.comment|no log]
+[ajax.comment|no log|public]
 {.check session.}
 {.break|if={.not|{.can comment.}.} |result={.!Forbidden.} (0).}
 {.for each|fn|{.replace|:|{.no pipe||.}|{.postvar|files.}.}|{:
@@ -72,10 +72,10 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 :}.}
 {.pipe|{.!OK.}.}
 
-[ajax.changepwd|no log]
+[ajax.changepwd|no log|public]
 {.check session.}
 {.break|if={.not|{.can change pwd.}.} |result={.!Forbidden.} (0).}
-{.comment | {.break|if={.substring|{.chr|123|46.}|{.chr|46|125.}|{.base64decode|{.postvar|new.}.}.}|result={.!Macro detected.} (4).} .}
+{.comment| FIXME: "md5decode" result can be executed if it's a macro .}
 {.if | {.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}
     | {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|{.!OK.} (1)|{.!Failed.} (2).}:}
     | {:{.!Old password not match.} (3):}

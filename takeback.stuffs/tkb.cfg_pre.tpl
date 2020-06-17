@@ -13,9 +13,8 @@ TitleText=HFS::%folder%
 UseJquery=0
 {.comment|
     The webpage goes fast with FaikQuery, because this only includes functions
-        that are needed in this webpage/template, and with less operations.
+        that are needed in this webpage/template, with less operations.
     If you need edit this template with jQuery features(other than animations), turn it on.
-    It's finally finished! With a cool animation replaced the slideUp/slideDown!
 .}
 
 {.comment|

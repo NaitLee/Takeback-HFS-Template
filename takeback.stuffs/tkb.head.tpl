@@ -8,4 +8,5 @@
 2
 
 [+special:strings]
+{.comment| UI customizer does not support Unicode .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫

@@ -61,7 +61,7 @@ function _filestatics () {
 var filestatics = new _filestatics();
 
 filestatics.filelistnodes.forEach(function(filelistnode, index) {
-    var url = spliturllast(filelistnode.href);
+    var url = filelistnode.href     // spliturllast(filelistnode.href);
     filestatics.filelist.push(url);
     // Prevent browser from directly downloading a file on click, and preview
     filelistnode.onclick = function(event) {

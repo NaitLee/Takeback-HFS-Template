@@ -1,4 +1,4 @@
-[]
+[|public]
 <!doctype html>
 <html>
 <head>

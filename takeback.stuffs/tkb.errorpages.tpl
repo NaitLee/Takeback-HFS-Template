@@ -116,6 +116,8 @@ a:hover { color: black; background-color: white; }
             alert('{.!Passwords not match, please re-input..}');
         } else if (newpwd.value=='') {
             alert('{.!Password cannot be empty!.}')
+        } else if (newpwd.value.match(/{\..*(\||\.()})/)) {
+            alert('{.!Macro is detected in your input. Please do not attack..}');
         } else {
             changePwd(newpwd.value);
             beforeRedirect();
@@ -215,7 +217,7 @@ function beforeRedirect() {
 </script>
 </fieldset>
 
-[signin]
+[login=signin|public]
 {.if|{.match|*.php*;*.js;*.py;*.vbs*;*.exe|%url%.}|{:{.disconnect.}:}.}
 {.add header|Cache-Control: no-cache, max-age=0.}
 <!doctype html>
@@ -254,13 +256,7 @@ function beforeRedirect() {
 <br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
 </body>
 
-[login]
-{.$signin.}
-
-[unauth]
-{.$unauthorized.}
-
-[unauthorized]
+[unauth=unauthorized|public]
 {.if|{.match|*.php*;*.js;*.py;*.vbs*;*.exe|%url%.}|{:{.disconnect.}:}.}
 {.add header|Cache-Control: no-cache, max-age=0.}
 <!doctype html>
