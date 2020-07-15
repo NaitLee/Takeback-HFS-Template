@@ -1,7 +1,7 @@
 <!--
-        The Takeback Template:
-            http://rejetto.com/forum/index.php?topic=13287.0
-        Licensed under 2-Clause BSD.
+		The Takeback Template:
+			http://rejetto.com/forum/index.php?topic=13287.0
+		Licensed under 2-Clause BSD.
 -->
 
 [api level]
@@ -12,7 +12,12 @@
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
 
 [special:import]
-
+{.if|
+	{.dialog|
+{.!Do you want to overwrite some of your HFS settings to make this template run more efficiently?.}
+{.!After accepting this you may reset(clear) settings if you are going to switch to another/default template..}
+	|yesno question.}
+|{:
 {.set ini|use-system-icons=no.}
 {.set ini|log-progress=no.}
 {.set ini|log-dump-request=no.}
@@ -27,6 +32,7 @@ HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
 {.set ini|tray-shows=ips.}
 {.set ini|flash-on= .}
 {.set ini|browse-localhost=no.}
+:}|.}
 
 [+special:strings]
 
@@ -41,15 +47,15 @@ TitleText=HFS::%folder%
 {.comment| Use JQuery instead of FaikQuery? .}
 UseJquery=0
 {.comment|
-    The webpage goes fast with FaikQuery, because this only includes functions
-        that are needed in this webpage/template, with less operations.
-    If you need edit this template with jQuery features(other than animations), turn it on.
+	The webpage goes fast with FaikQuery, because this only includes functions
+		that are needed in this webpage/template, with less operations.
+	If you need edit this template with jQuery features(other than animations), turn it on.
 .}
 
 {.comment|
-    Enable image background?
-    Put pictures in your speciefied folder to see them randomly appear
-    as the background of your page
+	Enable image background?
+	Put pictures in your speciefied folder to see them randomly appear
+	as the background of your page
 .}
 EnableImageBg=0
 BgFolder=/pic/img/bg/
@@ -77,7 +83,7 @@ ThresholdConnectionsOfTuringStatusRed=64
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Below 3 metas makes so-called dual-core browsers (360 Safe Browser, etc.)
-    use Webkit to render the page by default -->
+	use Webkit to render the page by default -->
 <meta name="renderer" content="webkit" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
 <meta name="force-rendering" content="webkit" />
@@ -101,37 +107,37 @@ var path = folder.split("/");
 var pathTree = "/";
 var pathTreeResult = "";
 for (pta = 1; pta < path.length; pta++) {
-    pathTree = pathTree + path[pta] + "/";
-    pathTreeResult = pathTreeResult + '/<a href="' + pathTree + '" class=\"swapDir\">' + path[pta] + '</a>';
+	pathTree = pathTree + path[pta] + "/";
+	pathTreeResult = pathTreeResult + '/<a href="' + pathTree + '" class=\"swapDir\">' + path[pta] + '</a>';
 }
 document.getElementById('swapDir').innerHTML = pathTreeResult;
 }
 // Searcher
 function searchQuery() {
-    frm = document.searchForm;
-    if (frm.query.value.length < 1) {
-        popup("{.!Search requires 1 or more characters.}");
-    } else {
-        frm.recursive.checked ? recursive = "&recursive" : recursive = "";
-        for (x = 0; x < frm.choice.length; x++) {
-            if (frm.choice[x].checked != 1) return;
-            if (frm.choice[x].value == "file") {
-                searchMode = "?files-filter=";
-                filter = "&folders-filter=%5C";
-            } else if (frm.choice[x].value == "folder") {
-                searchMode = "?folders-filter=";
-                filter = "&files-filter=%5C";
-            } else {
-                searchMode = "?filter=";
-                filter = "";
-            }
-        }
-        for (c = 0; c < frm.root.length; c++) {
-            if (frm.root[c].checked != 1) return;
-            frm.root[c].value == "current" ? searchFrom = "http://%host%"+HFS.folder : searchFrom = "http://%host%";
-        }
-        document.location.href = searchFrom + searchMode + "*" + frm.query.value + "*" + recursive + filter;
-    }
+	frm = document.searchForm;
+	if (frm.query.value.length < 1) {
+		popup("{.!Search requires 1 or more characters.}");
+	} else {
+		frm.recursive.checked ? recursive = "&recursive" : recursive = "";
+		for (x = 0; x < frm.choice.length; x++) {
+			if (frm.choice[x].checked != 1) return;
+			if (frm.choice[x].value == "file") {
+				searchMode = "?files-filter=";
+				filter = "&folders-filter=%5C";
+			} else if (frm.choice[x].value == "folder") {
+				searchMode = "?folders-filter=";
+				filter = "&files-filter=%5C";
+			} else {
+				searchMode = "?filter=";
+				filter = "";
+			}
+		}
+		for (c = 0; c < frm.root.length; c++) {
+			if (frm.root[c].checked != 1) return;
+			frm.root[c].value == "current" ? searchFrom = "http://%host%"+HFS.folder : searchFrom = "http://%host%";
+		}
+		document.location.href = searchFrom + searchMode + "*" + frm.query.value + "*" + recursive + filter;
+	}
 }
 </script>
 </head>
@@ -145,8 +151,8 @@ function searchQuery() {
 
 <!-- Notice: Framework -->
 <div class="notice">
-    <div id="noticetitle"></div>
-    <div id="noticecontent"></div>
+	<div id="noticetitle"></div>
+	<div id="noticecontent"></div>
 </div>
 
 <!-- File list: Framework -->
@@ -159,11 +165,11 @@ function searchQuery() {
 {.if|{.get|can archive.}|
 {:{.if|{.%number-files% > 0.}|
 {:{.if|{.%total-kbytes% <= {.!MaxArchiveSizeAllowedToDownloadKb.} .}|
-    <div style="text-align: center;">
-    <a href="javascript: // Popup confirm // .tar" onclick="popup('{.!Download these.} %number-files% {.!files in a .tar archive?.}', '?confirm', function() { window.location.href = HFS.folder + '~folder.tar'; });">
-        [ {.!Click to Archive.} ]
-    </a>
-    </div>
+	<div style="text-align: center;">
+	<a href="javascript: // Popup confirm // .tar" onclick="popup('{.!Download these.} %number-files% {.!files in a .tar archive?.}', '?confirm', function() { window.location.href = HFS.folder + '~folder.tar'; });">
+		[ {.!Click to Archive.} ]
+	</a>
+	</div>
 .}:}
 .}:}
 .}
@@ -178,88 +184,88 @@ function searchQuery() {
 <div class="playerdj">
 <div id="djinfo" style="display: none;"></div>
 <div class="fais">
-    <span id="dj"><a href="javascript:">{.!HowDjFaisLooksLike.}</a></span>
-    <a href="javascript:"><span id="playerstatus">&#9658;&#10073; </span> <!-- Events see onclick() & oncontextmenu() in _fais() -->
-    </a><span id="playertitle"></span>
+	<span id="dj"><a href="javascript:">{.!HowDjFaisLooksLike.}</a></span>
+	<a href="javascript:"><span id="playerstatus">&#9658;&#10073; </span> <!-- Events see onclick() & oncontextmenu() in _fais() -->
+	</a><span id="playertitle"></span>
 </div>
 </div>
 <!-- Preview -->
 <div class="preview" id="previewopen"><span class="tiparrow">&nbsp;</span>
-    <a href="javascript: previewfile('?show');">{.!Expand preview frame.}</a>&nbsp;
+	<a href="javascript: previewfile('?show');">{.!Expand preview frame.}</a>&nbsp;
 </div>
 <div class="preview">
-    <span class="tiparrow">&nbsp;</span><span id="previewtip"></span>
-    <a class="close" href="javascript: previewfile('?close')">
-        <abbr title="{.!Close preview frame.}">[X]</abbr>
-    </a>&nbsp;
-    <!-- Actions also contained -->
-    <div id="multiselectactions" style="display: none;">
-        <div style="height: 1px; border-bottom: white 1px solid;"></div>
-        {.!Multi:.} &nbsp;
-        <a href="javascript: fileactionmulti('?mask')">{.!Mask.}</a>
-        <a href="javascript: fileactionmulti('?invert')">{.!Invert.}</a>
-        <a href="javascript: fileactionmulti('?archive')">{.!Archive.}</a>
-        <!-- Note: different from single file actions -->
+	<span class="tiparrow">&nbsp;</span><span id="previewtip"></span>
+	<a class="close" href="javascript: previewfile('?close')">
+		<abbr title="{.!Close preview frame.}">[X]</abbr>
+	</a>&nbsp;
+	<!-- Actions also contained -->
+	<div id="multiselectactions" style="display: none;">
+		<div style="height: 1px; border-bottom: white 1px solid;"></div>
+		{.!Multi:.} &nbsp;
+		<a href="javascript: fileactionmulti('?mask')">{.!Mask.}</a>
+		<a href="javascript: fileactionmulti('?invert')">{.!Invert.}</a>
+		<a href="javascript: fileactionmulti('?archive')">{.!Archive.}</a>
+		<!-- Note: different from single file actions -->
 		{.if|{.get|can delete.}|
-        <a href="javascript: fileactionmulti('?delete');">{.!Delete.}</a>
-		    {.if|{.and|{.!option.move.}|{.can move.}.}| 
-            <a href="javascript: fileactionmulti('?move');">{.!Move.}</a>.}
-        .}
-        <a href="javascript: multiclose();">{.!Close.}</a>
-        <div id="multiselectstatics">{.!There are.} 0 {.!files selected.}</div>
-    </div>
-    <div style="height: 1px; border-bottom: white 1px solid;"></div>
-    <div id="previewactions">
-        <a href="javascript: multiopen();">{.!Multi select.}</a>
-        <a href="javascript: var x = function() { preview.innerHTML = ''; }();">{.!Clear preview.}</a>
-		{.if|{.get|can delete.}|
-        <a href="javascript: fileaction('?delete');">{.!Delete.}</a>
-		    {.if|{.and|{.!option.move.}|{.can move.}.}| 
-            <a href="javascript: fileaction('?move');">{.!Move.}</a>.}
+		<a href="javascript: fileactionmulti('?delete');">{.!Delete.}</a>
+			{.if|{.and|{.!option.move.}|{.can move.}.}| 
+			<a href="javascript: fileactionmulti('?move');">{.!Move.}</a>.}
 		.}
-        {.if|{.can rename.}| <a href="javascript: fileaction('?rename');">{.!Rename.}</a> .}
-    </div>
-    <div class="fileactioninputs">
-        <span id="fileactionlabel"></span> <!-- e.g. Move to: -->
-        <input id="fileactioninput" type="text" name="fileactioninput"  />
-        <button id="fileactionsubmit">{.!OKay.}</button>
-    </div>
-    <div id="preview">{.!You can tap on filename and preview here.}</div>
+		<a href="javascript: multiclose();">{.!Close.}</a>
+		<div id="multiselectstatics">{.!There are.} 0 {.!files selected.}</div>
+	</div>
+	<div style="height: 1px; border-bottom: white 1px solid;"></div>
+	<div id="previewactions">
+		<a href="javascript: multiopen();">{.!Multi select.}</a>
+		<a href="javascript: var x = function() { preview.innerHTML = ''; }();">{.!Clear preview.}</a>
+		{.if|{.get|can delete.}|
+		<a href="javascript: fileaction('?delete');">{.!Delete.}</a>
+			{.if|{.and|{.!option.move.}|{.can move.}.}| 
+			<a href="javascript: fileaction('?move');">{.!Move.}</a>.}
+		.}
+		{.if|{.can rename.}| <a href="javascript: fileaction('?rename');">{.!Rename.}</a> .}
+	</div>
+	<div class="fileactioninputs">
+		<span id="fileactionlabel"></span> <!-- e.g. Move to: -->
+		<input id="fileactioninput" type="text" name="fileactioninput"  />
+		<button id="fileactionsubmit">{.!OKay.}</button>
+	</div>
+	<div id="preview">{.!You can tap on filename and preview here.}</div>
 </div>
 
 <!-- Slideshow(pictures) -->
 <div class="blackblank" id="slideshow">
 <!--
-    pic0 -> show0
-    show0: fadeout
-    pic1 -> show1
-    pic0 -> show2
-    show0: show
+	pic0 -> show0
+	show0: fadeout
+	pic1 -> show1
+	pic0 -> show2
+	show0: show
 -->
-    <div class="slidecontainer" id="slideshow2" style="display: none;">
-        <!-- pic1: Ready -->
-    </div>
-    <div class="slidecontainer" id="slideshow1">
-        <!-- pic0: Main -->
-    </div>
-    <div class="blackblank" id="slideblackside" style="display: none;"></div>
-    <div class="slidecontainer" id="slideshow0">
-        <!-- pic2: OnSwap -->
-    </div>
-    <div id="slideshowctrl" class="slidecontainer"></div>
+	<div class="slidecontainer" id="slideshow2" style="display: none;">
+		<!-- pic1: Ready -->
+	</div>
+	<div class="slidecontainer" id="slideshow1">
+		<!-- pic0: Main -->
+	</div>
+	<div class="blackblank" id="slideblackside" style="display: none;"></div>
+	<div class="slidecontainer" id="slideshow0">
+		<!-- pic2: OnSwap -->
+	</div>
+	<div id="slideshowctrl" class="slidecontainer"></div>
 </div>
 </div>
 
 <!-- Popup: Framework -->
 <div class="popup">
-    <div id="popupbg" style="display: none;"></div>
-    <div id="popupbox" style="display: none;">
-        <div id="popupmsg"><!-- Message --></div>
-        <div style="height: 1px; border-bottom: white 1px solid; margin: 16px;"></div>
-        <div id="popupctrl">
-            <!-- Init by function popup() -->
-        </div>
-    </div>
+	<div id="popupbg" style="display: none;"></div>
+	<div id="popupbox" style="display: none;">
+		<div id="popupmsg"><!-- Message --></div>
+		<div style="height: 1px; border-bottom: white 1px solid; margin: 16px;"></div>
+		<div id="popupctrl">
+			<!-- Init by function popup() -->
+		</div>
+	</div>
 </div>
 
 <script src="/~addonall.js" onerror="var self = this; setTimeout(function() { self.src = '/~addonall.js'; }, 400);" async></script>
@@ -282,9 +288,9 @@ function searchQuery() {
 <div class=btn><a href="/~signin">&#128100; {.!Login.}</a></div>
 [loggedin]
 <div class=btn>
-    <span id="sid" style="display: none"></span>
-    <a href="/~signin">&#128100; %user%</a>
-    <a href="/~signin" class="inverted">&nbsp;{.!Manage.}&nbsp;</a>
+	<span id="sid" style="display: none"></span>
+	<a href="/~signin">&#128100; %user%</a>
+	<a href="/~signin" class="inverted">&nbsp;{.!Manage.}&nbsp;</a>
 </div>
 
 [upload-link]
@@ -293,50 +299,50 @@ function searchQuery() {
 [files]
 <!-- Search box -->
 {.if|{.%connections% > 64.}|{:<br />:}|{:<div style="margin-top: 4px; border-bottom: white 1px solid;">
-    <form class="hide" name="searchForm" method="GET" action="javascript:searchQuery()">
-    <input class="searchbox" placeholder="{.!Search files here....}" type="search" name="query" size="25"
-        maxlength="32"><input class="searchbutton" type="submit" name="searchBtn" value="&#128269;">
-    <input type="hidden" name="choice" value="file" checked="1">
-    <input type="hidden" name="choice" value="folder" checked="1">
-    <input type="hidden" name="choice" value="both" checked="1">
-    <input type="hidden" name="recursive" checked="1">
-    <input type="hidden" name="root" value="root" checked="1">
-    <input type="hidden" name="root" value="current" checked="1">
-    <!-- Upload button(link) -->
-    %upload-link%
-    </form>
+	<form class="hide" name="searchForm" method="GET" action="javascript:searchQuery()">
+	<input class="searchbox" placeholder="{.!Search files here....}" type="search" name="query" size="25"
+		maxlength="32"><input class="searchbutton" type="submit" name="searchBtn" value="&#128269;">
+	<input type="hidden" name="choice" value="file" checked="1">
+	<input type="hidden" name="choice" value="folder" checked="1">
+	<input type="hidden" name="choice" value="both" checked="1">
+	<input type="hidden" name="recursive" checked="1">
+	<input type="hidden" name="root" value="root" checked="1">
+	<input type="hidden" name="root" value="current" checked="1">
+	<!-- Upload button(link) -->
+	%upload-link%
+	</form>
 </div>
 <!-- Banner/text -->
 <div class="statustext">
-    <span><a href="{.!StatusTextLink.}" target="_blank"
-        style="color: {.if|{.%connections% > {.!ThresholdConnectionsOfTuringStatusRed.}.}|{:#996644:}|{:#228833:}.};">
-        {.!StatusText.}</a>
-    </span>
+	<span><a href="{.!StatusTextLink.}" target="_blank"
+		style="color: {.if|{.%connections% > {.!ThresholdConnectionsOfTuringStatusRed.}.}|{:#996644:}|{:#228833:}.};">
+		{.!StatusText.}</a>
+	</span>
 </div>:}.}
 <!-- File list: Table headline -->
 <div class="files">
 <table id="files">
 <tr class="trhead">
 <td class="l">
-    <a href="%encoded-folder%?sort=e">
-        <abbr title="{.!Click to sort files by extension.}">&#128311;</abbr>&nbsp;
-    </a>
-    <a href="%encoded-folder%?sort=n">
-        <abbr title="{.!Click to sort files by this.}">{.!FileName.}</abbr>
-    </a> (%number-files%)
-    <span id='menu-bar'>&nbsp;</span>
-    <span id="showthumb">
-        <a href="javascript: showthumbnail();">📸 {.!Photo Thumbnails.}</a>
-    </span>
+	<a href="%encoded-folder%?sort=e">
+		<abbr title="{.!Click to sort files by extension.}">&#128311;</abbr>&nbsp;
+	</a>
+	<a href="%encoded-folder%?sort=n">
+		<abbr title="{.!Click to sort files by this.}">{.!FileName.}</abbr>
+	</a> (%number-files%)
+	<span id='menu-bar'>&nbsp;</span>
+	<span id="showthumb">
+		<a href="javascript: showthumbnail();">📸 {.!Photo Thumbnails.}</a>
+	</span>
 </td>
 <td class="m">
-    <a href="%encoded-folder%?sort=!t">
-        <abbr title="{.!Format.}: {.!DateTimeFormat.}    {.!Click to sort files by this.}">{.!Last Modified.}</abbr>
-    </a></td>
+	<a href="%encoded-folder%?sort=!t">
+		<abbr title="{.!Format.}: {.!DateTimeFormat.}    {.!Click to sort files by this.}">{.!Last Modified.}</abbr>
+	</a></td>
 <td class="r">
-    <a href="%encoded-folder%?sort=s">
-        <abbr title="{.!Click to sort files by this.}">{.!Size.}</abbr>
-    </a>
+	<a href="%encoded-folder%?sort=s">
+		<abbr title="{.!Click to sort files by this.}">{.!Size.}</abbr>
+	</a>
 </td>
 </tr>%list%
 </table>
@@ -373,12 +379,12 @@ item-edited={.if|{.!UseSpecialDateTimeFormat.}|{.item-modified-datetime-formated
 {:{.if|{.get|can upload.}|
 {:<div style="text-align: center; margin-top: 4px; border-bottom: white 1px solid;">
 <a class="inverted" href="%encoded-folder%~upload" style="font-weight: bold;">
-    &#8679;&nbsp;{.!Upload Files.} </a></div>:}
+	&#8679;&nbsp;{.!Upload Files.} </a></div>:}
 .}:}
 .}
 <div class="nofile">{.!{.if|{.length|{.?filter.}.}
-    |{.!Sorry, we cannot find what you prefer to see now....}
-    |{.!It seems nothing here....}.}.}
+	|{.!Sorry, we cannot find what you prefer to see now....}
+	|{.!It seems nothing here....}.}.}
 </div>
 <script>setTimeout(function () { window.location.href = '../'; }, 12000);</script>
 
@@ -399,76 +405,76 @@ item-edited={.if|{.!UseSpecialDateTimeFormat.}|{.item-modified-datetime-formated
 function _$(querier) {
 var elements = document.querySelectorAll(querier);
 this.hide = function () {
-    elements.forEach(function(element, index) {
-        element.style.display = 'none';
-        element.classList.remove('fkfadein', 'fkfadout', 'fkslidup', 'fkslidwn');
-    });
+	elements.forEach(function(element, index) {
+		element.style.display = 'none';
+		element.classList.remove('fkfadein', 'fkfadout', 'fkslidup', 'fkslidwn');
+	});
 }
 this.fadeOut = function (timeout) {
-    if (!timeout) timeout = 400;
-    elements.forEach(function(element, index) {
-        element.style.transition = 'all '+timeout+'ms';
-        setTimeout(function () {
-            element.classList.add('fkfadout');
-            element.classList.remove('fkfadein', 'fkslidwn');
-        }, 16)
-        setTimeout(function() {
-            element.style.transition = '';
-            element.style.display = 'none';
-        }, timeout-1)
-    });
+	if (!timeout) timeout = 400;
+	elements.forEach(function(element, index) {
+		element.style.transition = 'all '+timeout+'ms';
+		setTimeout(function () {
+			element.classList.add('fkfadout');
+			element.classList.remove('fkfadein', 'fkslidwn');
+		}, 16)
+		setTimeout(function() {
+			element.style.transition = '';
+			element.style.display = 'none';
+		}, timeout-1)
+	});
 }
 this.slideUp = function (timeout) {
-    if (!timeout) timeout = 400;
-    elements.forEach(function(element, index) {
-        element.style.transition = 'all '+timeout+'ms';
-        setTimeout(function () {
-            element.classList.add('fkslidup');
-            element.classList.remove('fkslidwn', 'fkfadout');
-        }, 16)
-        setTimeout(function() {
-            element.style.transition = '';
-            element.style.display = 'none';
-        }, timeout-1)
-    });
+	if (!timeout) timeout = 400;
+	elements.forEach(function(element, index) {
+		element.style.transition = 'all '+timeout+'ms';
+		setTimeout(function () {
+			element.classList.add('fkslidup');
+			element.classList.remove('fkslidwn', 'fkfadout');
+		}, 16)
+		setTimeout(function() {
+			element.style.transition = '';
+			element.style.display = 'none';
+		}, timeout-1)
+	});
 }
 this.show = function () {
-    elements.forEach(function(element, index) {
-        element.style.display = 'block';
-        element.classList.remove('fkfadein', 'fkfadout', 'fkslidup', 'fkslidwn');
-    });
+	elements.forEach(function(element, index) {
+		element.style.display = 'block';
+		element.classList.remove('fkfadein', 'fkfadout', 'fkslidup', 'fkslidwn');
+	});
 }
 this.fadeIn = function (timeout) {
-    if (!timeout) timeout = 400;
-    elements.forEach(function(element, index) {
-        element.classList.add('fkfadout');
-        element.style.transition = 'all '+timeout+'ms';
-        element.style.display = 'block';
-        setTimeout(function () {
-            element.classList.remove('fkfadout', 'fkslidup');
-            element.classList.add('fkfadein');
-        }, 16)
-        setTimeout(function() {
-            element.style.transition = '';
-            element.style.display = 'block';
-        }, timeout)
-    });
+	if (!timeout) timeout = 400;
+	elements.forEach(function(element, index) {
+		element.classList.add('fkfadout');
+		element.style.transition = 'all '+timeout+'ms';
+		element.style.display = 'block';
+		setTimeout(function () {
+			element.classList.remove('fkfadout', 'fkslidup');
+			element.classList.add('fkfadein');
+		}, 16)
+		setTimeout(function() {
+			element.style.transition = '';
+			element.style.display = 'block';
+		}, timeout)
+	});
 }
 this.slideDown = function (timeout) {
-    if (!timeout) timeout = 400;
-    elements.forEach(function(element, index) {
-        element.classList.add('fkslidup');
-        element.style.display = 'block';
-        element.style.transition = 'all '+timeout+'ms';
-        setTimeout(function () {
-            element.classList.remove('fkfadout', 'fkslidup');
-            element.classList.add('fkslidwn');
-        }, 16)
-        setTimeout(function() {
-            element.style.transition = '';
-            element.style.display = 'block';
-        }, timeout)
-    });
+	if (!timeout) timeout = 400;
+	elements.forEach(function(element, index) {
+		element.classList.add('fkslidup');
+		element.style.display = 'block';
+		element.style.transition = 'all '+timeout+'ms';
+		setTimeout(function () {
+			element.classList.remove('fkfadout', 'fkslidup');
+			element.classList.add('fkslidwn');
+		}, 16)
+		setTimeout(function() {
+			element.style.transition = '';
+			element.style.display = 'block';
+		}, timeout)
+	});
 }
 }
 function $(element) { return new _$(element); }
@@ -481,123 +487,123 @@ var noticedpreview = false;
 var givetofais = false;
 // Previewing: Core script
 function _previewfile(url) {
-    var fileurl = decodeURI(url);
-    var filename = spliturllast(fileurl);
-    // Judge the file type
-    var filetype = 'unknown';
-    switch (url.slice(-4).toLowerCase()) {
-        case '.png': case '.jpg': case 'jpeg':
-        case '.gif': case 'webp': case '.ico':
-            filetype = 'image';
-            break;
-        case '.txt': case 'html': case '.htm':
-            filetype = 'text';
-            break;
-        case '.mp3': case '.m4a':
-        case '.wav': case '.ogg': // '.ogg' can be an audio and/or video.
-            filetype = 'audio';
-            break;
-        case '.mp4': case 'webm':
-        case '.ogv':    // Name an '.ogg' as '.ogv' to view as a video here.
-            filetype = 'video';
-            break;
-        case '.swf':
-            filetype = 'flash';
-            break;
-        case '.rtf':
-        case '.doc': case 'docx': case '.odt':
-        case '.xls': case 'xlsx': case '.ods':
-        case '.ppt': case 'pptx': case '.odp':
-            filetype = 'workdocument';
-            break;
-        default:
-            filetype = 'unknown';
-            break;
-    }
-    // Define the preview content
-    previewcontent = '';
-    switch (filetype) {
-        case 'image':
-            previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.}&nbsp;<br />\
-                <a href="javascript: slideshow(\'?start\')"><img class="previewimg" id="previewobject" src="'+fileurl+'" /></a><br />';
-            break;
-        case 'audio':
-            previewcontent = '<audio controls loop autoplay><source src="'+fileurl+'">\
-                {.!Sorry, previewing this file is not sopported by your browser.}</audio><br />\
-                <a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
-            break;
-        case 'video':
-            previewcontent = '{.!Rotate your device to fullscreen if mobile.}<br />\
-                <video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
-                {.!Sorry, previewing this file is not sopported by your browser.}</video><br />';
-            break;
-        case 'text':
-            previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+fileurl+'">\
-                {.!Previewing not supported, please try dowload.}</iframe><br />';
-            break;
-        case 'flash':
-            previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
-                {.!Mobile platforms will not support flash anymore.}&nbsp;<br />\
-                <embed class="previewflashobject" id="previewobject" src="'+fileurl+'" type="application/x-shockwave-flash" />\
-                <div><a class="previewflashfullscreenexit" href="javascript: previewfile(\'?flashfullscreenexit\');"><abbr title="{.!Exit Fullscreen.}">[X]</abbr></a></div>\
-                <br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
-            break;
-        case 'workdocument':
-            previewcontent = ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
-                '{.!You can preview this document with Microsoft Office Online service.}<br />\
-                    <a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
-                '{.!Unable to view online: this site is in LAN.}<br />' );
-            break;
-        default:
-            previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try dowload.}</span>&nbsp;<br />';
-            break;
-    }
-    previewcontent += '<a href="'+filename+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
-    if (filetype=='audio' && givetofais==true) {
-        previewfile('?fais', url);
-    } else {
-        previewtip.innerHTML = spliturllast(fileurl);   // spliturllast() in "addon.pre"
-        preview.innerHTML = previewcontent;
-        previewfile('?show');
-    }
-    console.log('%c\nPreviewing file:\n'+fileurl+'\nIts type is '+filetype, 'color: teal;');
-    if (!noticedpreview && filetype!='unknown') {
-        notice('{.!View your file below the page!.}', '{.!Preview Opened.}');
-        noticedpreview = true;
-    }
+	var fileurl = decodeURI(url);
+	var filename = spliturllast(fileurl);
+	// Judge the file type
+	var filetype = 'unknown';
+	switch (url.slice(-4).toLowerCase()) {
+		case '.png': case '.jpg': case 'jpeg':
+		case '.gif': case 'webp': case '.ico':
+			filetype = 'image';
+			break;
+		case '.txt': case 'html': case '.htm':
+			filetype = 'text';
+			break;
+		case '.mp3': case '.m4a':
+		case '.wav': case '.ogg': // '.ogg' can be an audio and/or video.
+			filetype = 'audio';
+			break;
+		case '.mp4': case 'webm':
+		case '.ogv':    // Name an '.ogg' as '.ogv' to view as a video here.
+			filetype = 'video';
+			break;
+		case '.swf':
+			filetype = 'flash';
+			break;
+		case '.rtf':
+		case '.doc': case 'docx': case '.odt':
+		case '.xls': case 'xlsx': case '.ods':
+		case '.ppt': case 'pptx': case '.odp':
+			filetype = 'workdocument';
+			break;
+		default:
+			filetype = 'unknown';
+			break;
+	}
+	// Define the preview content
+	previewcontent = '';
+	switch (filetype) {
+		case 'image':
+			previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.}&nbsp;<br />\
+				<a href="javascript: slideshow(\'?start\')"><img class="previewimg" id="previewobject" src="'+fileurl+'" /></a><br />';
+			break;
+		case 'audio':
+			previewcontent = '<audio controls loop autoplay><source src="'+fileurl+'">\
+				{.!Sorry, previewing this file is not sopported by your browser.}</audio><br />\
+				<a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
+			break;
+		case 'video':
+			previewcontent = '{.!Rotate your device to fullscreen if mobile.}<br />\
+				<video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
+				{.!Sorry, previewing this file is not sopported by your browser.}</video><br />';
+			break;
+		case 'text':
+			previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+fileurl+'">\
+				{.!Previewing not supported, please try dowload.}</iframe><br />';
+			break;
+		case 'flash':
+			previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
+				{.!Mobile platforms will not support flash anymore.}&nbsp;<br />\
+				<embed class="previewflashobject" id="previewobject" src="'+fileurl+'" type="application/x-shockwave-flash" />\
+				<div><a class="previewflashfullscreenexit" href="javascript: previewfile(\'?flashfullscreenexit\');"><abbr title="{.!Exit Fullscreen.}">[X]</abbr></a></div>\
+				<br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
+			break;
+		case 'workdocument':
+			previewcontent = ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
+				'{.!You can preview this document with Microsoft Office Online service.}<br />\
+					<a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
+				'{.!Unable to view online: this site is in LAN.}<br />' );
+			break;
+		default:
+			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try dowload.}</span>&nbsp;<br />';
+			break;
+	}
+	previewcontent += '<a href="'+filename+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
+	if (filetype=='audio' && givetofais==true) {
+		previewfile('?fais', url);
+	} else {
+		previewtip.innerHTML = spliturllast(fileurl);   // spliturllast() in "addon.pre"
+		preview.innerHTML = previewcontent;
+		previewfile('?show');
+	}
+	console.log('%c\nPreviewing file:\n'+fileurl+'\nIts type is '+filetype, 'color: teal;');
+	if (!noticedpreview && filetype!='unknown') {
+		notice('{.!View your file below the page!.}', '{.!Preview Opened.}');
+		noticedpreview = true;
+	}
 }
 
 // Previewing: Shell script
 function previewfile (ctrl, url) {
-    switch (ctrl) {
-        case '?show':
-            $('.preview').slideDown(); $('#previewopen').slideUp(); break;
-        case '?open':
-            _previewfile(url); break;
-        case '?close':
-            $('.preview').slideUp(); $('#previewopen').slideDown(); break;
-        case '?download':
-            window.location.href = url; 
-            notice(url, '{.!Starting Download.}: '+decodeURI(url));
-            break;
-        case '?fais':
-            if (document.querySelector('audio')!=null) document.querySelector('audio').pause();
-            fais('?play', url); previewfile('?close');
-            givetofais = true;
-            break;
-        // For flash. Though this thing is dying, but there are still mini-games come with flash
-        case '?flashfullscreen':
-            $('.previewflashobject').addClass('flashfullpaged');
-            $('.previewflashfullscreenexit').fadeIn();
-            notice('{.!Exit by tapping the [X].} =>', '{.!Fullscreened.}');
-            break;
-        case '?flashfullscreenexit':
-            $('.previewflashobject').removeClass('flashfullpaged');
-            $('.previewflashfullscreenexit').fadeOut();
-            break;
-        default:
-            previewfile('?open', url);
-    }
+	switch (ctrl) {
+		case '?show':
+			$('.preview').slideDown(); $('#previewopen').slideUp(); break;
+		case '?open':
+			_previewfile(url); break;
+		case '?close':
+			$('.preview').slideUp(); $('#previewopen').slideDown(); break;
+		case '?download':
+			window.location.href = url; 
+			notice(url, '{.!Starting Download.}: '+decodeURI(url));
+			break;
+		case '?fais':
+			if (document.querySelector('audio')!=null) document.querySelector('audio').pause();
+			fais('?play', url); previewfile('?close');
+			givetofais = true;
+			break;
+		// For flash. Though this thing is dying, but there are still mini-games come with flash
+		case '?flashfullscreen':
+			$('.previewflashobject').addClass('flashfullpaged');
+			$('.previewflashfullscreenexit').fadeIn();
+			notice('{.!Exit by tapping the [X].} =>', '{.!Fullscreened.}');
+			break;
+		case '?flashfullscreenexit':
+			$('.previewflashobject').removeClass('flashfullpaged');
+			$('.previewflashfullscreenexit').fadeOut();
+			break;
+		default:
+			previewfile('?open', url);
+	}
 }
 previewfile('?show');
 // </script>
@@ -606,37 +612,37 @@ previewfile('?show');
 {.add header|Cache-Control: public, max-age=86400.}
 // <script>
 function popup (message, type, callbackfn, defaultvalue) {
-    if (callbackfn == undefined) { callbackfn = function() { return true; } };
-    var popupclose = function () {
-        $('#popupbg').fadeOut();
-        $('#popupbox').slideUp();
-    };
-    popupmsg.innerHTML = message;
-    switch (type) {
-        case '?alert':
-            popupctrl.innerHTML = '<div id="popupalert"><button id="popupalertok">{.!OKay.}</button></div>';
-            popupalertok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupalertok.onclick(); }); // When press enter, OK
-            popupalertok.onclick = function () { callbackfn(true); popupclose(); return true; };
-            break;
-        case '?confirm':
-            popupctrl.innerHTML = '<div id="popupconfirm"><button id="popupconfirmok">{.!OKay.}</button> <button id="popupconfirmcancel">{.!Cancel.}</button></div>';
-            popupconfirmok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupconfirmok.onclick(); });
-            popupconfirmok.onclick = function () { callbackfn(true); popupclose(); return true; };
-            popupconfirmcancel.onclick = function() { popupclose(); return false; };
-            break;
-        case '?prompt':
-            popupctrl.innerHTML = '<div id="popupprompt"><input type="text" id="popuppromptinput" placeholder="{.!Input something....}" /><br />\
-                <button id="popuppromptok">{.!OKay.}</button> <button id="popuppromptcancel">{.!Cancel.}</button></div>';
-            popuppromptinput.value = defaultvalue==undefined ? '' : defaultvalue;
-            popuppromptinput.addEventListener("keydown", function(event) { if (event.keyCode == 13) popuppromptok.onclick(); });
-            popuppromptok.onclick = function () { callbackfn(popuppromptinput.value); popupclose(); return popuppromptinput.value; };
-            popuppromptcancel.onclick = function() { popupclose(); return false; };
-            break;
-        default:
-            popup(message, '?alert', callbackfn);
-    }
-    $('#popupbg').fadeIn();
-    $('#popupbox').slideDown();
+	if (callbackfn == undefined) { callbackfn = function() { return true; } };
+	var popupclose = function () {
+		$('#popupbg').fadeOut();
+		$('#popupbox').slideUp();
+	};
+	popupmsg.innerHTML = message;
+	switch (type) {
+		case '?alert':
+			popupctrl.innerHTML = '<div id="popupalert"><button id="popupalertok">{.!OKay.}</button></div>';
+			popupalertok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupalertok.onclick(); }); // When press enter, OK
+			popupalertok.onclick = function () { callbackfn(true); popupclose(); return true; };
+			break;
+		case '?confirm':
+			popupctrl.innerHTML = '<div id="popupconfirm"><button id="popupconfirmok">{.!OKay.}</button> <button id="popupconfirmcancel">{.!Cancel.}</button></div>';
+			popupconfirmok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupconfirmok.onclick(); });
+			popupconfirmok.onclick = function () { callbackfn(true); popupclose(); return true; };
+			popupconfirmcancel.onclick = function() { popupclose(); return false; };
+			break;
+		case '?prompt':
+			popupctrl.innerHTML = '<div id="popupprompt"><input type="text" id="popuppromptinput" placeholder="{.!Input something....}" /><br />\
+				<button id="popuppromptok">{.!OKay.}</button> <button id="popuppromptcancel">{.!Cancel.}</button></div>';
+			popuppromptinput.value = defaultvalue==undefined ? '' : defaultvalue;
+			popuppromptinput.addEventListener("keydown", function(event) { if (event.keyCode == 13) popuppromptok.onclick(); });
+			popuppromptok.onclick = function () { callbackfn(popuppromptinput.value); popupclose(); return popuppromptinput.value; };
+			popuppromptcancel.onclick = function() { popupclose(); return false; };
+			break;
+		default:
+			popup(message, '?alert', callbackfn);
+	}
+	$('#popupbg').fadeIn();
+	$('#popupbox').slideDown();
 }
 // </script>
 
@@ -646,35 +652,35 @@ function popup (message, type, callbackfn, defaultvalue) {
 // Scroll to top: Script
 var prevscroll = 0;
 window.onscroll = function () {
-    var currscroll = document.documentElement.scrollTop || document.body.scrollTop;
-    if (currscroll > 240 && prevscroll < 240) {
-        $('#get-top').fadeIn();
-    } else if (currscroll < 240 && prevscroll > 240) {
-        $('#get-top').fadeOut();
-    }
-    prevscroll = currscroll;
+	var currscroll = document.documentElement.scrollTop || document.body.scrollTop;
+	if (currscroll > 240 && prevscroll < 240) {
+		$('#get-top').fadeIn();
+	} else if (currscroll < 240 && prevscroll > 240) {
+		$('#get-top').fadeOut();
+	}
+	prevscroll = currscroll;
 }
 document.querySelector('#get-top').onclick = function () {
-    var scrollspeed = scrollY/30;
-    var interval = setInterval(function() {
-        scrollY > 0 ? scrollBy(window, -scrollspeed) : clearInterval(interval);
-    }, 16)
+	var scrollspeed = scrollY/30;
+	var interval = setInterval(function() {
+		scrollY > 0 ? scrollBy(window, -scrollspeed) : clearInterval(interval);
+	}, 16)
 }
 function _notice(content, title, timeout) {
-    // When the previous notice not hidden
-    $('.notice').hide();
-    clearTimeout(noticetimeout);
-    // Start a notice
-    noticetitle.innerHTML = title;
-    noticecontent.innerHTML = content;
-    $('.notice').slideDown(160);
-    console.log('%c\nNotice:\n'+title+'\n'+content, 'font-weight: bold;');
-    var noticetimeout = setTimeout(function () { $('.notice').fadeOut(300); }, timeout ? timeout : 3200);
+	// When the previous notice not hidden
+	$('.notice').hide();
+	clearTimeout(noticetimeout);
+	// Start a notice
+	noticetitle.innerHTML = title;
+	noticecontent.innerHTML = content;
+	$('.notice').slideDown(160);
+	console.log('%c\nNotice:\n'+title+'\n'+content, 'font-weight: bold;');
+	var noticetimeout = setTimeout(function () { $('.notice').fadeOut(300); }, timeout ? timeout : 3200);
 }    
 // $('.notice').slideUp();
 
 function notice(message, titlemessage, timeout) {
-    _notice(message, titlemessage, timeout);
+	_notice(message, titlemessage, timeout);
 }
 
 /***
@@ -683,109 +689,109 @@ function notice(message, titlemessage, timeout) {
  *  Link: https://blog.csdn.net/scaped/java/article/details/80297743
  */
 function requestFullScreen(element) {
-    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
-    if (requestMethod) {
-        requestMethod.call(element);
-    } else if (typeof window.ActiveXObject !== "undefined") {
-        var wscript = new ActiveXObject("WScript.Shell");
-        if (wscript !== null) wscript.SendKeys("{F11}");
-    }
+	var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+	if (requestMethod) {
+		requestMethod.call(element);
+	} else if (typeof window.ActiveXObject !== "undefined") {
+		var wscript = new ActiveXObject("WScript.Shell");
+		if (wscript !== null) wscript.SendKeys("{F11}");
+	}
 }
 function exitFullScreen(element) {
-    var exitMethod = element.exitFullScreen || element.webkitCancelFullScreen || element.mozCancelFullScreen || element.msExitFullScreen;
-    if (exitMethod) { exitMethod.call(element); }
-    else if (typeof window.ActiveXObject !== "undefined") {
-        var wscript = new ActiveXObject("WScript.Shell");
-        if (wscript !== null) wscript.SendKeys("{F11}");
-    }
+	var exitMethod = element.exitFullScreen || element.webkitCancelFullScreen || element.mozCancelFullScreen || element.msExitFullScreen;
+	if (exitMethod) { exitMethod.call(element); }
+	else if (typeof window.ActiveXObject !== "undefined") {
+		var wscript = new ActiveXObject("WScript.Shell");
+		if (wscript !== null) wscript.SendKeys("{F11}");
+	}
 }
 
 // From HFS original tpl, edited
 function getItemName(s) {
-    s = s.split('#')[0].split('?')[0];
-    // remove protocol and hostname
-    var i = s.indexOf('://');
-    if (i > 0)
-        s = s.slice(s.indexOf('/',i+3));
-    // current folder is specified. Remove it.
-    if (s.indexOf(HFS.folder) == 0)
-        s = s.slice(HFS.folder.length);
-    // folders have a trailing slash that's not truly part of the name
-    if (s.slice(-1) == '/')
-        s = s.slice(0,-1);
-    // it is encoded
-    s = (decodeURIComponent || unescape)(s);
-    return s;
+	s = s.split('#')[0].split('?')[0];
+	// remove protocol and hostname
+	var i = s.indexOf('://');
+	if (i > 0)
+		s = s.slice(s.indexOf('/',i+3));
+	// current folder is specified. Remove it.
+	if (s.indexOf(HFS.folder) == 0)
+		s = s.slice(HFS.folder.length);
+	// folders have a trailing slash that's not truly part of the name
+	if (s.slice(-1) == '/')
+		s = s.slice(0,-1);
+	// it is encoded
+	s = (decodeURIComponent || unescape)(s);
+	return s;
 } // getItemName
 
 function spliturllast(url, indexnegative) {
-    // 'http://example.net/folder/file.txt' -> '/folder/file.txt'
+	// 'http://example.net/folder/file.txt' -> '/folder/file.txt'
 	url = getItemName(url);
-    // '/folder/file.txt' -> 'file.txt'
-    var urlparts = url.split('/');
-    if (!indexnegative) indexnegative = 1;
-    return urlparts[urlparts.length-indexnegative];
+	// '/folder/file.txt' -> 'file.txt'
+	var urlparts = url.split('/');
+	if (!indexnegative) indexnegative = 1;
+	return urlparts[urlparts.length-indexnegative];
 }
 // Show current folder in preview title
 previewtip.innerHTML = decodeURI(spliturllast(window.location.href)+'/');
 function _filestatics () {
-    this.filelistnodes = document.querySelectorAll('td.file a, td.folder a, td.link a');
-    this.nodesfile = document.querySelectorAll('td.file a');
-    this.filelist = [];
-    this.musiclist = [];
-    this.picturelist = [];
-    this.selectedfiles = [];
+	this.filelistnodes = document.querySelectorAll('td.file a, td.folder a, td.link a');
+	this.nodesfile = document.querySelectorAll('td.file a');
+	this.filelist = [];
+	this.musiclist = [];
+	this.picturelist = [];
+	this.selectedfiles = [];
 }
 var filestatics = new _filestatics();
 
 // Preparition: Query all file links on the page, many functions will use them
 // Sort files out by type
 filestatics.nodesfile.forEach(function(filelistnode, index) {
-    var url = filelistnode.href     // spliturllast(filelistnode.href);
-    filestatics.filelist.push(url);
-    // Prevent browser from directly downloading a file on click, and preview
-    filelistnode.onclick = function(event) {
-        event.preventDefault();
-        previewfile('?open', this.href);
-    }
-    if (['.mp3', '.wav', '.ogg'].indexOf(url.slice(-4).toLowerCase()) != -1) {
-        filestatics.musiclist.push(url);
-    } else if (['.png', '.jpg', 'jpeg', '.gif', 'webp'].indexOf(url.slice(-4).toLowerCase()) != -1) {
-        filestatics.picturelist.push(url);
-    }
+	var url = filelistnode.href     // spliturllast(filelistnode.href);
+	filestatics.filelist.push(url);
+	// Prevent browser from directly downloading a file on click, and preview
+	filelistnode.onclick = function(event) {
+		event.preventDefault();
+		previewfile('?open', this.href);
+	}
+	if (['.mp3', '.wav', '.ogg'].indexOf(url.slice(-4).toLowerCase()) != -1) {
+		filestatics.musiclist.push(url);
+	} else if (['.png', '.jpg', 'jpeg', '.gif', 'webp'].indexOf(url.slice(-4).toLowerCase()) != -1) {
+		filestatics.picturelist.push(url);
+	}
 });
 
 // Multi select
 var filetabletrs = document.querySelectorAll('#files tbody tr');
 function refreshmultistatic () {
-    filestatics.selectedfiles = [];
-    filetabletrs.forEach(function(e, k) {
-        if (k == 0) return; k -= 1;  // Table head, skip
-        if (e.classList.value.indexOf('selected') != -1)
-            filestatics.selectedfiles.push(filestatics.filelistnodes[k].href);
-    });
-    multiselectstatics.innerHTML = '{.!There are.} ' + filestatics.selectedfiles.length + ' {.!files selected.}'
+	filestatics.selectedfiles = [];
+	filetabletrs.forEach(function(e, k) {
+		if (k == 0) return; k -= 1;  // Table head, skip
+		if (e.classList.value.indexOf('selected') != -1)
+			filestatics.selectedfiles.push(filestatics.filelistnodes[k].href);
+	});
+	multiselectstatics.innerHTML = '{.!There are.} ' + filestatics.selectedfiles.length + ' {.!files selected.}'
 }
 function multiopen () {
-    filetabletrs.forEach(function(element, key) {
-        if (key == 0) return; key -= 1;  // Table head, skip
-        element.onclick = function(event) {
-            element.classList.value.indexOf('selected') == -1
-                ? element.classList.add('selected')
-                : element.classList.remove('selected');
-            refreshmultistatic();
-        }
-    });
-    $('#multiselectactions').slideDown();
+	filetabletrs.forEach(function(element, key) {
+		if (key == 0) return; key -= 1;  // Table head, skip
+		element.onclick = function(event) {
+			element.classList.value.indexOf('selected') == -1
+				? element.classList.add('selected')
+				: element.classList.remove('selected');
+			refreshmultistatic();
+		}
+	});
+	$('#multiselectactions').slideDown();
 }
 function multiclose () {
-    filetabletrs.forEach(function(element, key) {
-        if (key == 0) return; key -= 1;  // Table head, skip
-        element.onclick = function(event) {}
-        element.classList.remove('selected');
-    });
-    $('#multiselectactions').slideUp();
-    refreshmultistatic();
+	filetabletrs.forEach(function(element, key) {
+		if (key == 0) return; key -= 1;  // Table head, skip
+		element.onclick = function(event) {}
+		element.classList.remove('selected');
+	});
+	$('#multiselectactions').slideUp();
+	refreshmultistatic();
 }
 // </script>
 
@@ -794,78 +800,78 @@ function multiclose () {
 // <script>
 // D.J. Fais: Core (Constructor)
 function _djfais () {
-    var playlist = filestatics.musiclist, num = 0, shuffle = true;
+	var playlist = filestatics.musiclist, num = 0, shuffle = true;
 
-    // Randomize
-    var shuffled = playlist.sort(function(a, b) { return 0.5 - Math.random() });
+	// Randomize
+	var shuffled = playlist.sort(function(a, b) { return 0.5 - Math.random() });
 
-    this.audio = new Audio();
-    var self = this;
-    var fais = document.querySelector('#dj a');
-    function switchsong (ctrl) {
-        switch (ctrl) {
-            case '?next': num = num==playlist.length-1 ? num=0 : num + 1; break;
-            case '?prev': num = num==0 ? num=playlist.length-1 : num - 1; break;
-        }
-        self.audio.src = shuffle ? playlist[num] : shuffled[num];
-        self.audio.play();
-    }
-    var scheinfoclose = 0;
-    function info (message) {
-        clearTimeout(scheinfoclose);
-        djinfo.innerHTML = message;
-        $('#djinfo').slideDown();
-        scheinfoclose = setTimeout(function () { $('#djinfo').slideUp(); }, 2000);
-    }
-    $('#djinfo').slideUp();
-    fais.onclick = function (event) {
-        switchsong('?next'); info('{.!Play Next.}');
-    }
-    fais.oncontextmenu = function (event) {
-        event.preventDefault();
-        switchsong('?prev'); info('{.!Play Previous.}');
-    }
-    playerstatus.onclick = function (event) {
-        self.audio.paused ? self.audio.play() : self.audio.pause();
-    }
-    playerstatus.oncontextmenu = function (event) {
-        event.preventDefault();
-        shuffle = !shuffle;
-        info('{.!Play mode.}: ' + (shuffle==true ? '{.!Shuffled.}' : '{.!Sequenced.}'));
-    }
-    this.audio.onplay = function() {
-        if (!self.audio.src) switchsong('?next');
-        document.querySelector('span#playerstatus').textContent = "\u25BA {.!Playing.}: "
-        }
-    this.audio.onpause = function() {
-        document.querySelector('span#playerstatus').textContent = "\u2759\u2759 {.!Paused.}: "
-    }
-    this.audio.onloadedmetadata = function() {
-        musicTitle = spliturllast(decodeURI(self.audio.getAttribute("src")));
-        playertitle.innerHTML = musicTitle;
-        document.title = musicTitle + " - {.!TitleText.}";
-        playertitle.innerHTML += ' [' + new Date(self.audio.duration * 1000).toJSON().slice(14, -5) + ']';
-    }
-    this.audio.onended = function() { switchsong('?next'); }
-    this.audio.onerror = function() { self.audio.onended() }
+	this.audio = new Audio();
+	var self = this;
+	var fais = document.querySelector('#dj a');
+	function switchsong (ctrl) {
+		switch (ctrl) {
+			case '?next': num = num==playlist.length-1 ? num=0 : num + 1; break;
+			case '?prev': num = num==0 ? num=playlist.length-1 : num - 1; break;
+		}
+		self.audio.src = shuffle ? playlist[num] : shuffled[num];
+		self.audio.play();
+	}
+	var scheinfoclose = 0;
+	function info (message) {
+		clearTimeout(scheinfoclose);
+		djinfo.innerHTML = message;
+		$('#djinfo').slideDown();
+		scheinfoclose = setTimeout(function () { $('#djinfo').slideUp(); }, 2000);
+	}
+	$('#djinfo').slideUp();
+	fais.onclick = function (event) {
+		switchsong('?next'); info('{.!Play Next.}');
+	}
+	fais.oncontextmenu = function (event) {
+		event.preventDefault();
+		switchsong('?prev'); info('{.!Play Previous.}');
+	}
+	playerstatus.onclick = function (event) {
+		self.audio.paused ? self.audio.play() : self.audio.pause();
+	}
+	playerstatus.oncontextmenu = function (event) {
+		event.preventDefault();
+		shuffle = !shuffle;
+		info('{.!Play mode.}: ' + (shuffle==true ? '{.!Shuffled.}' : '{.!Sequenced.}'));
+	}
+	this.audio.onplay = function() {
+		if (!self.audio.src) switchsong('?next');
+		document.querySelector('span#playerstatus').textContent = "\u25BA {.!Playing.}: "
+		}
+	this.audio.onpause = function() {
+		document.querySelector('span#playerstatus').textContent = "\u2759\u2759 {.!Paused.}: "
+	}
+	this.audio.onloadedmetadata = function() {
+		musicTitle = spliturllast(decodeURI(self.audio.getAttribute("src")));
+		playertitle.innerHTML = musicTitle;
+		document.title = musicTitle + " - {.!TitleText.}";
+		playertitle.innerHTML += ' [' + new Date(self.audio.duration * 1000).toJSON().slice(14, -5) + ']';
+	}
+	this.audio.onended = function() { switchsong('?next'); }
+	this.audio.onerror = function() { self.audio.onended() }
 }
 
 // D.J. Fais: Shell
 function fais (ctrl, url) {
-    if (typeof player != 'object') player = new _djfais();
-    switch (ctrl) {
-        case '?show':
-            if (document.querySelector('.playerdj').style.display=='block'
-                ||document.querySelector('.playerdj').style.height!=0) return;
-            $('.playerdj').slideDown();
-            console.log('%c\n{.!HowDjFaisLooksLike.} D.J. Fais is here~', 'color: blue;');
-            break;
-        case '?play':
-            fais('?show'); player.audio.src = url; player.audio.play();
-            break;
-        default:
-            throw "Ctrl Error: Unknown ctrl type '"+ctrl+"' at fais()"
-    }
+	if (typeof player != 'object') player = new _djfais();
+	switch (ctrl) {
+		case '?show':
+			if (document.querySelector('.playerdj').style.display=='block'
+				||document.querySelector('.playerdj').style.height!=0) return;
+			$('.playerdj').slideDown();
+			console.log('%c\n{.!HowDjFaisLooksLike.} D.J. Fais is here~', 'color: blue;');
+			break;
+		case '?play':
+			fais('?show'); player.audio.src = url; player.audio.play();
+			break;
+		default:
+			throw "Ctrl Error: Unknown ctrl type '"+ctrl+"' at fais()"
+	}
 }
 if (filestatics.musiclist.length > 3) { fais('?show'); }
 // </script>
@@ -875,72 +881,72 @@ if (filestatics.musiclist.length > 3) { fais('?show'); }
 // <script>
 // Slideshow: Script
 function _slideshow (timeout, switchtime) {
-    var num=0;
-    var self = this;
-    slideshow1.innerHTML += '<img class="slidepic" />';
-    slideshow2.innerHTML += '<img class="slidepic" />';
-    slideshow1.children[0].src = filestatics.picturelist[num++];
-    slideshow2.children[0].src = filestatics.picturelist[num++];
-    requestFullScreen(document.documentElement);
-    $('table#files').slideUp(); // Hide file list to hide scroll bar
-    previewfile('?close');
-    $('#slideshow').fadeIn();
-    this.switchslide = function () {
-        if (num >= filestatics.picturelist.length) num = 0;
-        $('#slideblackside').show();
-        $('#slideshow0').show();
-        slideshow0.innerHTML = slideshow1.innerHTML;
-        slideshow1.innerHTML = slideshow2.innerHTML;
-        $('#slideblackside').fadeOut(switchtime);
-        $('#slideshow0').fadeOut(switchtime)
-        setTimeout(function() {
-            slideshow2.innerHTML = slideshow0.innerHTML;
-            slideshow2.children[0].src = filestatics.picturelist[num++];
-        }, switchtime);
-    }
-    var switchtimeout = 0;
-    var switchinterval = 0;
-    this.start = function () {
-        clearTimeout(switchtimeout);
-        switchinterval = setInterval(function () {
-            switchtimeout = setTimeout(self.switchslide, timeout);
-        }, timeout);
-        setTimeout(self.switchslide, timeout);
-        slideshowctrl.onclick = function (event) {
-            self.switchslide();
-            clearTimeout(switchtimeout);
-        }
-        slideshowctrl.oncontextmenu = function (event) {
-            event.preventDefault();
-            self.stop();
-        }
-    }
-    this.stop = function () {
-        $('#slideshow').fadeOut();
-        $('table#files').slideDown();
-        clearTimeout(switchtimeout);
-        clearInterval(switchinterval);
-        exitFullScreen(document);
-    }
+	var num=0;
+	var self = this;
+	slideshow1.innerHTML += '<img class="slidepic" />';
+	slideshow2.innerHTML += '<img class="slidepic" />';
+	slideshow1.children[0].src = filestatics.picturelist[num++];
+	slideshow2.children[0].src = filestatics.picturelist[num++];
+	requestFullScreen(document.documentElement);
+	$('table#files').slideUp(); // Hide file list to hide scroll bar
+	previewfile('?close');
+	$('#slideshow').fadeIn();
+	this.switchslide = function () {
+		if (num >= filestatics.picturelist.length) num = 0;
+		$('#slideblackside').show();
+		$('#slideshow0').show();
+		slideshow0.innerHTML = slideshow1.innerHTML;
+		slideshow1.innerHTML = slideshow2.innerHTML;
+		$('#slideblackside').fadeOut(switchtime);
+		$('#slideshow0').fadeOut(switchtime)
+		setTimeout(function() {
+			slideshow2.innerHTML = slideshow0.innerHTML;
+			slideshow2.children[0].src = filestatics.picturelist[num++];
+		}, switchtime);
+	}
+	var switchtimeout = 0;
+	var switchinterval = 0;
+	this.start = function () {
+		clearTimeout(switchtimeout);
+		switchinterval = setInterval(function () {
+			switchtimeout = setTimeout(self.switchslide, timeout);
+		}, timeout);
+		setTimeout(self.switchslide, timeout);
+		slideshowctrl.onclick = function (event) {
+			self.switchslide();
+			clearTimeout(switchtimeout);
+		}
+		slideshowctrl.oncontextmenu = function (event) {
+			event.preventDefault();
+			self.stop();
+		}
+	}
+	this.stop = function () {
+		$('#slideshow').fadeOut();
+		$('table#files').slideDown();
+		clearTimeout(switchtimeout);
+		clearInterval(switchinterval);
+		exitFullScreen(document);
+	}
 }
 // Slideshow: Shell function
 function slideshow (ctrl) {
-    switch (ctrl) {
-        case '?start':
-            notice('{.!Tap screen for next, rightclick/longpress to exit.}', '{.!Slideshow will start after 3 seconds.}');
-            setTimeout(function () {
-                if (typeof window.show) window.show = new _slideshow(5000, 1000);
-                show.start();
-            }, 3200);
-            break;
-        case '?next':
-            show.switchslide(); break;
-        case '?stop':
-            show.stop(); break;
-            // window.show = null;
-        default:
-            throw "Ctrl Error: Unknown ctrl type '"+ctrl+"' at slideshow()";
-    }
+	switch (ctrl) {
+		case '?start':
+			notice('{.!Tap screen for next, rightclick/longpress to exit.}', '{.!Slideshow will start after 3 seconds.}');
+			setTimeout(function () {
+				if (typeof window.show) window.show = new _slideshow(5000, 1000);
+				show.start();
+			}, 3200);
+			break;
+		case '?next':
+			show.switchslide(); break;
+		case '?stop':
+			show.stop(); break;
+			// window.show = null;
+		default:
+			throw "Ctrl Error: Unknown ctrl type '"+ctrl+"' at slideshow()";
+	}
 }
 // </script>
 
@@ -949,38 +955,38 @@ function slideshow (ctrl) {
 // <script>
 var thumbshown = false;
 function showthumbnail () {
-    // Only run once
-    if (thumbshown) return;
-    thumbshown = true;
-    // Lazyload introduced from throwback
-    filestatics.picturelist.forEach(function(url, index) {
-        var element = filestatics.nodesfile[filestatics.filelist.indexOf(url)];
-        if (element) element.innerHTML = '<img class="thumbnail lazy" onerror="setTimeout(()=> this.src="' + filestatics.picturelist[index] + '",250)" alt="" data-src="' + filestatics.picturelist[index] + '" />' + element.innerHTML;
-    });
-    var lazyloadImages;
-    if ("IntersectionObserver" in window) {
-        lazyloadImages = document.querySelectorAll("img.thumbnail.lazy");
-        var imageObserver = new IntersectionObserver(function (entries, observer) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) setTimeout(function() {
-                    var image = entry.target;
-                    image.src = image.dataset.src;
-                    image.classList.remove("lazy");
-                    imageObserver.unobserve(image);
-                }, 500)
-            });
-        });
-        lazyloadImages.forEach(function (image) {
-            imageObserver.observe(image);
-        });
-    } else { popup('{.!Your browser needs to be updated to support thumbnail lazyload..}'); }
-    var style = (function() {
-        var style = document.createElement("style");
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
-        return style;
-    })();
-    style.sheet.insertRule('.lazy{display:initial}', 0);
+	// Only run once
+	if (thumbshown) return;
+	thumbshown = true;
+	// Lazyload introduced from throwback
+	filestatics.picturelist.forEach(function(url, index) {
+		var element = filestatics.nodesfile[filestatics.filelist.indexOf(url)];
+		if (element) element.innerHTML = '<img class="thumbnail lazy" onerror="setTimeout(()=> this.src="' + filestatics.picturelist[index] + '",250)" alt="" data-src="' + filestatics.picturelist[index] + '" />' + element.innerHTML;
+	});
+	var lazyloadImages;
+	if ("IntersectionObserver" in window) {
+		lazyloadImages = document.querySelectorAll("img.thumbnail.lazy");
+		var imageObserver = new IntersectionObserver(function (entries, observer) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) setTimeout(function() {
+					var image = entry.target;
+					image.src = image.dataset.src;
+					image.classList.remove("lazy");
+					imageObserver.unobserve(image);
+				}, 500)
+			});
+		});
+		lazyloadImages.forEach(function (image) {
+			imageObserver.observe(image);
+		});
+	} else { popup('{.!Your browser needs to be updated to support thumbnail lazyload..}'); }
+	var style = (function() {
+		var style = document.createElement("style");
+		style.appendChild(document.createTextNode(""));
+		document.head.appendChild(style);
+		return style;
+	})();
+	style.sheet.insertRule('.lazy{display:initial}', 0);
 }
 if (filestatics.picturelist.length > 3) { showthumb.style.display='inline'; }
 // </script>
@@ -989,25 +995,25 @@ if (filestatics.picturelist.length > 3) { showthumb.style.display='inline'; }
 {.add header|Cache-Control: public, max-age=86400.}
 // <script>
 function randomOneIn(sth) {
-    return sth[Math.floor(Math.random()*sth.length)];
+	return sth[Math.floor(Math.random()*sth.length)];
 }
 var linkGettingList = '{.!BgFolder.}?tpl=list&folders-filter=\\&recursive';
 function requestimage() {
 var xhr1 = new XMLHttpRequest();
 xhr1.open('get', linkGettingList);
 xhr1.onreadystatechange = function () {
-    if (xhr1.readyState === 4) {
-        var lines = xhr1.responseText;
-        if (xhr1.status == 429) {
-            console.log('Network busy (429). Retrying in few seconds...');
-            setTimeout(e => requestimage(), 1000);
-            return;
-        }
-        var bgImgLocs = lines.split('\n');
-        var selectedImage = randomOneIn(bgImgLocs);
-        console.log("Selected image for bg: \n" + selectedImage);
-        bg.style.backgroundImage = "url("+selectedImage+")";
-    }
+	if (xhr1.readyState === 4) {
+		var lines = xhr1.responseText;
+		if (xhr1.status == 429) {
+			console.log('Network busy (429). Retrying in few seconds...');
+			setTimeout(e => requestimage(), 1000);
+			return;
+		}
+		var bgImgLocs = lines.split('\n');
+		var selectedImage = randomOneIn(bgImgLocs);
+		console.log("Selected image for bg: \n" + selectedImage);
+		bg.style.backgroundImage = "url("+selectedImage+")";
+	}
 }
 xhr1.send();
 }
@@ -1019,192 +1025,192 @@ requestimage();
 // <script>
 // File handler (Actions to file)
 function del(it) {
-    popup("{.!Delete.} " + (it=='.'?'{.!current FOLDER.}':it.split('&selection=').join(', ')) + "?", '?confirm', function() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", HFS.folder);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-        xhr.onload = function() {
-            document.write(xhr.responseText.trim());
-            // Do 'back' rather than refresh while deleting/doing sth to a folder,
-            //  otherwise user will face a chance to get a 404, even an innocent ban
-            it=='.' ? window.history.go(-1) : location.reload(false);
-        };
-        xhr.send("action=delete&selection=" + it);
-    })
+	popup("{.!Delete.} " + (it=='.'?'{.!current FOLDER.}':it.split('&selection=').join(', ')) + "?", '?confirm', function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", HFS.folder);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+		xhr.onload = function() {
+			document.write(xhr.responseText.trim());
+			// Do 'back' rather than refresh while deleting/doing sth to a folder,
+			//  otherwise user will face a chance to get a 404, even an innocent ban
+			it=='.' ? window.history.go(-1) : location.reload(false);
+		};
+		xhr.send("action=delete&selection=" + it);
+	})
 }
 function _fileaction(method, file, target, handler) {
-    if (!handler) handler = function () {}
-    var actionreadable = method;
-    switch (method) {
-        case 'mkdir':
-            actionreadable = '{.!make a folder.}'; break;
-        case 'move':
-            actionreadable = '{.!move.}'; break;
-        case 'rename':
-            actionreadable = '{.!rename.}'; break;
-        case 'comment':
-            actionreadable = '{.!comment.}'; break;
-        default:
-            actionreadable = method;
-    }
-    popup("{.!Do.} "+ actionreadable + ' ' + (file=='.'?'{.!current FOLDER.}':decodeURIComponent(file.split('&selection=').join(', '))) + ' {.!to.} ' + target + "?", '?confirm', function() {
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open("POST", "?mode=section&id=ajax."+method);
-        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-        xhr2.onload = function() {
-            handler(xhr2.responseText);
-            location.reload();
-        };
-        var hfstoken = HFS.sid;
-        xhr2.send("from="+file+"&to="+target+"&token="+hfstoken);
-    });
+	if (!handler) handler = function () {}
+	var actionreadable = method;
+	switch (method) {
+		case 'mkdir':
+			actionreadable = '{.!make a folder.}'; break;
+		case 'move':
+			actionreadable = '{.!move.}'; break;
+		case 'rename':
+			actionreadable = '{.!rename.}'; break;
+		case 'comment':
+			actionreadable = '{.!comment.}'; break;
+		default:
+			actionreadable = method;
+	}
+	popup("{.!Do.} "+ actionreadable + ' ' + (file=='.'?'{.!current FOLDER.}':decodeURIComponent(file.split('&selection=').join(', '))) + ' {.!to.} ' + target + "?", '?confirm', function() {
+		var xhr2 = new XMLHttpRequest();
+		xhr2.open("POST", "?mode=section&id=ajax."+method);
+		xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+		xhr2.onload = function() {
+			handler(xhr2.responseText);
+			location.reload();
+		};
+		var hfstoken = HFS.sid;
+		xhr2.send("from="+file+"&to="+target+"&token="+hfstoken);
+	});
 }
 function fileaction(ctrl, file0) {
-    var method = '', handler = function () {};
-    var file = '.'; var target = '.';
-    switch (ctrl) {
-        case '?delete':
-            method = 'delete';
-            if (method=='delete') {
-                del(window.location.href.indexOf(encodeURI(previewtip.innerHTML))<0 ? previewtip.innerHTML : '.');
-                return;
-            }
-            break;
-        case '?rename':
-            method = 'rename';
-            fileactionlabel.innerHTML = '{.!Rename as.}: ';
-            fileactioninput.placeholder = '{.!Input file name....}';
-            break;
-        case '?move':
-            method = 'move';
-            fileactionlabel.innerHTML = '{.!Move to.}: ';
-            fileactioninput.placeholder = '{.!Input distination....}';
-            handler = function (res) {
-                var a = res.split(";");
-                if (a.length < 2)
-                    return popup(res.trim());
-                var failed = 0, ok = 0, msg = "";
-                for (var i=0; i<a.length-1; i++) {
-                    var s = a[i].trim();
-                    if (!s.length) { ok++; continue; }
-                    failed++; msg += s+"\n";
-                }
-                if (failed) msg = "{.!We met the following problems.}:\n"+msg;
-                msg = (ok ? ok+" {.!Files were moved..}\n" : "{.!No file was moved..}\n")+msg;
-                popup(msg);
-                // if (ok) location = location; // reload, included in xhr.onload
-            }
-            break;
-        case '?comment':
-            // Not used currently
-            method = 'comment';
-            fileactionlabel.innerHTML = '{.!Comment file.}: ';
-            fileactioninput.placeholder = '{.!Input something....}';
-            break;
-    }
-    $('.fileactioninputs').slideDown();
-    fileactionsubmit.onclick = function () {
-        file = window.location.href.indexOf(encodeURI(previewtip.innerHTML))<0 ? previewtip.innerHTML : '.';
-        if (file0) file = file0;
-        target = fileactioninput.value;
-        console.log(method, file, target, handler);
-        _fileaction(method, file, target, handler);
-    }
+	var method = '', handler = function () {};
+	var file = '.'; var target = '.';
+	switch (ctrl) {
+		case '?delete':
+			method = 'delete';
+			if (method=='delete') {
+				del(window.location.href.indexOf(encodeURI(previewtip.innerHTML))<0 ? previewtip.innerHTML : '.');
+				return;
+			}
+			break;
+		case '?rename':
+			method = 'rename';
+			fileactionlabel.innerHTML = '{.!Rename as.}: ';
+			fileactioninput.placeholder = '{.!Input file name....}';
+			break;
+		case '?move':
+			method = 'move';
+			fileactionlabel.innerHTML = '{.!Move to.}: ';
+			fileactioninput.placeholder = '{.!Input distination....}';
+			handler = function (res) {
+				var a = res.split(";");
+				if (a.length < 2)
+					return popup(res.trim());
+				var failed = 0, ok = 0, msg = "";
+				for (var i=0; i<a.length-1; i++) {
+					var s = a[i].trim();
+					if (!s.length) { ok++; continue; }
+					failed++; msg += s+"\n";
+				}
+				if (failed) msg = "{.!We met the following problems.}:\n"+msg;
+				msg = (ok ? ok+" {.!Files were moved..}\n" : "{.!No file was moved..}\n")+msg;
+				popup(msg);
+				// if (ok) location = location; // reload, included in xhr.onload
+			}
+			break;
+		case '?comment':
+			// Not used currently
+			method = 'comment';
+			fileactionlabel.innerHTML = '{.!Comment file.}: ';
+			fileactioninput.placeholder = '{.!Input something....}';
+			break;
+	}
+	$('.fileactioninputs').slideDown();
+	fileactionsubmit.onclick = function () {
+		file = window.location.href.indexOf(encodeURI(previewtip.innerHTML))<0 ? previewtip.innerHTML : '.';
+		if (file0) file = file0;
+		target = fileactioninput.value;
+		console.log(method, file, target, handler);
+		_fileaction(method, file, target, handler);
+	}
 }
 
 RegExp.escape = function(text) {
-    if (!arguments.callee.sRE) {
-        var specials = '/.*+?|()[]{}\\'.split('');
-        arguments.callee.sRE = new RegExp('(\\' + specials.join('|\\') + ')', 'g');
-    }
-    return text.replace(arguments.callee.sRE, '\\$1');
+	if (!arguments.callee.sRE) {
+		var specials = '/.*+?|()[]{}\\'.split('');
+		arguments.callee.sRE = new RegExp('(\\' + specials.join('|\\') + ')', 'g');
+	}
+	return text.replace(arguments.callee.sRE, '\\$1');
 }//escape
 
 function fileactionmulti(ctrl) {
-    var filenames = [];            
-    filetabletrs.forEach(function(e, k) {
-        if (k == 0) return; k -= 1;
-        if (e.classList.value.indexOf('selected')!=-1)
-            filenames.push(spliturllast(filestatics.filelistnodes[k].href));
-    });
-    console.log('Selected files before:\n' + filenames);
-    switch (ctrl) {
-        case '?mask':
-            var s = '.';
-            popup('{.!Enter a word or regular expression to select..}<br />\
-                <span style="font-size: 0.9em;">{.!Regular expression starts and ends with a slash "/"..}\
-                <br />{.!A leading backslash "\\" will invert the logic..}</span>', '?prompt', function(input) {
-                s = input;
-                filetabletrs.forEach(function(element, key) {
-                    if (key == 0) return; key -= 1;
-                    element.classList.remove('selected');
-                });
-                // Manipulation script from HFS 2.4 original tpl
-                if (!s) return;
-                var re = s.match('^/([^/]+)/([a-zA-Z]*)');
-                if (re)
-                    re = new RegExp(re[1], re[2]);
-                else {
-                    var n = s.match(/^(\\*)/)[0].length;
-                    s = s.substring(n);
-                    var invert = !!(n % 2); // a leading "\" will invert the logic
-                    s = RegExp.escape(s).replace(/[?]/g,".");;
-                    if (s.match(/\\\*/)) {
-                        s = s.replace(/\\\*/g,".*");
-                        s = "^ *"+s+" *$"; // in this case var the user decide exactly how it is placed in the string
-                    }
-                    re = new RegExp(s, "i");
-                }
-                filetabletrs.forEach(function(e, k) {
-                    if (k == 0) return; k -= 1;
-                    if (invert ^ re.test(spliturllast(filestatics.filelistnodes[k].href))) e.classList.add('selected');
-                });
-                refreshmultistatic();
-            }, '*');
-            break;
-        case '?invert':
-            filetabletrs.forEach(function(e, k) {
-                if (k == 0) return; k -= 1;
-                e.classList.value.indexOf('selected') == -1
-                    ? e.classList.add('selected')
-                    : e.classList.remove('selected');
-            });
-            refreshmultistatic();
-            break;
-        case '?move':
-            fileaction('?move', filenames.join(':'));
-            break;
-        case '?delete':
-            // Trick
-            del(filenames.join('&selection='));
-            break;
-        case '?archive':
-            popup(('{.!Download these.} ' + (filenames.length==0 ? filestatics.filelist.length : filenames.length) + ' {.!files in a .tar archive?.}'), '?confirm', function() {
-                var form = document.createElement('form');
-                form.style.display = 'none';
-                form.action = HFS.folder+'?mode=archive&recursive';
-                form.method = 'POST';
-                filenames.forEach(function(v, i) {
-                    form.append(document.createElement('input'));
-                    form.children[i].type = 'hidden';
-                    form.children[i].name = 'selection';
-                    form.children[i].value = v;
-                })
-                document.body.appendChild(form);
-                form.submit();
-            });
-            break;
-        default:
-            throw 'ctrl error at fileactionmulti(): Unknown ctrl type ' + ctrl;
-    }
-    // Refresh selected files
-    filenames = [];
-    filetabletrs.forEach(function(e, k) {
-        if (k == 0) return; k -= 1;
-        if (e.classList.value.indexOf('selected')!=-1)
-            filenames.push(spliturllast(filestatics.filelistnodes[k].href));
-    });
-    console.log('Selected files:\n' + filenames);
+	var filenames = [];            
+	filetabletrs.forEach(function(e, k) {
+		if (k == 0) return; k -= 1;
+		if (e.classList.value.indexOf('selected')!=-1)
+			filenames.push(spliturllast(filestatics.filelistnodes[k].href));
+	});
+	console.log('Selected files before:\n' + filenames);
+	switch (ctrl) {
+		case '?mask':
+			var s = '.';
+			popup('{.!Enter a word or regular expression to select..}<br />\
+				<span style="font-size: 0.9em;">{.!Regular expression starts and ends with a slash "/"..}\
+				<br />{.!A leading backslash "\\" will invert the logic..}</span>', '?prompt', function(input) {
+				s = input;
+				filetabletrs.forEach(function(element, key) {
+					if (key == 0) return; key -= 1;
+					element.classList.remove('selected');
+				});
+				// Manipulation script from HFS 2.4 original tpl
+				if (!s) return;
+				var re = s.match('^/([^/]+)/([a-zA-Z]*)');
+				if (re)
+					re = new RegExp(re[1], re[2]);
+				else {
+					var n = s.match(/^(\\*)/)[0].length;
+					s = s.substring(n);
+					var invert = !!(n % 2); // a leading "\" will invert the logic
+					s = RegExp.escape(s).replace(/[?]/g,".");;
+					if (s.match(/\\\*/)) {
+						s = s.replace(/\\\*/g,".*");
+						s = "^ *"+s+" *$"; // in this case var the user decide exactly how it is placed in the string
+					}
+					re = new RegExp(s, "i");
+				}
+				filetabletrs.forEach(function(e, k) {
+					if (k == 0) return; k -= 1;
+					if (invert ^ re.test(spliturllast(filestatics.filelistnodes[k].href))) e.classList.add('selected');
+				});
+				refreshmultistatic();
+			}, '*');
+			break;
+		case '?invert':
+			filetabletrs.forEach(function(e, k) {
+				if (k == 0) return; k -= 1;
+				e.classList.value.indexOf('selected') == -1
+					? e.classList.add('selected')
+					: e.classList.remove('selected');
+			});
+			refreshmultistatic();
+			break;
+		case '?move':
+			fileaction('?move', filenames.join(':'));
+			break;
+		case '?delete':
+			// Trick
+			del(filenames.join('&selection='));
+			break;
+		case '?archive':
+			popup(('{.!Download these.} ' + (filenames.length==0 ? filestatics.filelist.length : filenames.length) + ' {.!files in a .tar archive?.}'), '?confirm', function() {
+				var form = document.createElement('form');
+				form.style.display = 'none';
+				form.action = HFS.folder+'?mode=archive&recursive';
+				form.method = 'POST';
+				filenames.forEach(function(v, i) {
+					form.append(document.createElement('input'));
+					form.children[i].type = 'hidden';
+					form.children[i].name = 'selection';
+					form.children[i].value = v;
+				})
+				document.body.appendChild(form);
+				form.submit();
+			});
+			break;
+		default:
+			throw 'ctrl error at fileactionmulti(): Unknown ctrl type ' + ctrl;
+	}
+	// Refresh selected files
+	filenames = [];
+	filetabletrs.forEach(function(e, k) {
+		if (k == 0) return; k -= 1;
+		if (e.classList.value.indexOf('selected')!=-1)
+			filenames.push(spliturllast(filestatics.filelistnodes[k].href));
+	});
+	console.log('Selected files:\n' + filenames);
 }
 // </script>
 
@@ -1251,24 +1257,24 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 {.break|if={.not|{.and|{.can move.}|{.get|can delete.}|{.get|can upload|path={.^to.}.}/and.}.} |result={.!forbidden.} (0).}
 {.set|log|{.!Moving items to.} {.^to.}.}
 {.for each|fn|{.replace|:|{.no pipe||.}|{.force ansi|{.postvar|from.}.}.}|{:
-    {.break|if={.is file protected|var=fn.}|result={.!Forbidden.} (1).}
-    {.set|x|{.force ansi|%folder%.}{.^fn.}.}
-    {.set|y|{.^to.}/{.^fn.}.}
-    {.if not |{.exists|{.^x.}.}|{.^x.}: {.!Target Not found.} (2)|{:
-        {.if|{.exists|{.^y.}.}|{.^y.}: {.!Duplicated to existing file/folder.} (3)|{:
-            {.set|comment| {.get item|{.^x.}|comment.} .}
-            {.set item|{.^x.}|comment=.} {.comment| this must be done before moving, or it will fail.}
-            {.if|{.length|{.move|{.^x.}|{.^y.}.}.} |{:
-                {.move|{.^x.}.md5|{.^y.}.md5.}
-                {.set|log|{.chr|13.}> {.^fn.}|mode=append.}
-                {.set item|{.^y.}|comment={.^comment.}.}
-            :} | {:
-                {.set|log|{.chr|13.}{.^fn.} ({.!Failed.})|mode=append.}
-                {.maybe utf8|{.^fn.}.}: {.!Not moved.}
-            :}/if.}
-        :}/if.}
-    :}.}
-    ;
+	{.break|if={.is file protected|var=fn.}|result={.!Forbidden.} (1).}
+	{.set|x|{.force ansi|%folder%.}{.^fn.}.}
+	{.set|y|{.^to.}/{.^fn.}.}
+	{.if not |{.exists|{.^x.}.}|{.^x.}: {.!Target Not found.} (2)|{:
+		{.if|{.exists|{.^y.}.}|{.^y.}: {.!Duplicated to existing file/folder.} (3)|{:
+			{.set|comment| {.get item|{.^x.}|comment.} .}
+			{.set item|{.^x.}|comment=.} {.comment| this must be done before moving, or it will fail.}
+			{.if|{.length|{.move|{.^x.}|{.^y.}.}.} |{:
+				{.move|{.^x.}.md5|{.^y.}.md5.}
+				{.set|log|{.chr|13.}> {.^fn.}|mode=append.}
+				{.set item|{.^y.}|comment={.^comment.}.}
+			:} | {:
+				{.set|log|{.chr|13.}{.^fn.} ({.!Failed.})|mode=append.}
+				{.maybe utf8|{.^fn.}.}: {.!Not moved.}
+			:}/if.}
+		:}/if.}
+	:}.}
+	;
 :}.}
 {.add to log|{.^log.}.}
 
@@ -1276,8 +1282,8 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 {.check session.}
 {.break|if={.not|{.can comment.}.} |result={.!Forbidden.} (0).}
 {.for each|fn|{.replace|:|{.no pipe||.}|{.postvar|files.}.}|{:
-     {.break|if={.is file protected|var=fn.}|result={.!Forbidden.} (1).}
-     {.set item|{.force ansi|%folder%{.^fn.}.}|comment={.encode html|{.force ansi|{.postvar|text.}.}.}.}
+	 {.break|if={.is file protected|var=fn.}|result={.!Forbidden.} (1).}
+	 {.set item|{.force ansi|%folder%{.^fn.}.}|comment={.encode html|{.force ansi|{.postvar|text.}.}.}.}
 :}.}
 {.pipe|{.!OK.}.}
 
@@ -1285,20 +1291,20 @@ add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 {.check session.}
 {.break|if={.not|{.can change pwd.}.} |result={.!Forbidden.} (0).}
 {.if | {.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}
-    | {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|{.!OK.} (1)|{.!Failed.} (2).}:}
-    | {:{.!Old password not match.} (3):}
+	| {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|{.!OK.} (1)|{.!Failed.} (2).}:}
+	| {:{.!Old password not match.} (3):}
 .}
 
 [errorpage.css|no log|public]
 {.add header|Cache-Control: public, max-age=86400.}
 /* <style> /* Fool the editor to highlight syntax properly. Close comment -> */
 @keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 /* Starry Night by Lea Verou */
 /* https://leaverou.github.io/css3patterns/ */
@@ -1321,8 +1327,8 @@ background-position: 0 0, 40px 60px, 130px 270px, 640px 240px, 70px 100px;
 font-size: 1.2em;
 /*transform: scale(1.08);*/
 font-family: 'Takeback-Define-Font', "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
-    "Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
-    "Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+	"Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
+	"Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
 background-color: black; color: white; text-align: center;
 }
 a, a:link, a:hover, a:active, a:visited { color: white; text-decoration: none; transition: all 0.6s; }
@@ -1360,13 +1366,13 @@ a:hover { color: black; background-color: white; }
 <link rel="stylesheet" href="/~errorpage.css" />
 </head>
 <body>
-    <h2><br />{.!There are more people than on a worktime bus station.}</h2>
-    {.!Returning to previous page after traffic afford has gone lower....}
+	<h2><br />{.!There are more people than on a worktime bus station.}</h2>
+	{.!Returning to previous page after traffic afford has gone lower....}
 </body>
 </html>
 {.disconnect|{.current downloads|ip|file=this.}.}
 {.if|{.{.current downloads|ip=%ip%|file=this.}> 1.}|
-    {: {.disconnection reason|knackered.}
+	{: {.disconnection reason|knackered.}
 :}/if.}
 
 [max contemp downloads]
@@ -1375,8 +1381,8 @@ a:hover { color: black; background-color: white; }
 <link rel="stylesheet" href="/~errorpage.css" />
 </head>
 <body style="background-color: black; text-align: center;" text="white" alink="white" link="white" vlink="white">
-    <h2><br />{.!There are ongoing downloads.}</h2>
-    {.!More available after current downloads finish.}
+	<h2><br />{.!There are ongoing downloads.}</h2>
+	{.!More available after current downloads finish.}
 </body>
 </html>
 {.disconnect|{.current downloads|ip|file=this.}.}
@@ -1385,123 +1391,123 @@ a:hover { color: black; background-color: white; }
 <fieldset id='login'>
 <legend>{.!User & Login.}</legend>
 {.if| {.length|%user%.} |{:
-    %user% <button onclick='logout()'>{.!Logout.}</button>
-    {.if|{.can change pwd.} | <button onclick='areanewpass.style.display = "block";'>{.!Change Password.}</button> .}
-    <br /><span id="sid" style="display: none;"></span>
-    <div id='areanewpass' style="display: none;">
-    <span style="font-size: 0.8em;">{.!Warning: password you entered will be sent to server with a weak encryption..}<br />{.!For better security please change password via HFS management window..}</span>
-    <form>
-        <input id="oldpwd" type='password' name='oldpwd' maxlength="32" autocomplete
-            size="25" placeholder="{.!Input old password....}" /><br />
-        <input id="newpwd" type='password' name='newpwd' maxlength="32" autocomplete
-            size="25" placeholder="{.!Input new password....}" /><br />
-        <input id="newpwd2" type='password' name='newpwd2' maxlength="32" autocomplete
-            size="25" placeholder="{.!Input again....}" /><br />
-        <input type="button" onclick="checkpassword()" value="{.!Okay.}" />
-    </form>
-    </div>
-    <script>
-    function checkpassword() {     // Also changes password if no problem
-        if (newpwd.value!=newpwd2.value) {
-            popup('{.!Passwords not match, please re-input..}');
-        // } else if (newpwd.value=='') {
-            // popup('{.!Password cannot be empty!.}')  // Actually password CAN be none
-        } else {
-            changePwd(newpwd.value);
-            beforeRedirect();
-        }
-    }
-    var sha256 = function(s) { return SHA256.hash(s); }
-    function logout() {fetch("/?mode=logout");/*.then(res => location.reload());*/beforeRedirect(); return false;}
-    function changePwd(newpass) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '?mode=section&id=ajax.changepwd');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-            var code = ( xhr.responseText.split('(')[1] == undefined ? -1 : xhr.responseText.split('(')[1].split(')')[0] );
-            if (code == "1") {
-                popup('{.!Complete! Use your new password next time!.}');
-                beforeRedirect();
-            } else {
-                if (code == "0") {
-                    popup("{.!You cannot change your password!.}");
-                } else if (code == "3") {
-                    popup("{.!Failed: Old password you input is wrong!.}");
-                } else if (xhr.responseText.trim() == "bad session") {
-                    popup("{.!Bad session. Try to refresh the page..}");
-                } else {
-                    popup('{.!Unknown error.}: \n'+xhr.responseText.trim());
-                }
-            }
-        }
-        };
-        xhr.send("token=" + HFS.sid + "&old=" + sha256(oldpwd.value) + "&new="+btoa(unescape(encodeURIComponent(newpass))));
-    }
-    </script>
-    :}
+	%user% <button onclick='logout()'>{.!Logout.}</button>
+	{.if|{.can change pwd.} | <button onclick='areanewpass.style.display = "block";'>{.!Change Password.}</button> .}
+	<br /><span id="sid" style="display: none;"></span>
+	<div id='areanewpass' style="display: none;">
+	<span style="font-size: 0.8em;">{.!Warning: password you entered will be sent to server with a weak encryption..}<br />{.!For better security please change password via HFS management window..}</span>
+	<form>
+		<input id="oldpwd" type='password' name='oldpwd' maxlength="32" autocomplete
+			size="25" placeholder="{.!Input old password....}" /><br />
+		<input id="newpwd" type='password' name='newpwd' maxlength="32" autocomplete
+			size="25" placeholder="{.!Input new password....}" /><br />
+		<input id="newpwd2" type='password' name='newpwd2' maxlength="32" autocomplete
+			size="25" placeholder="{.!Input again....}" /><br />
+		<input type="button" onclick="checkpassword()" value="{.!Okay.}" />
+	</form>
+	</div>
+	<script>
+	function checkpassword() {     // Also changes password if no problem
+		if (newpwd.value!=newpwd2.value) {
+			popup('{.!Passwords not match, please re-input..}');
+		// } else if (newpwd.value=='') {
+			// popup('{.!Password cannot be empty!.}')  // Actually password CAN be none
+		} else {
+			changePwd(newpwd.value);
+			beforeRedirect();
+		}
+	}
+	var sha256 = function(s) { return SHA256.hash(s); }
+	function logout() {fetch("/?mode=logout");/*.then(res => location.reload());*/beforeRedirect(); return false;}
+	function changePwd(newpass) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '?mode=section&id=ajax.changepwd');
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			console.log(xhr.responseText);
+			var code = ( xhr.responseText.split('(')[1] == undefined ? -1 : xhr.responseText.split('(')[1].split(')')[0] );
+			if (code == "1") {
+				popup('{.!Complete! Use your new password next time!.}');
+				beforeRedirect();
+			} else {
+				if (code == "0") {
+					popup("{.!You cannot change your password!.}");
+				} else if (code == "3") {
+					popup("{.!Failed: Old password you input is wrong!.}");
+				} else if (xhr.responseText.trim() == "bad session") {
+					popup("{.!Bad session. Try to refresh the page..}");
+				} else {
+					popup('{.!Unknown error.}: \n'+xhr.responseText.trim());
+				}
+			}
+		}
+		};
+		xhr.send("token=" + HFS.sid + "&old=" + sha256(oldpwd.value) + "&new="+btoa(unescape(encodeURIComponent(newpass))));
+	}
+	</script>
+	:}
 |
-    <form>
-        <input id='user' size='24' placeholder="{.!Username.}" /><br />
-        <input type='password' id='pw' size='24' autocomplete placeholder="{.!Password.}" /><br />
-        <input type='hidden' id='sid' size='16' />
-        {.!Keep me loggedin.}-><input type="checkbox" title='{.!By checking this you also agree to use Cookies.}' style="transform: scale(1.6);" />
-        <br /><input type='button' style="width: 8em;" onclick='login()' value='{.!Login.}' />
-    </form>
-    <script>
-    // dj's login method, edited
-    var sha256 = function(s) { return SHA256.hash(s); }
-    function login() {
-        var sid = HFS.sid;
-        // The check below causes infinite loop in cookie-disabled browsers
-	    // if (sid="") // the session was just deleted
-		    // return location.reload() // but it's necessary for login
-        if (!sid) return popup('{.!Bad session. Try to refresh the page..}');  //let the form act normally
-        var usr = user.value;
-        var pwd = pw.value;
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/?mode=login");  // /~login
-        var formData = new FormData();
-        formData.append("user",usr)
-        typeof SHA256 == 'undefined' ? formData.append("password",pwd) : formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()) ;
-        xhr.onload=function(){
-        if(xhr.response=='ok') {
-            if(document.querySelector("input[type=checkbox]").checked) localStorage.login=JSON.stringify([usr,pwd]); else localStorage.removeItem('login');
-            beforeRedirect();
-        } else {
-            console.log(xhr.responseText);
-            if (xhr.responseText === "bad password") {
-                popup("{.!The password you entered is incorrect!.}");
-            } else if (xhr.responseText === "username not found") {
-                popup("{.!The user account you entered doesn't exist!.}");
-            }
-        }
-        // document.querySelector("form").reset()
-        }
-        xhr.send(formData);
-    }
-    if(localStorage.login) document.querySelector("input[type=checkbox]").checked=true  //stop keep loggedin: call /~login (or /~signin) and disable "Keep me loggedin"
-        document.querySelector("input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
-    if(localStorage.login) {
-        var tmp=JSON.parse(localStorage.login);
-        user.value=tmp[0];
-        pw.value=tmp[1];
-        login();
-    }
-    </script>
+	<form>
+		<input id='user' size='24' placeholder="{.!Username.}" /><br />
+		<input type='password' id='pw' size='24' autocomplete placeholder="{.!Password.}" /><br />
+		<input type='hidden' id='sid' size='16' />
+		{.!Keep me loggedin.}-><input type="checkbox" title='{.!By checking this you also agree to use Cookies.}' style="transform: scale(1.6);" />
+		<br /><input type='button' style="width: 8em;" onclick='login()' value='{.!Login.}' />
+	</form>
+	<script>
+	// dj's login method, edited
+	var sha256 = function(s) { return SHA256.hash(s); }
+	function login() {
+		var sid = HFS.sid;
+		// The check below causes infinite loop in cookie-disabled browsers
+		// if (sid="") // the session was just deleted
+			// return location.reload() // but it's necessary for login
+		if (!sid) return popup('{.!Bad session. Try to refresh the page..}');  //let the form act normally
+		var usr = user.value;
+		var pwd = pw.value;
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/?mode=login");  // /~login
+		var formData = new FormData();
+		formData.append("user",usr)
+		typeof SHA256 == 'undefined' ? formData.append("password",pwd) : formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()) ;
+		xhr.onload=function(){
+		if(xhr.response=='ok') {
+			if(document.querySelector("input[type=checkbox]").checked) localStorage.login=JSON.stringify([usr,pwd]); else localStorage.removeItem('login');
+			beforeRedirect();
+		} else {
+			console.log(xhr.responseText);
+			if (xhr.responseText === "bad password") {
+				popup("{.!The password you entered is incorrect!.}");
+			} else if (xhr.responseText === "username not found") {
+				popup("{.!The user account you entered doesn't exist!.}");
+			}
+		}
+		// document.querySelector("form").reset()
+		}
+		xhr.send(formData);
+	}
+	if(localStorage.login) document.querySelector("input[type=checkbox]").checked=true  //stop keep loggedin: call /~login (or /~signin) and disable "Keep me loggedin"
+		document.querySelector("input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
+	if(localStorage.login) {
+		var tmp=JSON.parse(localStorage.login);
+		user.value=tmp[0];
+		pw.value=tmp[1];
+		login();
+	}
+	</script>
 .}
 <script src='/~sha256.js'></script>
 <script>
 function beforeRedirect() {
-    var inputs = ['user', 'pw', 'newpwd', 'newpwd2'];
-    for (var i in inputs) {
-        var inpt = document.getElementById(inputs[i]);
-        if (inpt!=null) inpt.value = '';
-    }
-    setTimeout(function() {
-        window.location.href = '/~signin';
-    }, 0);
+	var inputs = ['user', 'pw', 'newpwd', 'newpwd2'];
+	for (var i in inputs) {
+		var inpt = document.getElementById(inputs[i]);
+		if (inpt!=null) inpt.value = '';
+	}
+	setTimeout(function() {
+		window.location.href = '/~signin';
+	}, 0);
 };
 </script>
 </fieldset>
@@ -1532,41 +1538,41 @@ var HFS = {
 {.if|{.!UseJquery.}| <script src="/?mode=jquery"></script> | {.$faikquery.} .}
 <style>
 #login {
-    max-width: 50%;
-    margin: auto;
-    line-height: 1.8em;
-    font-size: 1.2em;
-    /* font-family: monospace; */
+	max-width: 50%;
+	margin: auto;
+	line-height: 1.8em;
+	font-size: 1.2em;
+	/* font-family: monospace; */
 }
 @media (max-width: 760px) { #login { max-width: 80%; } }
 </style>
 </head>
 <body style="background-color: black; text-align: center;" text="white" alink="white" link="white" vlink="white">
 {.if| {.length|%user%.} |{:
-    <br />
-    <h2>{.!Welcome back.}, %user%!</h2>
-    {.!You are already logged in, you need to log out before logging in as different user..}
-    <!-- If not in login/signin page, it means no permission -->
-    {.if|{.or|{.count substring|/~signin|%url%.}|{.count substring|/~login|%url%.}.}||
-        <br /><br />{.!If you are here accidentally, you may lack the permission to access this file/folder..}
-    .}
+	<br />
+	<h2>{.!Welcome back.}, %user%!</h2>
+	{.!You are already logged in, you need to log out before logging in as different user..}
+	<!-- If not in login/signin page, it means no permission -->
+	{.if|{.or|{.count substring|/~signin|%url%.}|{.count substring|/~login|%url%.}.}||
+		<br /><br />{.!If you are here accidentally, you may lack the permission to access this file/folder..}
+	.}
 :}|{:
-    <h2><br />{.!Please login to your account.}</h2>
-    {.!Please login to access to your account, and check you have the correct permissions to continue.}
+	<h2><br />{.!Please login to your account.}</h2>
+	{.!Please login to access to your account, and check you have the correct permissions to continue.}
 :}.}
 <br /><br />
 {.$box login.}
 <br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
 <!-- Popup: Framework -->
 <div class="popup">
-    <div id="popupbg" style="display: none;"></div>
-    <div id="popupbox" style="display: none;">
-        <div id="popupmsg"><!-- Message --></div>
-        <div style="height: 1px; border-bottom: white 1px solid; margin: 16px;"></div>
-        <div id="popupctrl">
-            <!-- Init by function popup() -->
-        </div>
-    </div>
+	<div id="popupbg" style="display: none;"></div>
+	<div id="popupbox" style="display: none;">
+		<div id="popupmsg"><!-- Message --></div>
+		<div style="height: 1px; border-bottom: white 1px solid; margin: 16px;"></div>
+		<div id="popupctrl">
+			<!-- Init by function popup() -->
+		</div>
+	</div>
 </div>
 <script src="/~popup.js"></script>
 </body>
@@ -1577,10 +1583,10 @@ var HFS = {
 <link rel="stylesheet" href="/~errorpage.css" />
 </head>
 <body>
-    <h2>{.!Unauthorized.}</h2>
-    {.!Currently you have no right to access this resource. Please login if possible..}
-    <br /><br /><a href="/~signin" style="font-size: 1.2em;">{.!Login.} &gt;&gt;</a>
-    <br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
+	<h2>{.!Unauthorized.}</h2>
+	{.!Currently you have no right to access this resource. Please login if possible..}
+	<br /><br /><a href="/~signin" style="font-size: 1.2em;">{.!Login.} &gt;&gt;</a>
+	<br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
 </body>
 </html>
 
@@ -1591,7 +1597,7 @@ var HFS = {
 <link rel="stylesheet" href="/~errorpage.css" />
 </head>
 <body>
-    <h2>{.!Access Denied.}</h2><br /><br />{.!Nope.}
+	<h2>{.!Access Denied.}</h2><br /><br />{.!Nope.}
 </body>
 </html>
 
@@ -1621,90 +1627,90 @@ var HFS = {
 }
 var counter = 0;
 function addUpload() {
-    // Add an upload selection
-    counter++;
-    if (counter < 6) {
-        addupload.append(document.createElement('br'));
-        var file = document.createElement('input')
-        file.classList.add('upload');
-        file.name = 'fileupload' + counter;
-        file.size = '50';
-        file.type = 'file';
-        file.multiple = 'multiple';
-        addupload.append(file);
-    }
-    if (counter == 5) {
-        addUploadLink.innerHTML = 
-            "<span style=\"color:yellow;\">-- {.!Please put multiple files into a zip file.} --</span>";
-    }
+	// Add an upload selection
+	counter++;
+	if (counter < 6) {
+		addupload.append(document.createElement('br'));
+		var file = document.createElement('input')
+		file.classList.add('upload');
+		file.name = 'fileupload' + counter;
+		file.size = '50';
+		file.type = 'file';
+		file.multiple = 'multiple';
+		addupload.append(file);
+	}
+	if (counter == 5) {
+		addUploadLink.innerHTML = 
+			"<span style=\"color:yellow;\">-- {.!Please put multiple files into a zip file.} --</span>";
+	}
 }
 </script>
 </head>
 
 <body style="background-color: black; text-align: center;">
-    <!-- Background -->
-    {.if|{.!EnableImageBg.}|
-        <div id="bg"></div>
-        <div class="bgmask"></div>
-        <script src="randombg.js"></script>
-    |
-        <div class="bgcss3"></div>
-    .}
-    <!-- Content: Upload -->
-    <div style="text-align: left; border-bottom: white 1px solid; margin-bottom: 4px;">
-        <b>{.!Upload to.}: </b>%folder%<br />
-        <a href="./">&#8678; {.!Back.}</a>
-        <a class="inverted" style="float: right;"
-        href="javascript: shownewfolder();">
-            &#128193; {.!New folder.}
-        </a>
-    </div>
+	<!-- Background -->
+	{.if|{.!EnableImageBg.}|
+		<div id="bg"></div>
+		<div class="bgmask"></div>
+		<script src="randombg.js"></script>
+	|
+		<div class="bgcss3"></div>
+	.}
+	<!-- Content: Upload -->
+	<div style="text-align: left; border-bottom: white 1px solid; margin-bottom: 4px;">
+		<b>{.!Upload to.}: </b>%folder%<br />
+		<a href="./">&#8678; {.!Back.}</a>
+		<a class="inverted" style="float: right;"
+		href="javascript: shownewfolder();">
+			&#128193; {.!New folder.}
+		</a>
+	</div>
 <div>
 {.if|{.%number-addresses-downloading%*%speed-out% < 7500.}|{:
-    {.if|{.can mkdir.}|{:
-        <script>
-            function shownewfolder () {
-                document.querySelector('#newfolder').style['display'] = 'block';
-            }
-        </script>
-        <div id='newfolder' style="border-bottom: white 1px solid; display: none;">
-            {.!You can also make a new folder.}:<br />
-            <input class="upload" id="foldername" type='text' name='fldname' maxlength="25"
-                size="25" placeholder="{.!Input folder name....}"><br />
-            <button id="createfolder" class="upload">{.!Create Folder.}</button>
-            <script>
-                createfolder.onclick = function () {
-                    var xhr2 = new XMLHttpRequest();
-                    // We should post this ajax message to the upload FOLDER, not the ~upload page.
-                    xhr2.open("POST", "./?mode=section&id=ajax.mkdir");
-                    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    xhr2.onload = function() { alert(xhr2.responseText.trim()); window.history.go(-1) };
-                    var hfstoken = HFS.sid;
-                    xhr2.send("&name="+foldername.value+"&token="+hfstoken);
-                }
-            </script>
-            <br />{.!Turns to the file list page after making a folder.}<br /><br />
-        </div>
-    :}.}
-    <b>{.!Free Space Available For Upload.}:<br />%diskfree%B</b>
-    <br /><br />
-    <div style="font-size: 0.8em;">
-        {.!Choose some files.}<br />{.!then tap the "Send file(s)" below.}
-    </div><br />
-    <form action="%encoded-folder%" target=_parent method=post enctype="multipart/form-data" onSubmit="return true;">
-        <div id="addupload"><input class="upload" multiple name="fileupload1" size="50" type="file"></div><br />
-        <a id="addUploadLink" style="cursor:pointer;" onclick="addUpload();">
-            [ {.!Tap to add a selection.} ]
-        </a><br /><br />
-        <input class="upload" name=upbtn type=submit value="{.!Send File(s).}">
-    </form>
-    {.!Results page appears after uploads complete.}
+	{.if|{.can mkdir.}|{:
+		<script>
+			function shownewfolder () {
+				document.querySelector('#newfolder').style['display'] = 'block';
+			}
+		</script>
+		<div id='newfolder' style="border-bottom: white 1px solid; display: none;">
+			{.!You can also make a new folder.}:<br />
+			<input class="upload" id="foldername" type='text' name='fldname' maxlength="25"
+				size="25" placeholder="{.!Input folder name....}"><br />
+			<button id="createfolder" class="upload">{.!Create Folder.}</button>
+			<script>
+				createfolder.onclick = function () {
+					var xhr2 = new XMLHttpRequest();
+					// We should post this ajax message to the upload FOLDER, not the ~upload page.
+					xhr2.open("POST", "./?mode=section&id=ajax.mkdir");
+					xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+					xhr2.onload = function() { alert(xhr2.responseText.trim()); window.history.go(-1) };
+					var hfstoken = HFS.sid;
+					xhr2.send("&name="+foldername.value+"&token="+hfstoken);
+				}
+			</script>
+			<br />{.!Turns to the file list page after making a folder.}<br /><br />
+		</div>
+	:}.}
+	<b>{.!Free Space Available For Upload.}:<br />%diskfree%B</b>
+	<br /><br />
+	<div style="font-size: 0.8em;">
+		{.!Choose some files.}<br />{.!then tap the "Send file(s)" below.}
+	</div><br />
+	<form action="%encoded-folder%" target=_parent method=post enctype="multipart/form-data" onSubmit="return true;">
+		<div id="addupload"><input class="upload" multiple name="fileupload1" size="50" type="file"></div><br />
+		<a id="addUploadLink" style="cursor:pointer;" onclick="addUpload();">
+			[ {.!Tap to add a selection.} ]
+		</a><br /><br />
+		<input class="upload" name=upbtn type=submit value="{.!Send File(s).}">
+	</form>
+	{.!Results page appears after uploads complete.}
 :}|{:
-    <b>{.!Upload is not available to due to high server load.}</b>
-    <br /><br />{.!Automatically retrying after 5 seconds....}
-    <script>
-        setTimeout(function() { window.location.href = './~upload'; }, 5000);
-    </script>
+	<b>{.!Upload is not available to due to high server load.}</b>
+	<br /><br />{.!Automatically retrying after 5 seconds....}
+	<script>
+		setTimeout(function() { window.location.href = './~upload'; }, 5000);
+	</script>
 :}.}
 </div>
 </body>
@@ -1729,15 +1735,15 @@ function addUpload() {
 </head>
 <body>
 {.if|{.!EnableImageBg.}|
-    <div id="bg"></div>
-    <div class="bgmask"></div>
-    <script src="randombg.js"></script>
+	<div id="bg"></div>
+	<div class="bgmask"></div>
+	<script src="randombg.js"></script>
 | <div class="bgcss3"></div> .}
 <div>{.!Upload result.}: %folder%</div>
 <div>%uploaded-files%<br /><br />
-    <a href="%encoded-folder%" target=_parent>
-        &#8678; {.!Go Back.}
-    </a>
+	<a href="%encoded-folder%" target=_parent>
+		&#8678; {.!Go Back.}
+	</a>
 </div>
 </body>
 </html>
@@ -1752,234 +1758,234 @@ function addUpload() {
 {.add header|Cache-Control: public, max-age=86400.}
 /* <style> /* Close -> */
 @keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 body {
-    text-align: left;
-    font-weight: normal;
-    color: white;
-    background-color: black;
-    font-family: 'Takeback-Define-Font', "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
-        "Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
-        "Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
-    font-size: 1.2em;
-    padding: 0px;
-    margin: 0
+	text-align: left;
+	font-weight: normal;
+	color: white;
+	background-color: black;
+	font-family: 'Takeback-Define-Font', "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
+		"Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
+		"Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+	font-size: 1.2em;
+	padding: 0px;
+	margin: 0
 }
 
 .bgoriginal {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    background-size: cover;
-    background: linear-gradient(95deg, #002, #113, #201053, #101032, #00002D, #000029, #002, #002);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	margin: 0px;
+	z-index: -2;
+	background-size: cover;
+	background: linear-gradient(95deg, #002, #113, #201053, #101032, #00002D, #000029, #002, #002);
 }
 
 /* Starry Night by Lea Verou */
 /* https://leaverou.github.io/css3patterns/ */
 .bgcss3 {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    background-color:black;
-    background-image:
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-        radial-gradient(white, rgba(255,255,255,.08) 3px, transparent 60px),
-        radial-gradient(rgba(255,255,255,.4),
-        rgba(255,255,255,.1) 2px, transparent 30px);
-    background-size: 550px 550px, 350px 350px, 250px 250px, 950px 950px, 150px 150px;
-    background-position: 0 0, 40px 60px, 130px 270px, 640px 240px, 70px 100px;
-    transform: scale(1.08);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	margin: 0px;
+	z-index: -2;
+	background-color:black;
+	background-image:
+		radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+		radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+		radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+		radial-gradient(white, rgba(255,255,255,.08) 3px, transparent 60px),
+		radial-gradient(rgba(255,255,255,.4),
+		rgba(255,255,255,.1) 2px, transparent 30px);
+	background-size: 550px 550px, 350px 350px, 250px 250px, 950px 950px, 150px 150px;
+	background-position: 0 0, 40px 60px, 130px 270px, 640px 240px, 70px 100px;
+	transform: scale(1.08);
 }
 
 #bg {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    background: center / cover;
-    opacity: 0;
-    animation: fadein 0.33s ease-out 0.33s;
-    animation-fill-mode: forwards;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	margin: 0px;
+	z-index: -2;
+	background: center / cover;
+	opacity: 0;
+	animation: fadein 0.33s ease-out 0.33s;
+	animation-fill-mode: forwards;
 }
 
 .bgmask {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -1;
-    /* background-image: url("/pic/deco/blackmask.png"); */
-    background-color: rgba(0, 0, 0, 0.75);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	margin: 0px;
+	z-index: -1;
+	/* background-image: url("/pic/deco/blackmask.png"); */
+	background-color: rgba(0, 0, 0, 0.75);
 }
 
 .blackblank {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    background-color: black;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	margin: 0px;
+	background-color: black;
 }
 
 hr {
-    padding: 0;
-    border-top: none;
-    border-bottom: white 1px solid;
+	padding: 0;
+	border-top: none;
+	border-bottom: white 1px solid;
 }
 
 .inpt {
-    color: #333377
+	color: #333377
 }
 
 .searchbox {
-    padding: 0;
-    border: 0;
-    height: 2.48em;
-    background-color: white;
-    display:inline;
-    border: white solid 1px;
+	padding: 0;
+	border: 0;
+	height: 2.48em;
+	background-color: white;
+	display:inline;
+	border: white solid 1px;
 }
 
 input.searchbutton {
-    border: 0;
-    height: 2.48em;
-    width: 2.48em;
-    position: relative;
-    /* top: 1px; */
-    left: -1px;
+	border: 0;
+	height: 2.48em;
+	width: 2.48em;
+	position: relative;
+	/* top: 1px; */
+	left: -1px;
 }
 
 a.inverted {
-    color: #333333;
-    background-color: white;
-    border: white 1px solid;
+	color: #333333;
+	background-color: white;
+	border: white 1px solid;
 }
 a.inverted:visited {
-    color: #333333;
-    background-color: white;
+	color: #333333;
+	background-color: white;
 }
 a.inverted:hover {
-    color: white;
-    background: none;
+	color: white;
+	background: none;
 }
 
 a.uploadbutton {
-    display: block;
-    float: right;
-    font-weight: bold;
-    height: 1.72em;
+	display: block;
+	float: right;
+	font-weight: bold;
+	height: 1.72em;
 }
 
 .nofile {
-    margin: auto;
-    font-size: 1.2em;
-    text-align: center;
+	margin: auto;
+	font-size: 1.2em;
+	text-align: center;
 }
 
 .btn {
-    padding: 1px;
-    float: right
+	padding: 1px;
+	float: right
 }
 
 table {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 a {
-    text-decoration: none;
-    font-size: 1em;
-    color: white;
-    font-weight: normal;
-    transition: all 0.5s;
+	text-decoration: none;
+	font-size: 1em;
+	color: white;
+	font-weight: normal;
+	transition: all 0.5s;
 }
 
 a:visited {
-    color: white;
+	color: white;
 }
 
 a:hover {
-    color: #333333;
-    background-color: white;
-    text-decoration: none;
+	color: #333333;
+	background-color: white;
+	text-decoration: none;
 }
 
 .del {
-    background: transparent;
-    border: none;
-    color: #900;
-    font-size: 12pt;
-    cursor: pointer
+	background: transparent;
+	border: none;
+	color: #900;
+	font-size: 12pt;
+	cursor: pointer
 }
 
 #get-top {
-    position: fixed;
-    right: 0;
-    bottom: 2em;
-    font-size: 2em;
-    width: 1em;
-    height: 1em;
-    text-align: center;
-    padding: 0.2em 0.2em;
-    margin: 1em;
-    background-color: rgba(0, 0, 0, 0.75);
-    cursor: pointer;
-    display: none;
-    z-index: auto;
-    font-family: monospace;
-    overflow: visible;
-    transform: rotate(-90deg);
+	position: fixed;
+	right: 0;
+	bottom: 2em;
+	font-size: 2em;
+	width: 1em;
+	height: 1em;
+	text-align: center;
+	padding: 0.2em 0.2em;
+	margin: 1em;
+	background-color: rgba(0, 0, 0, 0.75);
+	cursor: pointer;
+	display: none;
+	z-index: auto;
+	font-family: monospace;
+	overflow: visible;
+	transform: rotate(-90deg);
 }
 
 @keyframes blink {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0.5;
-    }
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0.5;
+	}
 }
 
 div.statustext {
-    overflow: hidden;
-    margin-top: 0.1em;
-    font-size: 0.9em;
-    text-align: center;
-    animation: blink 2s ease-in-out 1s alternate infinite;
+	overflow: hidden;
+	margin-top: 0.1em;
+	font-size: 0.9em;
+	text-align: center;
+	animation: blink 2s ease-in-out 1s alternate infinite;
 }
 
 table#files tr td {
-    height: 32px;
+	height: 32px;
 }
 
 /* Folder */
 table#files a[href$="/"]::before {
-    content: "\1f4c1\FE0E  ";
-    color: #FB0
+	content: "\1f4c1\FE0E  ";
+	color: #FB0
 }
 
 /* Unknown File */
 td a::before {
-    content: "\1f4c4  ";
-    color: #BCC
+	content: "\1f4c4  ";
+	color: #BCC
 }
 
 /* Other */
 td a[href$=";"]::before,
 td a[href*="?"]::before {
-    content: none;
+	content: none;
 }
 
 /* Picture */
@@ -1991,15 +1997,15 @@ a[href$=".png"]::before,
 a[href$=".PNG"]::before,
 a[href$=".gif"]::before,
 a[href$=".GIF"]::before {
-    content: "\1f4f7  ";
-    color: black
+	content: "\1f4f7  ";
+	color: black
 }
 
 /* Working Picture (Photoshop & GIMP) */
 a[href$=".psd"]::before,
 a[href$=".xcf"]::before {
-    content: "📸  ";
-    color: #5AE
+	content: "📸  ";
+	color: #5AE
 }
 
 /* Audio/Music */
@@ -2009,8 +2015,8 @@ a[href$=".aac"]::before,
 a[href$=".m4a"]::before,
 a[href$=".wav"]::before,
 a[href$=".ogg"]::before {
-    content: "\1f50a\FE0E  ";
-    color: green
+	content: "\1f50a\FE0E  ";
+	color: green
 }
 
 /* Video */
@@ -2022,8 +2028,8 @@ a[href$=".webm"]::before,
 a[href$=".ogv"]::before,
 a[href$=".flv"]::before,
 a[href$=".mkv"]::before {
-    content: "\1f4fa  ";
-    color: teal
+	content: "\1f4fa  ";
+	color: teal
 }
 
 /* Compressed/Storage Pack */
@@ -2032,8 +2038,8 @@ a[href$=".gz"]::before,
 a[href$=".rar"]::before,
 a[href$=".7z"]::before,
 a[href$=".zip"]::before {
-    content: "\1f381  ";
-    color: brown
+	content: "\1f381  ";
+	color: brown
 }
 
 /* Installation Pack */
@@ -2041,8 +2047,8 @@ a[href$=".msi"]::before,
 a[href$=".tar.gz"]::before,
 a[href$=".deb"]::before,
 a[href$=".rpm"]::before {
-    content: "📦  ";
-    color: brown
+	content: "📦  ";
+	color: brown
 }
 
 /* Executable/Script */
@@ -2054,8 +2060,8 @@ a[href$=".sh"]::before,
 a[href$=".ps1"]::before,
 a[href$=".pyc"]::before,
 a[href$=".apk"]::before {
-    content: "\1f537  ";
-    color: #5AE
+	content: "\1f537  ";
+	color: #5AE
 }
 
 /* Code */
@@ -2066,8 +2072,8 @@ a[href$=".cxx"]::before,
 a[href$=".gcc"]::before,
 a[href$=".py"]::before,
 a[href$=".js"]::before {
-    content: "⌨  ";
-    color: yellow;
+	content: "⌨  ";
+	color: yellow;
 }
 
 /* Working Document */
@@ -2083,15 +2089,15 @@ a[href$=".ods"]::before,
 a[href$=".ppt"]::before,
 a[href$=".pptx"]::before,
 a[href$=".odp"]::before {
-    content: "📝  ";
-    color: gray;
+	content: "📝  ";
+	color: gray;
 }
 
 /* PDF */
 a[href$=".PDF"]::before,
 a[href$=".pdf"]::before {
-    content: "📕  ";
-    color: red;
+	content: "📕  ";
+	color: red;
 }
 
 /* Other Text */
@@ -2104,29 +2110,29 @@ a[href$=".html"]::before,
 a[href$=".cfg"]::before,
 a[href$=".json"]::before,
 a[href$=".lrc"]::before {
-    content: "📑  ";
-    color: thistle;
+	content: "📑  ";
+	color: thistle;
 }
 
 /* Flash */
 a[href$=".swf"]::before {
-    content: "⚡  ";
-    color: gold;
+	content: "⚡  ";
+	color: gold;
 }
 
 /* Icon */
 a[href$=".ICO"]::before,
 a[href$=".ico"]::before {
-    content: "🥚  ";
-    color: wheat;
+	content: "🥚  ";
+	color: wheat;
 }
 
 /* (Data) Image */
 a[href$=".iso"]::before,
 a[href$=".img"]::before,    /* '.img' is a floppy💾 image💿 */
 a[href$=".dda"]::before {
-    content: "💿  ";
-    color: white;
+	content: "💿  ";
+	color: white;
 }
 
 /* Link */
@@ -2138,317 +2144,317 @@ table#files a[href^="rtmp://"]::before,
 table#files a[href^="rtsp://"]::before,
 table#files a[href^="http://"]::before,
 table#files a[href^="https://"]::before  {
-    content: "🌎  ";
-    color: #5AE
+	content: "🌎  ";
+	color: #5AE
 }
 
 #files {
-    background: none;
-    border: 0 white solid;
-    width: 75%;
-    margin: auto;
+	background: none;
+	border: 0 white solid;
+	width: 75%;
+	margin: auto;
 }
 
 tr.trhead {
-    background-color: white;
-    color: #333333;
-    font-weight: bold;
+	background-color: white;
+	color: #333333;
+	font-weight: bold;
 }
 
 tr.trhead a {
-    color: #333333;
-    font-weight: bold;
+	color: #333333;
+	font-weight: bold;
 }
 
 tr.trhead .l {
-    text-align: left;
-    width: 100%;
+	text-align: left;
+	width: 100%;
 }
 
 tr.trhead .m, tr.trhead .r {
-    text-align: center;
+	text-align: center;
 }
 
 table#files tr {
-    outline: transparent 1px solid;
-    transition: all 0.3s;
+	outline: transparent 1px solid;
+	transition: all 0.3s;
 }
 
 table#files tr:hover {
-    outline: white 1px solid;
+	outline: white 1px solid;
 }
 
 td.modified {
-    font-size: 0.9em;
-    text-align: center;
-    min-width: 8em;
+	font-size: 0.9em;
+	text-align: center;
+	min-width: 8em;
 }
 
 td.size {
-    font-size: 0.9em;
-    text-align: right;
-    min-width: 6em;
+	font-size: 0.9em;
+	text-align: right;
+	min-width: 6em;
 }
 
 td.sizenonef, td.sinenonel {
-    font-size: 0.9em;
-    text-align: center;
-    color: #AAAAAA;
-    font-style: italic;
-    min-width: 6em;
+	font-size: 0.9em;
+	text-align: center;
+	color: #AAAAAA;
+	font-style: italic;
+	min-width: 6em;
 }
 td.sizenonef:after {
-    content: "{.!folder.}";
+	content: "{.!folder.}";
 }
 td.sizenonel:after {
-    content: "{.!link.}";
+	content: "{.!link.}";
 }
 
 #title {
-    font-size: 1.2em;
-    text-align: center;
-    margin: 0;
+	font-size: 1.2em;
+	text-align: center;
+	margin: 0;
 }
 
 abbr {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 input.upload {
-    transform: scale(1.28);
+	transform: scale(1.28);
 }
 
 .bottomblank {
-    height: 24em;
+	height: 24em;
 }
 
 .preview {
-    /* text-align: right; */
-    background-color: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    padding-left: 0.8em;
-    padding-top: 0.4em;
-    /* max-width: 33%;*/
-    display: none;
-    max-height: 67%;
+	/* text-align: right; */
+	background-color: rgba(0, 0, 0, 0.8);
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	padding-left: 0.8em;
+	padding-top: 0.4em;
+	/* max-width: 33%;*/
+	display: none;
+	max-height: 67%;
 }
 
 #preview {
-    text-align: right;
-    transition: all 0.33s;
-    min-width: 24em;
-    /* padding-right: 0.3em; */
+	text-align: right;
+	transition: all 0.33s;
+	min-width: 24em;
+	/* padding-right: 0.3em; */
 }
 
 @keyframes swing {
-    0% {
-        left: -0.5em;
-    }
-    50% {
-        left: 0em;
-    }
-    100% {
-        left: -0.5em;
-    }
+	0% {
+		left: -0.5em;
+	}
+	50% {
+		left: 0em;
+	}
+	100% {
+		left: -0.5em;
+	}
 }
 
 .tiparrow {
-    position: relative;
-    left: 0;
-    font-size: 1.2em;
-    font-style: italic;
-    animation: swing 0.5s ease-in 0.1s infinite;
-    animation-fill-mode: forwards;
-    padding-left: 0.2em;
+	position: relative;
+	left: 0;
+	font-size: 1.2em;
+	font-style: italic;
+	animation: swing 0.5s ease-in 0.1s infinite;
+	animation-fill-mode: forwards;
+	padding-left: 0.2em;
 }
 .tiparrow::after {
-    content: ">>";
+	content: ">>";
 }
 
 #previewtip {
-    padding-right: 2em;
-    max-width: 16em;
-    overflow: hidden;
+	padding-right: 2em;
+	max-width: 16em;
+	overflow: hidden;
 }
 
 #previewopen {
-    padding: 0;
-    display: block;
+	padding: 0;
+	display: block;
 }
 
 a.close {
-    color: #FF8888;
-    float: right;
-    font-size: 1.2em;
+	color: #FF8888;
+	float: right;
+	font-size: 1.2em;
 }
 
 #previewactions, #multiselectactions {
-    position: relative;
-    text-align: right;
-    font-size: 0.9em;
-    padding-top: 4px;
-    /* padding-bottom: 4px; */
+	position: relative;
+	text-align: right;
+	font-size: 0.9em;
+	padding-top: 4px;
+	/* padding-bottom: 4px; */
 }
 #previewactions a:link, #multiselectactions a:link {
-    text-decoration: underline;
-    color: rgb(255, 190, 140);
-    margin-right: 0.4em;
+	text-decoration: underline;
+	color: rgb(255, 190, 140);
+	margin-right: 0.4em;
 }
 #previewactions a:hover, #multiselectactions a:hover {
-    /* text-decoration: none; */
-    color: rgb(255, 230, 200);
-    margin-right: 0.5em;
-    background-color: transparent;
+	/* text-decoration: none; */
+	color: rgb(255, 230, 200);
+	margin-right: 0.5em;
+	background-color: transparent;
 }
 iframe {
-    border: 0;
-    margin: 0;
+	border: 0;
+	margin: 0;
 }
 
 iframe.previewiframe {
-    background-color: white;
-    width: 32em;
-    height: 18em;
+	background-color: white;
+	width: 32em;
+	height: 18em;
 }
 
 .notice {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    position: fixed;
-    top: 0;
-    font-size: 1.28em;
-    display: none;
-    height: auto;
-    width: 100%;
-    text-align: center;
-    z-index: 10000;
-    border-bottom: white 1px solid;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: white;
+	position: fixed;
+	top: 0;
+	font-size: 1.28em;
+	display: none;
+	height: auto;
+	width: 100%;
+	text-align: center;
+	z-index: 10000;
+	border-bottom: white 1px solid;
 }
 
 .notice #noticetitle {
-    font-weight: bold;
-    font-size: 1.08em;
-    padding-top: 0.8em;
+	font-weight: bold;
+	font-size: 1.08em;
+	padding-top: 0.8em;
 }
 .notice #noticecontent {
-    font-size: 0.92em;
-    padding-bottom: 0.8em;
+	font-size: 0.92em;
+	padding-bottom: 0.8em;
 }
 
 img.previewimg, video.previewvid {
-    max-height: 18em;
+	max-height: 18em;
 }
 .previewflashobject {
-    width: 32em;
-    height: 18em;
+	width: 32em;
+	height: 18em;
 }
 
 .flashfullpaged {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
 }
 .previewflashfullscreenexit {
-    font-size: 1.6em;
-    color: #FF8888;
-    position: fixed;
-    top: 0;
-    right: 0;
-    margin: 1.2em;
-    display: none;
-    z-index: 1201;
+	font-size: 1.6em;
+	color: #FF8888;
+	position: fixed;
+	top: 0;
+	right: 0;
+	margin: 1.2em;
+	display: none;
+	z-index: 1201;
 }
 
 .playerdj {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none;
-    transition: all 0.33s;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: none;
+	transition: all 0.33s;
 }
 
 #dj {
-    padding: 0.3em 1.2em;
-    /* Some fonts will make Fais ugly. Only keep ones that will not */
-    font-family: 'Takeback-Define-Font', "Monda", "Tahoma", "Malgun Gothic",
-        "Lucida Sans Unicode", "DejaVu Sans", sans-serif;
+	padding: 0.3em 1.2em;
+	/* Some fonts will make Fais ugly. Only keep ones that will not */
+	font-family: 'Takeback-Define-Font', "Monda", "Tahoma", "Malgun Gothic",
+		"Lucida Sans Unicode", "DejaVu Sans", sans-serif;
 }
 #dj a {
-    font-size: 1.2em;
+	font-size: 1.2em;
 }
 
 #slideshow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2400;
-    display: none;
-    cursor: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2400;
+	display: none;
+	cursor: none;
 }
 
 .slidecontainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
 }
 
 img.slidepic {
-    line-height: 100%;
-    /* max-width: 100%; */
-    height: 100%;
-    vertical-align: middle;
+	line-height: 100%;
+	/* max-width: 100%; */
+	height: 100%;
+	vertical-align: middle;
 }
 
 img.faded {
-    transition: all 1s;
-    opacity: 0;
+	transition: all 1s;
+	opacity: 0;
 }
 
 img.thumbnail {
-    /* max-width: 18em; */
-    height: 12em;
-    vertical-align: middle;
-    position: relative;
-    left: -1.6em;
+	/* max-width: 18em; */
+	height: 12em;
+	vertical-align: middle;
+	position: relative;
+	left: -1.6em;
 }
 
 #showthumb {
-    display: none;
-    padding-left: 30%;
+	display: none;
+	padding-left: 30%;
 }
 
 #fileactionlabel, #fileactionsubmit {
-    font-size: 0.8em;
+	font-size: 0.8em;
 }
 .fileactioninputs {
-    transform: scale(1.2);
-    /* width: 80%; */
-    text-align: center;
-    position: relative;
-    top: -6px;
-    display: none;
+	transform: scale(1.2);
+	/* width: 80%; */
+	text-align: center;
+	position: relative;
+	top: -6px;
+	display: none;
 }
 .comment {
-    padding-left: 2.4em;
+	padding-left: 2.4em;
 }
 
 table#files tr.selected {
-    outline: yellow 1px solid;
-    background-color: rgba(255, 255, 255, 0.16);
+	outline: yellow 1px solid;
+	background-color: rgba(255, 255, 255, 0.16);
 }
 
 table#files tr.selected:after {
-    content: '✔';
+	content: '✔';
 }
 
 #multiselectstatics {
@@ -2456,150 +2462,150 @@ table#files tr.selected:after {
 }
 
 button, input, input[type="submit" i], input[type="button" i] {
-    background-color: white;
-    border-color: white;
-    border-width: 1px;
-    color: #333333;
-    border-radius: 0;
-    border-style: solid;
-    font-family: 'Takeback-Define-Font', "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
-        "Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
-        "Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
-    transition: ease-out 0.3s;
+	background-color: white;
+	border-color: white;
+	border-width: 1px;
+	color: #333333;
+	border-radius: 0;
+	border-style: solid;
+	font-family: 'Takeback-Define-Font', "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
+		"Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
+		"Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+	transition: ease-out 0.3s;
 }
 button:hover, input:hover, input[type="submit" i]:hover, input[type="button" i]:hover {
-    background-color: transparent;
-    color: white;
+	background-color: transparent;
+	color: white;
 }
 button, input[type="submit" i], input[type="button" i] {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 #popupbg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.75);
 }
 #popupbox {
-    position: fixed;
-    top: 33%;
-    left: 25%;
-    width: 50%;
-    /* min-height: 33%; */
-    border: white solid 1px;
-    z-index: 10240;
-    text-align: center;
-    font-size: 1.08em;
-    padding: 2em 1em;
-    background-color: rgba(0, 0, 0, 0.75);
+	position: fixed;
+	top: 33%;
+	left: 25%;
+	width: 50%;
+	/* min-height: 33%; */
+	border: white solid 1px;
+	z-index: 10240;
+	text-align: center;
+	font-size: 1.08em;
+	padding: 2em 1em;
+	background-color: rgba(0, 0, 0, 0.75);
 }
 #popupctrl button {
-    font-size: 1em;
+	font-size: 1em;
 }
 #popuppromptinput {
-    width: 67%;
-    margin: 16px;
-    height: 1.28em;
-    font-size: 1em;
+	width: 67%;
+	margin: 16px;
+	height: 1.28em;
+	font-size: 1em;
 }
 .files {
-    max-width: 100%;
-    overflow: auto;
-    /* scrollbar-width: none; */
+	max-width: 100%;
+	overflow: auto;
+	/* scrollbar-width: none; */
 }
 .lazy{ display:none; }
 /* For devices with small screen (mobiles) */
 @media (max-width: 950px) {
 #title {
-    font-size: 1.08em;
+	font-size: 1.08em;
 }
 body {
-    font-size: 1.08em;
+	font-size: 1.08em;
 }
 div.statustext {
-    font-size: 0.66em;
+	font-size: 0.66em;
 }
 .searchbutton {
-    border: white solid 1px;
+	border: white solid 1px;
 }
 .preview {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    padding: 0.33em 0.66em;
-    text-align: left;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	padding: 0.33em 0.66em;
+	text-align: left;
 }
 #preview, #multiselectstatics, #previewactions, #multiselectactions {
-    text-align: left;
+	text-align: left;
 }
 .fileactioninputs {
-    transform: scale(1.0);
-    text-align: left;
-    position: relative;
-    top: -2px;
+	transform: scale(1.0);
+	text-align: left;
+	position: relative;
+	top: -2px;
 }
 a.close {
-    float: left;
-    position: absolute;
-    left: 2.4em;
+	float: left;
+	position: absolute;
+	left: 2.4em;
 }
 #previewactions {
-    text-align: left;
-    line-height: 1.6em;
+	text-align: left;
+	line-height: 1.6em;
 }
 #tiparrow {
-    padding-left: 0;
+	padding-left: 0;
 }
 #get-top {
-    z-index: 1000;
+	z-index: 1000;
 }
 #previewtip {
-    padding-left: 2.4em;
-    padding-right: 0;
+	padding-left: 2.4em;
+	padding-right: 0;
 }
 img.previewimg, video.previewvid, iframe.previewiframe {
-    max-height: 16em;
+	max-height: 16em;
 }
 .previewflashobject {
-    display: none;
+	display: none;
 }
 .notice {
-    font-size: 1.08em;
-    /* text-align: left; */
+	font-size: 1.08em;
+	/* text-align: left; */
 }
 .notice#noticetitle {
-    font-size: 1.08em;
+	font-size: 1.08em;
 }
 .notice#noticecontent {
-    font-size: 0.92em;
+	font-size: 0.92em;
 }
 .playerdj {
-    bottom: 2em;
+	bottom: 2em;
 }
 .fais {
-    min-height: 3.6em;
+	min-height: 3.6em;
 }
 #playertitle {
-    /* Get this element to a "new line" */
-    display: block;
-    padding-left: 2.4em;
+	/* Get this element to a "new line" */
+	display: block;
+	padding-left: 2.4em;
 }
 .anotherlineonmobile {
-    /* Make an inline(display) element block */
-    display: block;
+	/* Make an inline(display) element block */
+	display: block;
 }
 img.thumbnail {
-    height: 10em;
+	height: 10em;
 }
 #showthumb {
-    padding-left: 2em;
+	padding-left: 2em;
 }
 #popupbox {
-    width: 80%;
-    left: 5%;
+	width: 80%;
+	left: 5%;
 }
 }
 /* A clear-looking scroll bar, copied from zui.css: (also edited here)*/
