@@ -61,6 +61,7 @@ HeaderText={.!HTTP File System.}
 {.comment| What will the statustext show? .}
 EnableStatus=1
 StatusText={.!Files here are available for view & download.}
+StatusTextLink=http://rejetto.com/hfs/
 
 {.comment| How will Fais looked like? .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
@@ -75,6 +76,12 @@ ThresholdConnectionsOfTuringStatusRed=64
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Below 3 metas makes so-called dual-core browsers (360 Safe Browser, etc.)
+    use Webkit to render the page by default -->
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="force-rendering" content="webkit" />
+<title>{.!TitleText.}</title>
 <link rel="icon" href="/favicon.ico">
 <script>
 var HFS = { 
@@ -83,7 +90,6 @@ var HFS = {
 	sid: '{.cookie|HFS_SID_.}',
 }
 </script>
-<title>{.!TitleText.}</title>
 
 <link rel="stylesheet" href="/~tkbmain.css" />
 {.if|{.!UseJquery.}| <script src="/?mode=jquery"></script> | {.$faikquery.} .}
@@ -100,9 +106,34 @@ for (pta = 1; pta < path.length; pta++) {
 }
 document.getElementById('swapDir').innerHTML = pathTreeResult;
 }
+// Searcher
+function searchQuery() {
+    frm = document.searchForm;
+    if (frm.query.value.length < 1) {
+        popup("{.!Search requires 1 or more characters.}");
+    } else {
+        frm.recursive.checked ? recursive = "&recursive" : recursive = "";
+        for (x = 0; x < frm.choice.length; x++) {
+            if (frm.choice[x].checked != 1) return;
+            if (frm.choice[x].value == "file") {
+                searchMode = "?files-filter=";
+                filter = "&folders-filter=%5C";
+            } else if (frm.choice[x].value == "folder") {
+                searchMode = "?folders-filter=";
+                filter = "&files-filter=%5C";
+            } else {
+                searchMode = "?filter=";
+                filter = "";
+            }
+        }
+        for (c = 0; c < frm.root.length; c++) {
+            if (frm.root[c].checked != 1) return;
+            frm.root[c].value == "current" ? searchFrom = "http://%host%"+HFS.folder : searchFrom = "http://%host%";
+        }
+        document.location.href = searchFrom + searchMode + "*" + frm.query.value + "*" + recursive + filter;
+    }
+}
 </script>
-<!-- Moved the deleter to File Handler -->
-<!-- Moved the searcher below the Frameworks part -->
 </head>
 
 <body>
@@ -140,6 +171,7 @@ document.getElementById('swapDir').innerHTML = pathTreeResult;
 
 <!-- Scroll to top: Framework -->
 <div id="get-top"><abbr title="{.!Back to top.}">&gt;</abbr></div>
+
 <!-- Addons: Framework -->
 <div id="addons">
 <!-- D.J. Fais (as mini player) -->
@@ -276,7 +308,7 @@ document.getElementById('swapDir').innerHTML = pathTreeResult;
 </div>
 <!-- Banner/text -->
 <div class="statustext">
-    <span><a href="http://rejetto.com/hfs/" target="_blank"
+    <span><a href="{.!StatusTextLink.}" target="_blank"
         style="color: {.if|{.%connections% > {.!ThresholdConnectionsOfTuringStatusRed.}.}|{:#996644:}|{:#228833:}.};">
         {.!StatusText.}</a>
     </span>
@@ -627,33 +659,6 @@ document.querySelector('#get-top').onclick = function () {
     var interval = setInterval(function() {
         scrollY > 0 ? scrollBy(window, -scrollspeed) : clearInterval(interval);
     }, 16)
-}
-// Searcher
-function searchQuery() {
-    frm = document.searchForm;
-    if (frm.query.value.length < 1) {
-        popup("{.!Search requires 1 or more characters.}");
-    } else {
-        frm.recursive.checked ? recursive = "&recursive" : recursive = "";
-        for (x = 0; x < frm.choice.length; x++) {
-            if (frm.choice[x].checked != 1) return;
-            if (frm.choice[x].value == "file") {
-                searchMode = "?files-filter=";
-                filter = "&folders-filter=%5C";
-            } else if (frm.choice[x].value == "folder") {
-                searchMode = "?folders-filter=";
-                filter = "&files-filter=%5C";
-            } else {
-                searchMode = "?filter=";
-                filter = "";
-            }
-        }
-        for (c = 0; c < frm.root.length; c++) {
-            if (frm.root[c].checked != 1) return;
-            frm.root[c].value == "current" ? searchFrom = "http://%host%"+HFS.folder : searchFrom = "http://%host%";
-        }
-        document.location.href = searchFrom + searchMode + "*" + frm.query.value + "*" + recursive + filter;
-    }
 }
 function _notice(content, title, timeout) {
     // When the previous notice not hidden
@@ -1333,6 +1338,10 @@ a:hover { color: black; background-color: white; }
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="force-rendering" content="webkit" />
+<title>404</title>
 <link rel="icon" href="data:,">
 %content%
 
@@ -1505,8 +1514,11 @@ function beforeRedirect() {
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:,">
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="force-rendering" content="webkit" />
 <title>{.!Login.}</title>
+<link rel="icon" href="data:,">
 <script>
 var HFS = { 
 	user: '{.js encode|%user%.}', 
@@ -1595,8 +1607,11 @@ var HFS = {
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:,">
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="force-rendering" content="webkit" />
 <title>{.!Upload to.}: %folder%</title>
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="/~tkbmain.css" />
 <script>
 var HFS = { 
@@ -1704,10 +1719,13 @@ function addUpload() {
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="force-rendering" content="webkit" />
+<title>{.!Upload result.}: %folder%</title>
 <link rel="icon" href="data:,">
 <meta http-equiv="refresh" content="4;url=./">
 <link rel="stylesheet" href="/~tkbmain.css" />
-<title>{.!Upload result.}: %folder%</title>
 </head>
 <body>
 {.if|{.!EnableImageBg.}|
@@ -2500,17 +2518,6 @@ button, input[type="submit" i], input[type="button" i] {
 }
 body {
     font-size: 1.08em;
-}
-.bgcss3 {
-    animation: none;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    background-size: cover;
-    /* background: linear-gradient(95deg, #002, #113, #150d31, #171741, #00002D, #000029, #002, #002); */
-    background: black;
 }
 div.statustext {
     font-size: 0.66em;
