@@ -50,6 +50,7 @@ UseJquery=0
 	The webpage goes fast with FaikQuery, because this only includes functions
 		that are needed in this webpage/template, with less operations.
 	If you need edit this template with jQuery features(other than animations), turn it on.
+	JQuery will be force loaded if visiter uses Internet Explorer.
 .}
 
 {.comment|
@@ -62,7 +63,7 @@ BgFolder=/pic/img/bg/
 
 {.comment| What will the header show?   -- Texts wrapped by {.! .} will be able to be replaced("translated") by defining them like those ones below.}
 EnableHeader=0
-HeaderText={.!HTTP File System.}
+HeaderText={.!HTTP File Server.}
 
 {.comment| What will the statustext show? .}
 EnableStatus=1
@@ -98,9 +99,34 @@ var HFS = {
 </script>
 
 <link rel="stylesheet" href="/~tkbmain.css" />
-{.if|{.!UseJquery.}| <script src="/?mode=jquery"></script> | {.$faikquery.} .}
+{.if|{.!UseJquery.}| <script id="scriptjq0" src="/?mode=jquery"></script> | {.$faikquery.} .}
 
 <script>
+// Detect IE/Edge by Mario: https://codepen.io/gapcode/pen/vEJNZN
+function detectIE() {
+	var ua = window.navigator.userAgent;
+	var msie = ua.indexOf('MSIE ');
+	if (msie > 0) {
+		return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+	}
+	var trident = ua.indexOf('Trident/');
+	if (trident > 0) {
+		var rv = ua.indexOf('rv:');
+		return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+	}
+	return false;
+}
+var version = detectIE();
+if (version < 12 && version != false) {
+	// IE, Load JQuery if not ever loaded
+	console.log('Browser: IE ' + version);
+	console.log('JQuery will be force loaded for a better experience.')
+	if (document.getElementById('scriptjq0') == null) {
+		var script = document.createElement('script');
+		script.src = '/?mode=jquery';
+		document.head.appendChild(script);
+	}
+}
 function browseAbleFolderTree(folder) {
 var infoFolder = folder;
 var path = folder.split("/");
@@ -661,9 +687,11 @@ window.onscroll = function () {
 	prevscroll = currscroll;
 }
 document.querySelector('#get-top').onclick = function () {
+	if (window.scrollY==undefined) window.scrollY = document.documentElement.scrollTop; // IE
+	// if (window.scrollX==undefined) window.scrollX = document.documentElement.scrollLeft;
 	var scrollspeed = scrollY/30;
 	var interval = setInterval(function() {
-		scrollY > 0 ? scrollBy(window, -scrollspeed) : clearInterval(interval);
+		scrollY > scrollspeed ? scrollBy(window, -scrollspeed) : clearInterval(interval);
 	}, 16)
 }
 function _notice(content, title, timeout) {
@@ -677,12 +705,20 @@ function _notice(content, title, timeout) {
 	console.log('%c\nNotice:\n'+title+'\n'+content, 'font-weight: bold;');
 	var noticetimeout = setTimeout(function () { $('.notice').fadeOut(300); }, timeout ? timeout : 3200);
 }    
-// $('.notice').slideUp();
 
 function notice(message, titlemessage, timeout) {
 	_notice(message, titlemessage, timeout);
 }
 
+// Test browser
+if (version < 12 && version != false) {
+	function popupoutdated() {
+		popup('{.!You are using an unsupported browser, which will result in an unjoyful experience..}<br>\
+			{.!If you are using a dual-core browser, please switch core at right side of address bar..}<br>\
+			{.!Or you may update your browser to new ones, such as: Chrome, Chromium, Edge, Firefox, Opera, Safari etc..}');
+	}
+	notice('{.!Please update your browser to modern ones..} <button onclick="popupoutdated();">{.!Further info.}</button>', '{.!Browser outdated.}', 8000);
+}
 /***
  *  Fullscreen request & exit, by niewzh (CSDN Blog)
  *  requestFullScreen(document.documentElement); exitFullScreen(document);
@@ -746,6 +782,9 @@ var filestatics = new _filestatics();
 
 // Preparition: Query all file links on the page, many functions will use them
 // Sort files out by type
+if (window.NodeList && !NodeList.prototype.forEach) {	// IE 11
+   NodeList.prototype.forEach = Array.prototype.forEach;
+}
 filestatics.nodesfile.forEach(function(filelistnode, index) {
 	var url = filelistnode.href     // spliturllast(filelistnode.href);
 	filestatics.filelist.push(url);
