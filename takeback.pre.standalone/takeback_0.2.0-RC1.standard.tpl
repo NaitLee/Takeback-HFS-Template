@@ -4,30 +4,18 @@
 		Licensed under 2-Clause BSD.
 -->
 
+[api level]
+2
+
 [+special:strings]
 
 {.comment|
-	Use Takeback Index as your index page?
-	You may customize it as well.
+	Use Takeback Index as your index page? You may customize it as well,
+		just search "MARKER-0" with your editor and you'll see it.
 .}
 UseTakebackIndex=1
 TkbIndex.Title={.!My Personal Site.}
 TkbIndex.TitleShort={.!HTTP File Server.}
-{.comment|
-	Define some indexes and navs as following:
-	{:{.set|TkbIndex.n| Title[Path]Description .}:}
-	Examples are given below.
-.}
-{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
-{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
-{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
-{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
-
-{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
-{.set|#TkbNav.1| {.!Administration Login.}[/login]{.!Get more permissions by logging-in..} .}
-
-TkbIndexes={.var domain|#TkbIndex|get=values.}
-TkbNavs={.var domain|#TkbNav|get=values.}
 
 {.comment| Use special date&time format? 0 to disable, other values to enable .}
 UseSpecialDateTimeFormat=1
@@ -56,7 +44,7 @@ UseJquery=0
 	Put pictures in your speciefied folder to see them randomly appear
 	as the background of your page
 .}
-EnableImageBg=1
+EnableImageBg=0
 BgFolder=/pic/img/bg/
 
 {.comment| What will the header show?   -- Texts wrapped by {.! .} will be able to be replaced("translated") by defining them like those ones below.}
@@ -71,14 +59,11 @@ StatusTextLink=http://rejetto.com/hfs/
 {.comment| How will Fais looked like? .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
 
-{.comment| Presets:    φ(゜▽゜*)♪    🎶(*^▽^*)o    🎤♪(^∇^*)o    🎵(*￣︶￣*)o♪    .}
+{.comment| Presets:    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵    .}
 
 {.comment| ... and more below .}
 MaxArchiveSizeAllowedToDownloadKb=4096000
 ThresholdConnectionsOfTurningStatusRed=64
-
-[api level]
-2
 
 [special:import]
 {.if|
@@ -130,7 +115,7 @@ var HFS = {
 {.if|{.!EnableImageBg.}
 | <div id="bg"></div><div class="bgmask"></div>
 	{.$script.randombg.}
-| <div id="bg"><div class="bgcss3"></div></div>
+| <div class="bgmask"></div><div id="bg"><div class="bgcss3"></div></div>
 .}
 
 
@@ -177,6 +162,8 @@ document.querySelector('#get-top').onclick = function () {
 		</div>
 	</div>
 </div>
+{.$script.popup.}
+
 
 [checkiescript]
 <script>
@@ -214,6 +201,22 @@ if (version < 12 && version != false) {
 
 [index.html|public]
 <!doctype html>
+
+<!-- MARKER-0: Configure Takeback Index -->
+{.comment|
+	Define some indexes and navs as following:
+	{:{.set|TkbIndex.n| Title[Path]Description .}:}
+	{:{.set|TkbNav.n| Title[Path]Description .}:}
+	Examples are given below.
+.}
+{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
+{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
+{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
+{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
+
+{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
+{.set|#TkbNav.1| {.!Administration Login.}[/~login]{.!Get more permissions by logging-in..} .}
+
 <html>
 <head>
 	{.$commonhead.}
@@ -234,7 +237,7 @@ if (version < 12 && version != false) {
                 <!-- Navigation items, will be inited with JS. -->
                 <ul id="nav">
 					{.set|num|0.}
-					{.for each|i|{.!TkbNavs.}|{:
+					{.for each|i|{.var domain|#TkbNav.|get=values.}|{:
 						{.set|nav|{.^i.}.}
 							<li><a href="{.substring|[|]|{.^nav.}|include=0.}">
 								<abbr title="{.substring|]||{.^nav.}|include=0.}">{.substring||[|{.^nav.}|include=0.}</abbr>
@@ -267,7 +270,6 @@ if (version < 12 && version != false) {
 				</div>
 			</section>
 			<!-- Hitokoto. Details: https://hitokoto.cn 
-			-->
 			<div class="hitokoto">
 				<h2 class="hidden">Hitokoto</h2>
 				<div class="bracket left">『</div>
@@ -275,11 +277,12 @@ if (version < 12 && version != false) {
 				<div class="hitokotod"><span id="hitokotop"></span><span id="cursor">|</span></div>
 				<div class="bracket right">』</div>
 			</div>
+			-->
 			<!-- Items -->
 			<h2 class="hidden">Items</h2>
 			<div id="itemlist">
 				{.set|num|0.}
-				{.for each|i|{.!TkbIndexes.}|{:
+				{.for each|i|{.var domain|#TkbIndex.|get=values.}|{:
 					{.set|index|{.^i.}.}
 					{.set|direction|{.if|{.=|{.mod|{.^num.}|2.}|0.}|left|right.}.}
 					<div class="item {.^direction.}">
@@ -301,8 +304,7 @@ if (version < 12 && version != false) {
 			</div>
 		</div>
 	</div>
-    <!--<script src="https://v1.hitokoto.cn/?c=d&c=e&c=h&c=i&c=k&encode=js&select=%23hitokoto" defer></script>-->
-	<script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+	<!-- <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script> -->
 	<script src="~tkbindex.js"></script>
 </body>
 </html>
@@ -469,7 +471,6 @@ function searchQuery() {
 [addonall.js|no log|public]
 {.add header|Cache-Control: public, max-age=86400.}
 {.$addonpre.js.}
-{.$popup.js.}
 {.$preview.js.}
 {.$fileactions.js.}
 {.$djfais.js.}
@@ -812,9 +813,8 @@ function previewfile (ctrl, url) {
 previewfile('?show');
 // </script>
 
-[popup.js|no log|public]
-{.add header|Cache-Control: public, max-age=86400.}
-// <script>
+[script.popup]
+<script>
 function popup (message, type, callbackfn, defaultvalue) {
 	if (callbackfn == undefined) { callbackfn = function() { return true; } };
 	var popupclose = function () {
@@ -848,7 +848,7 @@ function popup (message, type, callbackfn, defaultvalue) {
 	$('#popupbg').fadeIn();
 	$('#popupbox').slideDown();
 }
-// </script>
+</script>
 
 [addonpre.js|no log|public]
 {.add header|Cache-Control: public, max-age=86400.}
@@ -2024,7 +2024,8 @@ body {
 	height: 100%;
 	position: fixed;
 	margin: 0px;
-	z-index: -2;
+	z-index: -1;
+	background: center / cover;
 	background-color:black;
 	background-image:
 		radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
@@ -2847,8 +2848,7 @@ img.thumbnail {
 	left: 5%;
 }
 }
-/* A clear-looking scroll bar, copied from zui.css: (also edited here)*/
-/* https://cdn.bootcss.com/zui/1.8.1/css/zui.min.css */
+
 @media (min-width:768px) {
 ::-webkit-scrollbar {
 width: 10px;
@@ -2916,18 +2916,6 @@ visibility: visible;
 
 [tkbindex.css|no log|public]
 /* <style> /* */
-@font-face {
-    font-family: "Monda";
-    src: url("/css/font/Monda.ttf");
-}
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
 body {
     margin: 0px;
     border: 0px;
@@ -2939,95 +2927,10 @@ body {
         "Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
         "Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
 }
-@keyframes bgsplash {
-    /* A junky animation that lets the bg splash and zoom at the center of screen */
-    from {
-        top: 16.5%;
-        left: 16.5%;
-        opacity: 0;
-        width: 66%;
-        height: 66%;
-    }
-    to {
-        top: 0%;
-        left: 0%;
-        opacity: 1;
-        width: 100%;
-        height: 100%;
-    }
-}
-@keyframes bgbreath {
-    0% {
-        transform: translate(0, 0) scale(1.0);
-    }
-    12.5% {
-        transform: translate(0px, 0px) scale(1.08);
-    }
-    25% {
-        transform: translate(-13px, -12px) scale(1.16);
-    }
-    37.5% {
-        transform: translate(18px, -35px) scale(1.08);
-    }
-    50% {
-        transform: translate(-7px, -8px) scale(1.0);
-    }
-    62.5% {
-        transform: translate(0px, 49px) scale(1.08);
-    }
-    75% {
-        transform: translate(-32px, -12px) scale(1.16);
-    }
-    87.5% {
-        transform: translate(39px, 0px) scale(1.08);
-    }
-    100% {
-        transform: translate(0, 0) scale(1.0);
-    }
-}
-#bg {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    opacity: 0;
-    background: center / cover;
-    animation: bgsplash 0.33s ease-out 1.5s;
-    animation-fill-mode: forwards;
-}
 /* Starry Night by Lea Verou */
 /* https://leaverou.github.io/css3patterns/ */
-.bgcss3 {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    z-index: -2;
-    background-color:black;
-    background-image:
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-        radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-    animation: 72s ease-in-out 0.66s alternate infinite bgbreath;
-    animation-fill-mode: forwards;
-}
 h2.hidden {
     display: none;
-}
-.bgmask {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    margin: 0px;
-    opacity: 0;
-    z-index: -1;
-    background-color: rgba(0, 0, 0, 0.75);
-    animation: fadein 0.5s ease-out 0s;
-    animation-fill-mode: forwards;
 }
 @keyframes contentslide {
     from {
