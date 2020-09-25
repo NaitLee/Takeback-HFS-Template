@@ -1923,6 +1923,9 @@ txt.addEventListener('keydown', function(event) {
 		window.open(thisSearch + txt.value);
 	}
 });
+document.getElementById('search-btn').onclick = function(event) {
+	window.open(thisSearch + txt.value);
+}
 var search = {
 	data: [{
 		name: '{.!Ecosia.}',
