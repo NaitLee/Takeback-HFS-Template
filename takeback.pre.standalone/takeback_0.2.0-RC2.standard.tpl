@@ -711,18 +711,18 @@ function $(element) { return new _$(element); }
 var noticedpreview = false;
 var givetofais = false;
 var converttohtml = function (file, path) {
-	notice('{.!Converting.} '+file+' {.!to .html format..}', 'Convertion Started');
+	notice('{.!Converting.} '+file+' {.!to .html format..}', '{.!Conversion Started.}');
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/~ajax.convertdoctohtml?file='+file+'&path='+path);
 	xhr.onload = function() {
 		if (new RegExp(/\:\\/).test(xhr.responseText.trim())) {
-			// popup('{.!Convertion complete..}\n{.!After refreshing the page, find the .html file..}', '?alert', function() {
+			// popup('{.!Conversion complete..}<br />{.!After refreshing the page, find the .html file..}', '?alert', function() {
 			// window.location.reload();
 			setTimeout(function() {
 				previewfile('?open', path+file.replace(/\..*$/, '.html'));
 			}, 1824);
 		} else {
-			popup('{.!Convertion failed..}<br />{.!Server has no LibreOffice installed..}', '?alert');
+			popup('{.!Conversion failed..}<br />{.!Server has no LibreOffice installed..}', '?alert');
 		}
 	}
 	xhr.send();
@@ -837,12 +837,14 @@ function previewfile (ctrl, url) {
 			break;
 		// For flash. Though this thing is dying, but there are still mini-games come with flash
 		case '?flashfullscreen':
-			$('.previewflashobject').addClass('flashfullpaged');
+			requestFullScreen(document.documentElement);
+			document.querySelector('.previewflashobject').classList.add('flashfullpaged');
 			$('.previewflashfullscreenexit').fadeIn();
 			notice('{.!Exit by tapping the [X].} =>', '{.!Fullscreened.}');
 			break;
 		case '?flashfullscreenexit':
-			$('.previewflashobject').removeClass('flashfullpaged');
+			exitFullScreen(document);
+			document.querySelector('.previewflashobject').classList.remove('flashfullpaged');
 			$('.previewflashfullscreenexit').fadeOut();
 			break;
 		default:
