@@ -13,7 +13,7 @@
 	Use Takeback Index as your index page? You may customize it as well,
 		just search "MARKER-0" with your editor and you'll see it.
 .}
-UseTakebackIndex=1
+UseTakebackIndex=0
 TkbIndex.Title={.!My Personal Site.}
 TkbIndex.TitleShort={.!HTTP File Server.}
 
@@ -90,11 +90,11 @@ ThresholdConnectionsOfTurningStatusRed=64
 
 [commonhead]
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Below 3 metas makes so-called dual-core browsers (360 Safe Browser, etc.)
 	use Webkit to render the page by default -->
 <meta name="renderer" content="webkit" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="force-rendering" content="webkit" />
 <link rel="icon" href="/favicon.ico">
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -108,9 +108,9 @@ var HFS = {
 </script>
 <link rel="stylesheet" href="/~tkbmain.css" />
 {.if|{.!UseJquery.}| <script id="scriptjq0" src="/?mode=jquery"></script> | {.$faikquery.} .}
-{.if|{.CheckIE.}|{.$checkiescript.}.}
+{.if|{.CheckIE.}|{.$script.checkie.}.}
 
-[commonbody]
+[commonbody.upper]
 <!-- Background image and blackening mask: Framework -->
 {.if|{.!EnableImageBg.}
 | <div id="bg"></div><div class="bgmask"></div>
@@ -125,9 +125,11 @@ var HFS = {
 	<div id="noticecontent"></div>
 </div>
 
+{.$script.notice.}
+
+[commonbody.lower]
 <!-- Scroll to top: Framework -->
 <div id="get-top"><abbr title="{.!Back to top.}">&gt;</abbr></div>
-
 <script>
 // Scroll to top: Script
 var prevscroll = 0;
@@ -150,7 +152,6 @@ document.querySelector('#get-top').onclick = function () {
 	setTimeout(function() { clearInterval(interval); }, 1000);
 }
 </script>
-
 <!-- Popup: Framework -->
 <div class="popup">
 	<div id="popupbg" style="display: none;"></div>
@@ -163,9 +164,28 @@ document.querySelector('#get-top').onclick = function () {
 	</div>
 </div>
 {.$script.popup.}
+<link rel="stylesheet" href="/~font.css" />
 
+[script.notice]
+<script>
+function _notice(content, title, timeout) {
+	// When the previous notice not hidden
+	$('.notice').hide();
+	clearTimeout(noticetimeout);
+	// Start a notice
+	noticetitle.innerHTML = title;
+	noticecontent.innerHTML = content;
+	$('.notice').slideDown(160);
+	console.log('%c\nNotice:\n'+title+'\n'+content, 'font-weight: bold;');
+	var noticetimeout = setTimeout(function () { $('.notice').fadeOut(300); }, timeout ? timeout : 3200);
+}    
 
-[checkiescript]
+function notice(message, titlemessage, timeout) {
+	_notice(message, titlemessage, timeout);
+}
+</script>
+
+[script.checkie]
 <script>
 // Detect IE/Edge by Mario: https://codepen.io/gapcode/pen/vEJNZN
 function detectIE() {
@@ -224,7 +244,7 @@ if (version < 12 && version != false) {
 	<title>{.!TitleText.}</title>
 </head>
 <body>
-	{.$commonbody.}
+	{.$commonbody.upper.}
 	<div class="pond">
         <header>
             <h1 class="logo">
@@ -306,18 +326,18 @@ if (version < 12 && version != false) {
 	</div>
 	<!-- <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script> -->
 	<script src="~tkbindex.js"></script>
+	{.$commonbody.lower.}
 </body>
 </html>
 
 []
 <!doctype html>
 {.comment|If it is root, go to index page.}
-{.if|{.!UseTakebackIndex.}|{.if|{.=|%folder%|/.}|{:{.redirect|/~index.html.}:}.}.}
+{.if|{.!UseTakebackIndex.}|{:{.if|{.=|%folder%|/.}|{:{.redirect|/~index.html.}:}.}:}.}
 <html>
 <head>
 {.$commonhead.}
 <title>{.!TitleText.}</title>
-{.if|{.=|%folder%|/.}|<meta http-equiv="refresh" content="0;url=/~index.html">.}
 
 <script>
 function browseAbleFolderTree(folder) {
@@ -363,7 +383,7 @@ function searchQuery() {
 </head>
 
 <body>
-{.$commonbody.}
+{.$commonbody.upper.}
 
 <!-- File list: Framework -->
 {.if|{.!EnableHeader.}| <div id="title">{.!HeaderText.}</div> |.}
@@ -464,7 +484,7 @@ function searchQuery() {
 </div>
 
 <script src="/~addonall.js" onerror="var self = this; setTimeout(function() { self.src = '/~addonall.js'; }, 400);" async></script>
-<link rel="stylesheet" href="/~font.css" />
+{.$commonbody.lower.}
 </body>
 </html>
 
@@ -690,6 +710,23 @@ function $(element) { return new _$(element); }
 // <script> // Fool the editor to highlight syntax properly
 var noticedpreview = false;
 var givetofais = false;
+var converttohtml = function (file, path) {
+	notice('{.!Converting.} '+file+' {.!to .html format..}', 'Convertion Started');
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/~ajax.convertdoctohtml?file='+file+'&path='+path);
+	xhr.onload = function() {
+		if (new RegExp(/\:\\/).test(xhr.responseText.trim())) {
+			// popup('{.!Convertion complete..}\n{.!After refreshing the page, find the .html file..}', '?alert', function() {
+			// window.location.reload();
+			setTimeout(function() {
+				previewfile('?open', path+file.replace(/\..*$/, '.html'));
+			}, 1824);
+		} else {
+			popup('{.!Convertion failed.}\n{.!Server has no LibreOffice installed..', '?alert');
+		}
+	}
+	xhr.send();
+}
 // Previewing: Core script
 function _previewfile(url) {
 	var fileurl = decodeURI(url);
@@ -754,10 +791,12 @@ function _previewfile(url) {
 				<br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
 			break;
 		case 'workdocument':
-			previewcontent = ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
+			previewcontent = '{.!You may convert this document to HTML format and view that directly..}<br />'
+				+ ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
 				'{.!You can preview this document with Microsoft Office Online service.}<br />\
 					<a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
-				'{.!Unable to view online: this site is in LAN.}<br />' );
+				'{.!Unable to view online: this site is in LAN.}<br />')
+				+ '<a href="javascript: converttohtml(\''+filename+'\', \''+HFS.folder+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>';
 			break;
 		default:
 			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try dowload.}</span>&nbsp;<br />';
@@ -1540,7 +1579,6 @@ a:hover { color: black; background-color: white; }
 <meta name="force-rendering" content="webkit" />
 <link rel="icon" href="data:,">
 <meta name="theme-color" content="#000000" />
-<link rel="stylesheet" href="/~font.css" />
 %content%
 
 [not found]
@@ -1816,7 +1854,7 @@ function addUpload() {
 </head>
 
 <body style="background-color: black; text-align: center;">
-	{.$commonbody.}
+	{.$commonbody.upper.}
 	<!-- Content: Upload -->
 	<div style="text-align: left; border-bottom: white 1px solid; margin-bottom: 4px;">
 		<b>{.!Upload to.}: </b>%folder%<br />
@@ -1874,7 +1912,7 @@ function addUpload() {
 	</script>
 :}.}
 </div>
-<link rel="stylesheet" href="/~font.css" />
+{.$commonbody.lower.}
 </body>
 
 </html>
@@ -1890,13 +1928,14 @@ function addUpload() {
 <meta http-equiv="refresh" content="4;url=./">
 </head>
 <body>
-{.$commonbody.}
+{.$commonbody.upper.}
 <div>{.!Upload result.}: %folder%</div>
 <div>%uploaded-files%<br /><br />
 	<a href="%encoded-folder%" target=_parent>
 		&#8678; {.!Go Back.}
 	</a>
 </div>
+{.$commonbody.lower.}
 </body>
 </html>
 
@@ -1905,6 +1944,16 @@ function addUpload() {
 
 [upload-failed]
 <li><b>{.!FAILED.}: </b>%item-name% - %reason%</li>
+
+[ajax.convertdoctohtml|public]
+{.break|if={.not|{.exist|"C:\Program Files\LibreOffice\program\soffice.exe".}.}|reason={.!No LibreOffice installed.} (1).}
+
+{.set|file|{.urlvar|file.}.}
+{.set|target|{.vfs to disk|{.urlvar|path.}.}.}
+{.set|cmd|"C:\Program Files\LibreOffice\program\soffice.exe" --convert-to html --outdir "{.^target.}" "{.^target.}\{.^file.}".}
+{.^cmd.}
+{.exec|{.^cmd.}|out=x.}
+{.^x.}
 
 [tkbindex.js|no log|public]
 {.add header|Cache-Control: public, max-age=86400.}
