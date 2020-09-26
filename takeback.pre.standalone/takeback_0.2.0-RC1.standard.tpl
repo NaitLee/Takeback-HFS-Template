@@ -722,7 +722,7 @@ var converttohtml = function (file, path) {
 				previewfile('?open', path+file.replace(/\..*$/, '.html'));
 			}, 1824);
 		} else {
-			popup('{.!Convertion failed.}\n{.!Server has no LibreOffice installed..', '?alert');
+			popup('{.!Convertion failed..}<br />{.!Server has no LibreOffice installed..}', '?alert');
 		}
 	}
 	xhr.send();
@@ -1946,7 +1946,7 @@ function addUpload() {
 <li><b>{.!FAILED.}: </b>%item-name% - %reason%</li>
 
 [ajax.convertdoctohtml|public]
-{.break|if={.not|{.exist|"C:\Program Files\LibreOffice\program\soffice.exe".}.}|reason={.!No LibreOffice installed.} (1).}
+{.break|if={.not|{.exists|C:\Program Files\LibreOffice\program\soffice.exe.}.}|reason={.!No LibreOffice installed.} (1).}
 
 {.set|file|{.urlvar|file.}.}
 {.set|target|{.vfs to disk|{.urlvar|path.}.}.}
