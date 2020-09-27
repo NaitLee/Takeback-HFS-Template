@@ -94,8 +94,8 @@ ThresholdConnectionsOfTurningStatusRed=64
 	use Webkit to render the page by default -->
 <meta name="renderer" content="webkit" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="force-rendering" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.ico">
 <meta name="description" content="A file-sharing site powered by HFS and Takeback template.">
 <meta name="keywords" content="HFS,HTTP File Server,Takeback,HFS template" />
@@ -113,6 +113,7 @@ var HFS = {
 
 [commonbody.upper]
 <!-- Background image and blackening mask: Framework -->
+
 {.if|{.!EnableImageBg.}
 | <div id="bg"></div><div class="bgmask"></div>
 	{.$script.randombg.}
@@ -785,7 +786,7 @@ function _previewfile(url) {
 			break;
 		case 'text':
 			previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+fileurl+'">\
-				{.!Previewing not supported, please try dowload.}</iframe><br />';
+				{.!Previewing not supported, please try download.}</iframe><br />';
 			break;
 		case 'flash':
 			previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
@@ -803,7 +804,7 @@ function _previewfile(url) {
 				+ '<a href="javascript: converttohtml(\''+filename+'\', \''+HFS.folder+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>';
 			break;
 		default:
-			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try dowload.}</span>&nbsp;<br />';
+			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try download.}</span>&nbsp;<br />';
 			break;
 	}
 	previewcontent += '<a href="'+filename+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
@@ -2168,7 +2169,7 @@ a.uploadbutton {
 	display: block;
 	float: right;
 	font-weight: bold;
-	height: 1.72em;
+	height: 2em;
 }
 
 .nofile {
