@@ -97,12 +97,13 @@ ThresholdConnectionsOfTurningStatusRed=64
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="force-rendering" content="webkit" />
 <link rel="icon" href="/favicon.ico">
-<link rel="shortcut icon" href="/favicon.ico" />
+<meta name="description" content="A file-sharing site powered by HFS and Takeback template.">
+<meta name="keywords" content="HFS,HTTP File Server,Takeback,HFS template" />
 <meta name="theme-color" content="#000000" />
 <script>
 var HFS = { 
-	user: '{.js encode|%user%.}', 
-	folder: '{.js encode|%folder%.}', 
+	user: '{.js encode|%user%.}',
+	folder: '{.js encode|%folder%.}',
 	sid: '{.cookie|HFS_SID_.}',
 }
 </script>
@@ -164,7 +165,7 @@ document.querySelector('#get-top').onclick = function () {
 	</div>
 </div>
 {.$script.popup.}
-<link rel="stylesheet" href="/~font.css" />
+<link rel="stylesheet" href="/~font.css" defer />
 
 [script.notice]
 <script>
@@ -387,10 +388,13 @@ function searchQuery() {
 
 <!-- File list: Framework -->
 {.if|{.!EnableHeader.}| <div id="title">{.!HeaderText.}</div> |.}
-%login-link%%loggedin%
-<a href="/">&#127968;{.!Homepage.}</a> <span id="swapDir">%folder%</span>
-<script> browseAbleFolderTree("%folder%") </script>
-%files%
+<header><nav>
+	%login-link%%loggedin%
+	<a href="/">&#127968;{.!Homepage.}</a> <span id="swapDir">%folder%</span>
+	<script> browseAbleFolderTree("%folder%") </script>
+</nav></header>
+<main>%files%</main>
+
 
 {.if|{.get|can archive.}|
 {:{.if|{.%number-files% > 0.}|
@@ -483,7 +487,7 @@ function searchQuery() {
 </div>
 </div>
 
-<script src="/~addonall.js" onerror="var self = this; setTimeout(function() { self.src = '/~addonall.js'; }, 400);" async></script>
+<script src="/~addonall.js" onerror="var self = this; setTimeout(function() { self.src = '/~addonall.js'; }, 400);" defer async></script>
 {.$commonbody.lower.}
 </body>
 </html>
@@ -512,22 +516,22 @@ function searchQuery() {
 [files]
 <!-- Search box -->
 {.if|{.%connections% > 64.}|{:<br />:}|{:<div style="margin-top: 4px; border-bottom: white 1px solid;">
-	<form class="hide" name="searchForm" method="GET" action="javascript:searchQuery()">
+	<form class="hide" id="searchForm" name="searchForm" method="GET" action="javascript:searchQuery()">
 	<input class="searchbox" placeholder="{.!Search files here....}" type="search" name="query" size="25"
-		maxlength="32"><input class="searchbutton" type="submit" name="searchBtn" value="&#128269;">
-	<input type="hidden" name="choice" value="file" checked="1">
-	<input type="hidden" name="choice" value="folder" checked="1">
-	<input type="hidden" name="choice" value="both" checked="1">
-	<input type="hidden" name="recursive" checked="1">
-	<input type="hidden" name="root" value="root" checked="1">
-	<input type="hidden" name="root" value="current" checked="1">
+		maxlength="32" /><button class="searchbutton" onclick="searchForm.submit();" name="searchBtn">&#128269;</button>
+	<input type="hidden" name="choice" value="file" checked="1" />
+	<input type="hidden" name="choice" value="folder" checked="1" />
+	<input type="hidden" name="choice" value="both" checked="1" />
+	<input type="hidden" name="recursive" checked="1" />
+	<input type="hidden" name="root" value="root" checked="1" />
+	<input type="hidden" name="root" value="current" checked="1" />
 	<!-- Upload button(link) -->
 	%upload-link%
 	</form>
 </div>
 <!-- Banner/text -->
 <div class="statustext">
-	<span><a href="{.!StatusTextLink.}" target="_blank"
+	<span><a href="{.!StatusTextLink.}" target="_blank" rel="noopener"
 		style="color: {.if|{.%connections% > {.!ThresholdConnectionsOfTurningStatusRed.}.}|{:#996644:}|{:#228833:}.};">
 		{.!StatusText.}</a>
 	</span>
@@ -882,6 +886,7 @@ function popup (message, type, callbackfn, defaultvalue) {
 			popuppromptinput.addEventListener("keydown", function(event) { if (event.keyCode == 13) popuppromptok.onclick(); });
 			popuppromptok.onclick = function () { callbackfn(popuppromptinput.value); popupclose(); return popuppromptinput.value; };
 			popuppromptcancel.onclick = function() { popupclose(); return false; };
+			popuppromptinput.focus();
 			break;
 		default:
 			popup(message, '?alert', callbackfn);
@@ -2131,19 +2136,18 @@ hr {
 .searchbox {
 	padding: 0;
 	border: 0;
-	height: 2.48em;
+	height: 3em;
 	background-color: white;
 	display:inline;
 	border: white solid 1px;
 }
 
-input.searchbutton {
+button.searchbutton {
 	border: 0;
-	height: 2.48em;
-	width: 2.48em;
+	height: 3em;
+	width: 3em;
 	position: relative;
-	/* top: 1px; */
-	left: -1px;
+	left: 1px;
 }
 
 a.inverted {
@@ -2239,7 +2243,7 @@ a:hover {
 div.statustext {
 	overflow: hidden;
 	margin-top: 0.1em;
-	font-size: 0.9em;
+	font-size: 1em;
 	text-align: center;
 	animation: blink 2s ease-in-out 1s alternate infinite;
 }
@@ -2475,7 +2479,7 @@ td.size {
 	min-width: 6em;
 }
 
-td.sizenonef, td.sinenonel {
+td.sizenonef, td.sizenonel {
 	font-size: 0.9em;
 	text-align: center;
 	color: #AAAAAA;
@@ -2814,11 +2818,17 @@ button, input[type="submit" i], input[type="button" i] {
 body {
 	font-size: 1.08em;
 }
-div.statustext {
-	font-size: 0.66em;
+.searchbox {
+	height: 3em;
 }
-.searchbutton {
-	border: white solid 1px;
+
+button.searchbutton {
+	height: 3em;
+	width: 3em;
+}
+
+div.statustext {
+	font-size: 0.9em;
 }
 .preview {
 	position: fixed;
