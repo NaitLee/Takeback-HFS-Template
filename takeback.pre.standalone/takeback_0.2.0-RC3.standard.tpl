@@ -56,6 +56,13 @@ EnableStatus=1
 StatusText={.!Files here are available for view & download.}
 StatusTextLink=http://rejetto.com/hfs/
 
+{.comment|
+	Enable the document converter? This is for user's convenience.
+	You need to install LibreOffice to make this work correctly. (https://libreoffice.org)
+	This sometimes slows down your computer. You can enable if you don't worry about this.
+.}
+EnableDocConvert=0
+
 {.comment| How will Fais looked like? .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
 
@@ -769,7 +776,7 @@ function _previewfile(url) {
 			break;
 	}
 	// Define the preview content
-	previewcontent = '';
+	var previewcontent = '';
 	switch (filetype) {
 		case 'image':
 			previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.}&nbsp;<br />\
@@ -781,13 +788,13 @@ function _previewfile(url) {
 				<a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
 			break;
 		case 'video':
-			previewcontent = '{.!Rotate your device to fullscreen if mobile.}<br />\
-				<video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
+			previewcontent = '<video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
 				{.!Sorry, previewing this file is not sopported by your browser.}</video><br />';
 			break;
 		case 'text':
 			previewcontent = '<iframe class="previewiframe" id="previewobject" src="'+fileurl+'">\
-				{.!Previewing not supported, please try download.}</iframe><br />';
+				{.!Previewing not supported, please try download.}</iframe><br />\
+				<a href="javascript: (function() { previewobject.innerHTML = previewcontent; })();">[{.!Refresh frame.}]</a>';
 			break;
 		case 'flash':
 			previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
@@ -797,12 +804,12 @@ function _previewfile(url) {
 				<br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
 			break;
 		case 'workdocument':
-			previewcontent = '{.!You may convert this document to HTML format and view that directly..}<br />'
+			previewcontent = '{.if|{.!EnableDocConvert.}|{.!You may convert this document to HTML format and view that directly..}<br />|.}'
 				+ ( url.indexOf('127.0.0')<0 && url.indexOf('192.168')<0 && url.indexOf('localhost')<0 ?     // If no local IP/hostnames in location
 				'{.!You can preview this document with Microsoft Office Online service.}<br />\
 					<a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
 				'{.!Unable to view online: this site is in LAN.}<br />')
-				+ '<a href="javascript: converttohtml(\''+filename+'\', \''+HFS.folder+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>';
+				+ '{.if|{.!EnableDocConvert.}|<a href="javascript: converttohtml(\''+filename+'\', \''+HFS.folder+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>|.}';
 			break;
 		default:
 			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try download.}</span>&nbsp;<br />';

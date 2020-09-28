@@ -216,3 +216,4 @@ You may convert this document to HTML format and view that directly.=您可以�
 Convert to HTML=转换为 HTML
 No LibreOffice installed=未安装 LibreOffice
 Converting document, please wait...=文档转换中，请稍候……
+Refresh frame=刷新框架
