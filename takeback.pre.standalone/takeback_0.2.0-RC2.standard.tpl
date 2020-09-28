@@ -716,21 +716,22 @@ function $(element) { return new _$(element); }
 var noticedpreview = false;
 var givetofais = false;
 var converttohtml = function (file, path) {
-	notice('{.!Converting.} '+file+' {.!to .html format..}', '{.!Conversion Started.}');
+	notice('{.!Converting.} '+file+' {.!to .html format..} {.!Please wait.}', '{.!Conversion Started.}');
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/~ajax.convertdoctohtml?file='+file+'&path='+path);
+	xhr.open('POST', '/~ajax.convertdoctohtml?file='+file+'&path='+path);
+	var formdata = new FormData();
+	// formdata.append('token', HFS.sid);
 	xhr.onload = function() {
-		if (new RegExp(/\:\\/).test(xhr.responseText.trim())) {
-			// popup('{.!Conversion complete..}<br />{.!After refreshing the page, find the .html file..}', '?alert', function() {
-			// window.location.reload();
+		if (new RegExp(/\:\\/).test(xhr.responseText.trim())) { // If server command is successfully generated
+			// popup('{.!Conversion started.}<br />{.!You may wait for a while to see specified .html file..}', '?alert');
 			setTimeout(function() {
-				previewfile('?open', path+file.replace(/\..*$/, '.html'));
-			}, 1824);
+				previewfile('?open', path+file+'.html');
+			}, 1000);
 		} else {
 			popup('{.!Conversion failed..}<br />{.!Server has no LibreOffice installed..}', '?alert');
 		}
 	}
-	xhr.send();
+	xhr.send(formdata);
 }
 // Previewing: Core script
 function _previewfile(url) {
@@ -1958,10 +1959,45 @@ function addUpload() {
 
 {.set|file|{.urlvar|file.}.}
 {.set|target|{.vfs to disk|{.urlvar|path.}.}.}
-{.set|cmd|"C:\Program Files\LibreOffice\program\soffice.exe" --convert-to html --outdir "{.^target.}" "{.^target.}\{.^file.}".}
+{.set|folder|{.^target.}\{.^file.}.html.}
+
+{.mkdir|{.^folder.}.}
+{.save|{.^folder.}\index.html|{.replace|@@filename@@|{.^file.}|{.no pipe|{.$docview.html.}.}.}.}
+
+{.set|cmd|"C:\Program Files\LibreOffice\program\soffice.exe" --convert-to html --outdir "{.^folder.}" --convert-images-to "gif" "{.^target.}\{.^file.}".}
 {.^cmd.}
 {.exec|{.^cmd.}|out=x.}
 {.^x.}
+
+[docview.html]
+<!DOCTYPE html>
+<html>
+<head>
+	{.$commonhead.}
+	<title>@@filename@@</title>
+	<script>
+		function getdoc () {
+			var xhr = new XMLHttpRequest();
+			var docfile = './'+'@@filename@@'.replace(/\..*$/, '')+'.html';
+			xhr.open('GET', docfile);
+			xhr.onload = function() {
+				if (xhr.status == '404') { // Conversion not completed yet
+					setTimeout(function() { getdoc(); }, 1000);
+				} else if (xhr.status == '200') { // Done, go
+					window.location.replace(docfile);
+				}
+			}
+			xhr.send();
+		}
+		getdoc();
+	</script>
+</head>
+<body>
+	{.$commonbody.upper.}
+	<h1 style="text-align: center;">{.!Converting document, please wait....}</h1>
+	{.$commonbody.lower.}
+</body>
+</html>
 
 [tkbindex.js|no log|public]
 {.add header|Cache-Control: public, max-age=86400.}
