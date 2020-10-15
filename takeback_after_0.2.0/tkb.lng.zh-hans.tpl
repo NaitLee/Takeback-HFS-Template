@@ -2,6 +2,7 @@
 [+special:strings]
 
 HTTP File Server=HTTP 文件服务器
+Files here are available for view & download=您可以浏览与下载这里的文件
 User & Login=用户与登录
 Login=登录
 Logout=退出登录
@@ -151,7 +152,7 @@ You can tap on filename and preview here=您可以点击文件名并预览文件
 There are=选择了
 files selected=个文件
 Enter a word or regular expression to select.=输入关键字或正则表达式以进行匹配。
-Regular expression starts and ends with a slash "/".正则表达式以斜杠“/”开头和结尾。
+Regular expression starts and ends with a slash "/".=正则表达式以斜杠“/”开头和结尾。
 Clear preview=清除预览
 Multi select=文件多选
 Cancel=取消
