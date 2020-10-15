@@ -415,7 +415,8 @@ function notice(message, titlemessage, timeout) {
 }
 </script>
 
-<textarea id="templatecontent" style="display: none;"><!--
+<textarea id="templatecontent" style="display: none;">
+<!--
 		The Takeback Template:
 			http://rejetto.com/forum/index.php?topic=13287.0
 		Licensed under 2-Clause BSD.
@@ -430,22 +431,22 @@ function notice(message, titlemessage, timeout) {
 	Use Takeback Index as your index page? You may customize it as well,
 		just search "MARKER-0" with your editor and you'll see it.
 .}
-UseTakebackIndex=0
+UseTakebackIndex=@@UseTakebackIndex@@
 TkbIndex.Title={.!My Personal Site.}
 TkbIndex.TitleShort={.!HTTP File Server.}
 
 {.comment| Use special date&time format? 0 to disable, other values to enable .}
-UseSpecialDateTimeFormat=1
-DateTimeFormat=dd/mm/yyyy
+UseSpecialDateTimeFormat=@@UseSpecialDateTimeFormat@@
+DateTimeFormat=@@DateTimeFormat@@
 {.comment| Format sample: DateTimeFormat=mm/dd/yyyy hh:MM:ss ampm .}
 
 {.comment| What will the title(browser tab) show? .}
-TitleText=HFS::{.!RootToMainPage.}
+TitleText=@@TitleText@@
 
 RootToMainPage={.if|{.=|%folder%|/.}|{.!Main Page.}|%folder%.}
 
 {.comment| Check if a viewer is using IE and hint him/her to update? .}
-CheckIE=1
+CheckIE=@@CheckIE@@
 {.comment|
 	If you're living in a environment that everyone is using Chrome & Firefox etc,
 	you might won't care this. If not, be aware of this option.
@@ -454,48 +455,43 @@ CheckIE=1
 .}
 
 {.comment| Force load JQuery? (Not needed.) .}
-UseJquery=0
+UseJquery=@@UseJquery@@
 
 {.comment|
 	Enable image background?
 	Put pictures in your speciefied folder to see them randomly appear
 	as the background of your page
 .}
-EnableImageBg=0
-BgFolder=/pic/img/bg/
+EnableImageBg=@@EnableImageBg@@
+BgFolder=@@BgFolder@@
 
 {.comment| What will the header show?   -- Texts wrapped by {.! .} will be able to be replaced("translated") by defining them like those ones below.}
-EnableHeader=0
-HeaderText={.!HTTP File Server.}
+EnableHeader=@@EnableHeader@@
+HeaderText=@@HeaderText@@
 
 {.comment| What will the statustext show? .}
-EnableStatus=1
-StatusText={.!Files here are available for view & download.}
-StatusTextLink=http://rejetto.com/hfs/
+EnableStatus=@@EnableStatus@@
+StatusText=@@StatusText@@
+StatusTextLink=@@StatusTextLink@@
 
 {.comment|
 	Enable the document converter? This is for user's convenience.
 	You need to install LibreOffice to make this work correctly. (https://libreoffice.org)
 	This sometimes slows down your computer. You can enable if you don't worry about this.
 .}
-EnableDocConvert=1
+EnableDocConvert=@@EnableDocConvert@@
 
 {.comment| How will Fais looked like? .}
-HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
+HowDjFaisLooksLike=@@HowDjFaisLooksLike@@
 
-{.comment| Presets:    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵    .}
+{.comment| Presets:    \( •̀ ω •́ )✧ ♫    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵    .}
 
 {.comment| ... and more below .}
-MaxArchiveSizeAllowedToDownloadKb=4096000
-ThresholdConnectionsOfTurningStatusRed=64
+MaxArchiveSizeAllowedToDownloadKb=@@MaxArchiveSizeAllowedToDownloadKb@@
+ThresholdConnectionsOfTurningStatusRed=@@ThresholdConnectionsOfTurningStatusRed@@
 
 [special:import]
-{.if|
-	{.dialog|
-{.!Do you want to overwrite some of your HFS settings to make this template run more efficiently?.}
-{.!After accepting this you may reset(clear) settings if you are going to switch to another/default template..}
-	|yesno question.}
-|{:
+{.if|@@OverrideHfsSettings@@|{:
 {.set ini|use-system-icons=no.}
 {.set ini|log-progress=no.}
 {.set ini|log-dump-request=no.}
