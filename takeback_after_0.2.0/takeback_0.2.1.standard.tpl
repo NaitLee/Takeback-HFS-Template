@@ -13,7 +13,7 @@
 	Use Takeback Index as your index page? You may customize it as well,
 		just search "MARKER-0" with your editor and you'll see it.
 .}
-UseTakebackIndex=0
+UseTakebackIndex=1
 TkbIndex.Title={.!My Personal Site.}
 TkbIndex.TitleShort={.!HTTP File Server.}
 
@@ -538,12 +538,15 @@ function searchQuery() {
 	</form>
 </div>
 <!-- Banner/text -->
+{.if|{.!EnableStatus.}|{:
 <div class="statustext">
 	<span><a href="{.!StatusTextLink.}" target="_blank" rel="noopener"
 		style="color: {.if|{.%connections% > {.!ThresholdConnectionsOfTurningStatusRed.}.}|{:#996644:}|{:#228833:}.};">
 		{.!StatusText.}</a>
 	</span>
-</div>:}.}
+</div>
+:}|<br />.}
+:}.}
 <!-- File list: Table headline -->
 <div class="files">
 <table id="files">
@@ -3031,6 +3034,7 @@ visibility: visible;
 body {
     margin: 0px;
     border: 0px;
+	font-size: 1em;
 }
 .pond {
     text-align: center;
