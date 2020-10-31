@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="UTF-8">
 	<!-- Below 3 metas makes so-called dual-core browsers (360 Safe Browser, etc.)
@@ -172,31 +172,26 @@
 		}
 
 		#content {
-			/* transform: scale(1.12); */
-			width: 75%;
 			margin: auto;
 			border: white 1px solid;
-		}
-		.splitline {
-			height: 1px;
-			border-bottom: white 1px solid;
-			margin: 1.5em 4em;
-		}
-		.genitemsboard {
 			display: flex;
-			flex-direction: row;
-			justify-content: space-around;
 			flex-wrap: wrap;
-			width: 100%;
-			margin: auto;
+			justify-content: center;
+			width: 80%;
+		}
+		#content div {
+			text-align: center;
+			display: block;
+			border-bottom: white solid 1px;
+			width: 38%;
 			padding: 2em;
 		}
-		.genitem {
-			text-align: right;
+		#TakebackIndexData {
 			display: block;
-			width: 36%;
+			width: 100%;
+			height: 12em;
 		}
-		.genitem p {
+		#content div p {
 			text-align: center;
 		}
 		input {
@@ -643,22 +638,7 @@ if (version < 12 && version != false) {
 
 [index.html|public]
 <!doctype html>
-
-<!-- MARKER-0: Configure Takeback Index -->
-{.comment|
-	Define some indexes and navs as following:
-	{:{.set|TkbIndex.n| Title[Path]Description .}:}
-	{:{.set|TkbNav.n| Title[Path]Description .}:}
-	Examples are given below.
-.}
-{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
-{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
-{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
-{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
-
-{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
-{.set|#TkbNav.1| {.!Administration Login.}[/~login]{.!Get more permissions by logging-in..} .}
-
+@@TakebackIndexData@@
 <html>
 <head>
 	{.$commonhead.}
@@ -4354,86 +4334,85 @@ Refresh frame=刷新框架
 
 <textarea id="lng-en_US"></textarea>
 
-<h1>The Takeback Generator 0.2.1</h1>
+<h1>The Takeback Generator <span>TakebackVersion</span></h1>
 
 <div id="content">
-<br />
-<div>
-	🌎 Language for template: <input type="list" list="lngs" id="lnginput" />
-	<datalist id="lngs">
-		<option value="en_US English">en_US English</option>
-		<option value="zh_Hans 简体中文">zh_Hans 简体中文</option>
-	</datalist>
-</div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
-		<label><input type="checkbox" id="UseTakebackIndex" /> Use Takeback Index?</label><br />
-		<label>Index page header: <input type="text" value="My Personal Site" id="TkbIndex.Title" /></label><br />
-		<label>Index page title: <input type="text" value="HFS" id="TkbIndex.TitleShort" /></label>
+	<div>
+		🌎 <span>Language for template:</span> <br />
+		<label><input type="radio" name="lng" value="en_US" /> en_US English</label><br />
+		<label><input type="radio" name="lng" value="zh_Hans" /> zh_Hans 简体中文</label>
 	</div>
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" checked id="UseSpecialDateTimeFormat" /> Use special date-time format?</label><br />
 		<label>Date-time format: <input type="text" value="dd/mm/yyyy" id="DateTimeFormat" /></label>
 		<p>Refer to: <a href="https://rejetto.com/wiki/index.php?title=HFS:_Time_format">HFS Time Formats</a></p>
 	</div>
+	<div>
+		<label><input type="checkbox" id="UseTakebackIndex" /> Use Takeback Index?</label><br />
+		<label>Index page header: <input type="text" value="My Personal Site" id="TkbIndex.Title" /></label><br />
+		<label>Index page title: <input type="text" value="HFS" id="TkbIndex.TitleShort" /></label>
+		
+	</div>
+<div>
+<!-- <p>
+Define some indexes and navs as following:<br />
+{:{.set|TkbIndex.n| Title[Path]Description .}:}<br />
+{:{.set|TkbNav.n| Title[Path]Description .}:}<br />
+</p> -->
+<label>Takeback Index Data:<br />
+<textarea id="TakebackIndexData">
+{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
+{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
+{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
+{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
+
+{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
+{.set|#TkbNav.1| {.!Administration Login.}[/~login]{.!Get more permissions by logging-in..} .}
+</textarea>
+</label>
 </div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
+	<div>
 		<label>Browser tab text: <input type="text" value="HFS::{.!RootToMainPage.}" id="TitleText" /></label>
 		<p>"{.!RootToMainPage.}" is a special value that can expand to current path.</p>
 	</div>
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" checked id="CheckIE" /> Check IE browser and hint update?</label>
 		<p>When this option is enabled, the template will hint user to update browser/switch core.</p>
 	</div>
-</div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" id="UseJquery" /> Force load jQuery?</label><br />
 		<p>Template auto loads jQuery if really needed.</p>
 	</div>
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" id="EnableImageBg" /> Enable image background?</label><br />
-		<label>Image folder: <input type="text" value="/pic/img/bg/" id="BgFolder" /></label>
+		<label>Image folder (VFS): <input type="text" value="/pic/img/bg/" id="BgFolder" /></label>
 	</div>
-</div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" id="EnableHeader" /> Enable header?</label><br />
 		<label>Header text: <input type="text" value="{.!HTTP File Server.}" id="HeaderText" /></label>
 	</div>
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" checked id="EnableStatus" /> Enable status text?</label><br />
 		<label>Status text: <input type="text" value="{.!Files here are available for view & download.}" id="StatusText" /></label><br />
 		<label>Text link: <input type="text" value="http://rejetto.com/hfs/" id="StatusTextLink" /></label>
 	</div>
-</div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" id="EnableDocConvert" /> Enable document converter?</label>
-		<p>Can convert document like .docx .odt to .html format if user needs.<br />
-			You need to install <a href="https://libreoffice.org">LibreOffice</a> to <b>server side</b> to make this work correctly.</p>
+		<p><span>Can convert document like .docx .odt to .html format if user needs.</span>
+		<span>You need to install </span><a href="https://libreoffice.org">LibreOffice</a> to <b>server side</b> to make this work correctly.</p>
 	</div>
-	<div class="genitem">
+	<div>
 		<label>Fais' appearance: <input type="text" value="\( •̀ ω •́ )✧ ♫" id="HowDjFaisLooksLike" /></label>
 		<p>D.J. Fais is a built-in mini music player.<br />
-		<pre>Presets:    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵</pre></p>
+		<pre><span>Presets:</span>    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵</pre></p>
 	</div>
-</div>
-<div class="splitline"></div>
-<div class="genitemsboard">
-	<div class="genitem">
+	<div>
 		<label><input type="checkbox" checked id="OverrideHfsSettings" /> Override HFS Settings?</label>
-		<p>Some of your HFS settings will be overridden for better experience.<br />
-		If you don't want, just uncheck this.</p>
+		<p><span>Some of your HFS settings will be overridden for better experience.</span><br />
+		<span>If you don't want, just uncheck this.</span></p>
 	</div>
-	<div class="genitem">
-		Advanced:<br />
+	<div>
+		<span>Advanced:</span><br />
 		<label>MaxArchiveSizeAllowedToDownloadKb: <input type="text" value="4096000" id="MaxArchiveSizeAllowedToDownloadKb" /></label><br />
 		<label>ThresholdConnectionsOfTurningStatusRed: <input type="text" value="64" id="ThresholdConnectionsOfTurningStatusRed" /></label>
 	</div>
@@ -4446,7 +4425,7 @@ Refresh frame=刷新框架
 
 <script>
 	function generate () {
-		var items = ['UseTakebackIndex', 'TkbIndex.Title', 'TkbIndex.TitleShort',
+		var items = ['UseTakebackIndex', 'TkbIndex.Title', 'TkbIndex.TitleShort', 'TakebackIndexData',
 			'UseSpecialDateTimeFormat', 'DateTimeFormat', 'TitleText', 'CheckIE',
 			'UseJquery', 'EnableImageBg', 'BgFolder', 'EnableHeader', 'HeaderText',
 			'EnableStatus', 'StatusText', 'StatusTextLink', 'EnableDocConvert', 'HowDjFaisLooksLike',
@@ -4459,7 +4438,11 @@ Refresh frame=刷新框架
 			template = template.replace('@@'+item+'@@', itemvalue);
 		});
 		// Add language
-		var lng = lnginput.value == '' ? 'en_US' : lnginput.value.split(' ')[0];
+		var lnginputs = document.querySelectorAll('input[name="lng"]');
+		var lng = '';
+		lnginputs.forEach(function(input, index) {
+			if (input.checked) lng = input.value.split(' ')[0];
+		})
 		var lngtextarea = document.getElementById('lng-'+lng);
 		template += lngtextarea.value;
 		templateblob = new Blob([template], {type: 'application/octet-stream'});
@@ -4470,7 +4453,79 @@ Refresh frame=刷新框架
 		popup('Done!<br />Downloading your template...', '?alert');
 	}
 </script>
-
+<!-- Localization, breaks after applying a language, but enough... -->
+<script>
+	var lang = {};
+	lang['en_US'] = {
+		'TakebackVersion': 'v0.2.1',
+	}
+	lang['zh_Hans'] = {
+		'TakebackVersion': 'v0.2.1',
+		'The Takeback Generator ': 'Takeback 模板构建器 ',
+		'Language for template:': '模板语言：',
+		' Use special date-time format?': ' 使用特殊时间格式吗？',
+		'Date-time format: ': '日期-时间格式：',
+		'Refer to: ': '可参考：', 'HFS Time Formats': 'HFS 时间格式',
+		' Use Takeback Index?': ' 使用 Takeback Index 作为主页吗？',
+		'Index page header: ': '主页大标题：',
+		'Index page title: ': '主页导航栏标题：',
+		'Takeback Index Data:': 'Takeback Index 数据：',
+		'Browser tab text: ': '浏览器标签页文字：',
+		'"{.!RootToMainPage.}" is a special value that can expand to current path.':
+			'"{.!RootToMainPage.}" 是可扩展为当前页面路径的特殊宏。',
+		' Check IE browser and hint update?': ' 检测 IE 浏览器并提示升级吗？',
+		'When this option is enabled, the template will hint user to update browser/switch core.':
+			'当启用此项后，模板会检测用户的浏览器并提示升级（IE）或切换内核（双核浏览器）。',
+		' Force load jQuery?': ' 强制启用 JQuery 吗？',
+		'Template auto loads jQuery if really needed.': '模板会在需要时自动加载 JQuery。',
+		' Enable image background?': ' 启用图片背景吗？',
+		'Image folder (VFS): ': '图片文件夹（虚拟文件系统）：',
+		' Enable header?': ' 启用标题文字吗？',
+		'Header text: ': '标题文字：',
+		' Enable status text?': ' 启用状态文字吗？',
+		'Status text: ': '状态文字：',
+		'Text link: ': '文字链接：',
+		' Enable document converter?': ' 启用文档转换器吗？',
+		'Can convert document like .docx .odt to .html format if user needs.':
+			'启用后用户可根据需求转换如 .docx, .odt 格式的文档到 .html 格式并直接预览。',
+		'You need to install ': '您需要安装 ',
+		'LibreOffice': 'LibreOffice',
+		' to ': ' 到',
+		'server side': '服务器端',
+		' to make this work correctly.': '使此功能可用。',
+		'Fais\' appearance: ': 'D.J. 颜文字君：',
+		'D.J. Fais is a built-in mini music player.': 'D.J. 颜文字君是模板内置的迷你播放器。',
+		'Presets:': '预设：',
+		' Override HFS Settings?': ' 覆盖 HFS 设置吗？',
+		'Some of your HFS settings will be overridden for better experience.':
+			'您的一些 HFS 设置将被覆盖以获得更好的服务器性能。',
+		'If you don\'t want, just uncheck this.': '如果您不想这样，可随时取消。',
+		'Advanced:': '高级设定：',
+		'MaxArchiveSizeAllowedToDownloadKb: ': '允许打包的最大文件总大小 (KB)：',
+		'ThresholdConnectionsOfTurningStatusRed: ': '使状态文本变色的连接数阈值：',
+		'Generate!': '构建！'
+	}
+	// https://stackoverflow.com/questions/6520192/how-to-get-the-text-node-of-an-element
+	document.querySelectorAll('input[name="lng"]').forEach(function(element, index) {
+		element.onchange = function() {
+			var lng = this.value.split(' ')[0];
+			document.querySelectorAll('*').forEach(function(element, index){
+				element.childNodes.forEach(function(node, i){
+					if (node.nodeType == Node.TEXT_NODE) {
+						var text = node.nodeValue;
+						var lngobj = lang[lng];
+						if (lngobj == undefined) return;
+						var lngvalue = lngobj[text];
+						if (lngvalue == undefined) return;
+						node.nodeValue = lngvalue;
+					}
+				});
+			});
+		}
+	});
+	// Check English on
+	document.querySelector('input[value="en_US"]').click();
+</script>
 <!-- Scroll to top: Framework -->
 <div id="get-top"><abbr title="{.!Back to top.}">&gt;</abbr></div>
 <script>
