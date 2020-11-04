@@ -427,8 +427,8 @@ function notice(message, titlemessage, timeout) {
 		just search "MARKER-0" with your editor and you'll see it.
 .}
 UseTakebackIndex=@@UseTakebackIndex@@
-TkbIndex.Title={.!My Personal Site.}
-TkbIndex.TitleShort={.!HTTP File Server.}
+TkbIndex.Title=@@TkbIndex.Title@@
+TkbIndex.TitleShort=@@TkbIndex.TitleShort@@
 
 {.comment| Use special date&time format? 0 to disable, other values to enable .}
 UseSpecialDateTimeFormat=@@UseSpecialDateTimeFormat@@
@@ -636,7 +636,7 @@ if (version < 12 && version != false) {
 }
 </script>
 
-[index.html|public]
+[takebackindex|public]
 <!doctype html>
 @@TakebackIndexData@@
 <html>
@@ -733,9 +733,15 @@ if (version < 12 && version != false) {
 </html>
 
 []
+{.comment|If it is root, load index page.}
+{.if|{.!UseTakebackIndex.}|
+{:{.if|{.=|%folder%|/.}|
+{:{.$takebackindex.}:}|{:{.$filelist.}:}
+.}:}|{:{.$filelist.}:}
+.}
+
+[filelist]
 <!doctype html>
-{.comment|If it is root, go to index page.}
-{.if|{.!UseTakebackIndex.}|{:{.if|{.=|%folder%|/.}|{:{.redirect|/~index.html.}:}.}:}.}
 <html>
 <head>
 {.$commonhead.}
@@ -2207,7 +2213,7 @@ function beforeRedirect() {
 		</div>
 	</div>
 </div>
-<script src="/~popup.js"></script>
+{.$script.popup.}
 <link rel="stylesheet" href="/~font.css" />
 </body>
 
@@ -4360,15 +4366,30 @@ Define some indexes and navs as following:<br />
 {:{.set|TkbNav.n| Title[Path]Description .}:}<br />
 </p> -->
 <label>Takeback Index Data:<br />
-<textarea id="TakebackIndexData">
-{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
-{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
-{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
-{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
 
-{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
-{.set|#TkbNav.1| {.!Administration Login.}[/~login]{.!Get more permissions by logging-in..} .}
-</textarea>
+	<input type="text" id="data0" placeholder="Title" />
+	<input type="text" id="data1" placeholder="Path" />
+	<input type="text" id="data2" placeholder="Discription" />
+	<br />
+	<button onclick="add('index');">Add as Index</button>
+	<button onclick="add('nav');">Add as Nav</button>
+	<br />
+	<textarea id="data" style="width: 80%; height: 16em;"></textarea>
+	<script>
+		var indexflow = 0;
+		var navflow = 0;
+		function add(type) {
+			switch (type) {
+			case 'index':
+				TakebackIndexData.value += `{.set|#TkbIndex.${indexflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
+				break;
+			case 'nav':
+				TakebackIndexData.value += `{.set|#TkbNav.${navflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
+				break;
+			}
+		}
+	</script>
+<textarea id="TakebackIndexData"></textarea>
 </label>
 </div>
 	<div>
@@ -4503,18 +4524,20 @@ Define some indexes and navs as following:<br />
 		'Advanced:': '高级设定：',
 		'MaxArchiveSizeAllowedToDownloadKb: ': '允许打包的最大文件总大小 (KB)：',
 		'ThresholdConnectionsOfTurningStatusRed: ': '使状态文本变色的连接数阈值：',
-		'Generate!': '构建！'
+		'Generate!': '构建！',
+		'Add as Index': '添加为项目',
+		'Add as Nav': '添加为导航'
 	}
 	// https://stackoverflow.com/questions/6520192/how-to-get-the-text-node-of-an-element
 	document.querySelectorAll('input[name="lng"]').forEach(function(element, index) {
 		element.onchange = function() {
 			var lng = this.value.split(' ')[0];
+			var lngobj = lang[lng];
+			if (lngobj == undefined) return;
 			document.querySelectorAll('*').forEach(function(element, index){
 				element.childNodes.forEach(function(node, i){
 					if (node.nodeType == Node.TEXT_NODE) {
 						var text = node.nodeValue;
-						var lngobj = lang[lng];
-						if (lngobj == undefined) return;
 						var lngvalue = lngobj[text];
 						if (lngvalue == undefined) return;
 						node.nodeValue = lngvalue;
