@@ -1216,7 +1216,7 @@ function _previewfile(url) {
 				'{.!You can preview this document with Microsoft Office Online service.}<br />\
 					<a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
 				'{.!Unable to view online: this site is in LAN.}<br />')
-				+ '{.if|{.!EnableDocConvert.}|<a href="javascript: converttohtml(\''+url.match(HFS.folder+'.*')[0]+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>|.}';
+				+ '{.if|{.!EnableDocConvert.}|<a href="javascript: converttohtml(\''+url.match(encodeURI(HFS.folder)+'.*')[0]+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>|.}';
 			break;
 		default:
 			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try download.}</span>&nbsp;<br />';
@@ -4345,7 +4345,7 @@ Refresh frame=刷新框架
 <div id="content">
 	<div>
 		🌎 <span>Language for template:</span> <br />
-		<label><input type="radio" name="lng" value="en_US" /> en_US English</label><br />
+		<label><input type="radio" name="lng" value="en_US" checked /> en_US English</label><br />
 		<label><input type="radio" name="lng" value="zh_Hans" /> zh_Hans 简体中文</label>
 	</div>
 	<div>
@@ -4365,32 +4365,30 @@ Define some indexes and navs as following:<br />
 {:{.set|TkbIndex.n| Title[Path]Description .}:}<br />
 {:{.set|TkbNav.n| Title[Path]Description .}:}<br />
 </p> -->
-<label>Takeback Index Data:<br />
-
-	<input type="text" id="data0" placeholder="Title" />
-	<input type="text" id="data1" placeholder="Path" />
-	<input type="text" id="data2" placeholder="Discription" />
-	<br />
-	<button onclick="add('index');">Add as Index</button>
-	<button onclick="add('nav');">Add as Nav</button>
-	<br />
-	<textarea id="data" style="width: 80%; height: 16em;"></textarea>
-	<script>
-		var indexflow = 0;
-		var navflow = 0;
-		function add(type) {
-			switch (type) {
-			case 'index':
-				TakebackIndexData.value += `{.set|#TkbIndex.${indexflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
-				break;
-			case 'nav':
-				TakebackIndexData.value += `{.set|#TkbNav.${navflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
-				break;
-			}
+<label>Takeback Index Data:</label><br />
+<input type="text" id="data0" placeholder="Title" />
+<input type="text" id="data1" placeholder="Path" />
+<input type="text" id="data2" placeholder="Description" />
+<br />
+<button onclick="add('index');">Add as Index</button>
+<button onclick="add('nav');">Add as Nav</button>
+<br />
+<textarea id="data" style="width: 80%; height: 16em;"></textarea>
+<script>
+	var indexflow = 0;
+	var navflow = 0;
+	function add(type) {
+		switch (type) {
+		case 'index':
+			TakebackIndexData.value += `{.set|#TkbIndex.${indexflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
+			break;
+		case 'nav':
+			TakebackIndexData.value += `{.set|#TkbNav.${navflow++}|${data0.value}[${data1.value}]${data2.value}.}\n`;
+			break;
 		}
-	</script>
+	}
+</script>
 <textarea id="TakebackIndexData"></textarea>
-</label>
 </div>
 	<div>
 		<label>Browser tab text: <input type="text" value="HFS::{.!RootToMainPage.}" id="TitleText" /></label>
@@ -4444,6 +4442,65 @@ Define some indexes and navs as following:<br />
 <a id="bloblink" href="#" style="display: none;">Download</a>
 <div class="bottomblank"></div>
 
+<textarea id="i18-N">
+[global]
+TakebackVersion=v0.2.2
+
+[zh-CN]
+The Takeback Generator =Takeback 模板构建器 
+Language for template:=模板语言：
+ Use special date-time format?= 使用特殊时间格式吗？
+Date-time format: =日期-时间格式：
+Refer to: =可参考：
+HFS Time Formats=HFS 时间格式
+ Use Takeback Index?= 使用 Takeback Index 作为主页吗？
+Index page header: =主页大标题：
+Index page title: =主页导航栏标题：
+Takeback Index Data:=Takeback Index 数据：
+Browser tab text: =浏览器标签页文字：
+"{.!RootToMainPage.}" is a special value that can expand to current path.="{.!RootToMainPage.}" 是可扩展为当前页面路径的特殊宏。
+ Check IE browser and hint update?= 检测 IE 浏览器并提示升级吗？
+When this option is enabled, the template will hint user to update browser/switch core.=当启用此项后，模板会检测用户的浏览器并提示升级（IE）或切换内核（双核浏览器）。
+ Force load jQuery?= 强制启用 JQuery 吗？
+Template auto loads jQuery if really needed.=模板会在需要时自动加载 JQuery。
+ Enable image background?= 启用图片背景吗？
+Image folder (VFS): =图片文件夹（虚拟文件系统）：
+ Enable header?= 启用标题文字吗？
+Header text: =标题文字：
+ Enable status text?= 启用状态文字吗？
+Status text: =状态文字：
+Text link: =文字链接：
+ Enable document converter?= 启用文档转换器吗？
+Can convert document like .docx .odt to .html format if user needs.=启用后用户可根据需求转换如 .docx, .odt 格式的文档到 .html 格式并直接预览。
+You need to install =您需要安装 
+LibreOffice=LibreOffice
+ to = 到
+server side=服务器端
+ to make this work correctly.=使此功能可用。
+Fais' appearance: =D.J. 颜文字君：
+D.J. Fais is a built-in mini music player.=D.J. 颜文字君是模板内置的迷你播放器。
+Presets:=预设：
+ Override HFS Settings?= 覆盖 HFS 设置吗？
+Some of your HFS settings will be overridden for better experience.=您的一些 HFS 设置将被覆盖以获得更好的服务器性能。
+If you don't want, just uncheck this.=如果您不想这样，可随时取消。
+Advanced:=高级设定：
+MaxArchiveSizeAllowedToDownloadKb: =允许打包的最大文件总大小 (KB)：
+ThresholdConnectionsOfTurningStatusRed: =使状态文本变色的连接数阈值：
+Generate!=构建！
+Title=标题
+Path=地址
+Description=详细信息
+Add as Index=添加为项目
+Add as Nav=添加为导航
+Done!=完成！
+Downloading your template...=正在下载您的模板……
+OKay=确定
+Cancel=取消
+Input something...=输入一些什么……
+Back to top=返回到顶部
+
+</textarea>
+
 <script>
 	function generate () {
 		var items = ['UseTakebackIndex', 'TkbIndex.Title', 'TkbIndex.TitleShort', 'TakebackIndexData',
@@ -4471,86 +4528,90 @@ Define some indexes and navs as following:<br />
 		a.download = 'Takeback_customized.tpl';
 		a.href = URL.createObjectURL(templateblob);
 		a.click();
-		popup('Done!<br />Downloading your template...', '?alert');
+		popup(i18N.get('Done!')+'<br />'+i18N.get('Downloading your template...'), '?alert');
 	}
 </script>
-<!-- Localization, breaks after applying a language, but enough... -->
 <script>
-	var lang = {};
-	lang['en_US'] = {
-		'TakebackVersion': 'v0.2.1',
-	}
-	lang['zh_Hans'] = {
-		'TakebackVersion': 'v0.2.1',
-		'The Takeback Generator ': 'Takeback 模板构建器 ',
-		'Language for template:': '模板语言：',
-		' Use special date-time format?': ' 使用特殊时间格式吗？',
-		'Date-time format: ': '日期-时间格式：',
-		'Refer to: ': '可参考：', 'HFS Time Formats': 'HFS 时间格式',
-		' Use Takeback Index?': ' 使用 Takeback Index 作为主页吗？',
-		'Index page header: ': '主页大标题：',
-		'Index page title: ': '主页导航栏标题：',
-		'Takeback Index Data:': 'Takeback Index 数据：',
-		'Browser tab text: ': '浏览器标签页文字：',
-		'"{.!RootToMainPage.}" is a special value that can expand to current path.':
-			'"{.!RootToMainPage.}" 是可扩展为当前页面路径的特殊宏。',
-		' Check IE browser and hint update?': ' 检测 IE 浏览器并提示升级吗？',
-		'When this option is enabled, the template will hint user to update browser/switch core.':
-			'当启用此项后，模板会检测用户的浏览器并提示升级（IE）或切换内核（双核浏览器）。',
-		' Force load jQuery?': ' 强制启用 JQuery 吗？',
-		'Template auto loads jQuery if really needed.': '模板会在需要时自动加载 JQuery。',
-		' Enable image background?': ' 启用图片背景吗？',
-		'Image folder (VFS): ': '图片文件夹（虚拟文件系统）：',
-		' Enable header?': ' 启用标题文字吗？',
-		'Header text: ': '标题文字：',
-		' Enable status text?': ' 启用状态文字吗？',
-		'Status text: ': '状态文字：',
-		'Text link: ': '文字链接：',
-		' Enable document converter?': ' 启用文档转换器吗？',
-		'Can convert document like .docx .odt to .html format if user needs.':
-			'启用后用户可根据需求转换如 .docx, .odt 格式的文档到 .html 格式并直接预览。',
-		'You need to install ': '您需要安装 ',
-		'LibreOffice': 'LibreOffice',
-		' to ': ' 到',
-		'server side': '服务器端',
-		' to make this work correctly.': '使此功能可用。',
-		'Fais\' appearance: ': 'D.J. 颜文字君：',
-		'D.J. Fais is a built-in mini music player.': 'D.J. 颜文字君是模板内置的迷你播放器。',
-		'Presets:': '预设：',
-		' Override HFS Settings?': ' 覆盖 HFS 设置吗？',
-		'Some of your HFS settings will be overridden for better experience.':
-			'您的一些 HFS 设置将被覆盖以获得更好的服务器性能。',
-		'If you don\'t want, just uncheck this.': '如果您不想这样，可随时取消。',
-		'Advanced:': '高级设定：',
-		'MaxArchiveSizeAllowedToDownloadKb: ': '允许打包的最大文件总大小 (KB)：',
-		'ThresholdConnectionsOfTurningStatusRed: ': '使状态文本变色的连接数阈值：',
-		'Generate!': '构建！',
-		'Add as Index': '添加为项目',
-		'Add as Nav': '添加为导航'
-	}
-	// https://stackoverflow.com/questions/6520192/how-to-get-the-text-node-of-an-element
-	document.querySelectorAll('input[name="lng"]').forEach(function(element, index) {
-		element.onchange = function() {
-			var lng = this.value.split(' ')[0];
-			var lngobj = lang[lng];
-			if (lngobj == undefined) return;
-			document.querySelectorAll('*').forEach(function(element, index){
-				element.childNodes.forEach(function(node, i){
-					if (node.nodeType == Node.TEXT_NODE) {
-						var text = node.nodeValue;
-						var lngvalue = lngobj[text];
-						if (lngvalue == undefined) return;
-						node.nodeValue = lngvalue;
-					}
-				});
-			});
-		}
-	});
-	// Check English on
-	document.querySelector('input[value="en_US"]').click();
+// An uncompleted version of i18-N.js-Lite
+// https://github.com/NaitLee/i18-N.js-Lite
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['exports'], factory);
+    } else if (typeof exports !== 'undefined') {
+        factory(exports);
+    } else {
+        factory((root.i18N = {}));
+    }
+}(this, function (exports) {
+    var _document = document;
+
+    if (window.NodeList && !NodeList.prototype.forEach) {
+       NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+
+    var data = '',
+        dataelem = _document.querySelector('#i18-N');
+
+    if (dataelem != null) data = dataelem.value; else return;
+
+    var lang = {}, langname = '', matchedtags = [];
+
+    matchedtags = data.match(/\[(.+)\]/ig);
+    matchedtags.forEach(function(tag) {
+        langname = tag.slice(1, -1);
+        lang[langname] = {};
+        data.split(tag+'\n')[1].split('\n\n[')[0].split('\n').map(function(value) { return value.split('='); }).forEach(function(array) {
+            lang[langname][array[0]] = array[1];
+        });
+    });
+
+    for (var i in lang['global']) {
+        for (var j in lang) {
+            lang[j][i] = lang['global'][i];
+        }
+    }
+
+    var parseattr = ['title', 'value', 'href', 'src', 'placeholder'],
+        parsenodetype = ['TEXT_NODE'];
+
+    function force(language) {
+        _document.querySelectorAll('*').forEach(function(elem) {
+            parseattr.forEach(function(attr) {
+                var originaltext = elem[attr];
+                if (originaltext == undefined) return;
+                var localizedtext = lang[language][originaltext];
+                if (localizedtext == undefined) return;
+                elem[attr] = localizedtext;
+            });
+            elem.childNodes.forEach(function(node){
+                parsenodetype.forEach(function(type) {
+                    if (node.nodeType == Node[type]) {
+                        var originaltext = node.nodeValue;
+                        var localizedtext = lang[language][originaltext];
+                        if (localizedtext == undefined) return;
+                        node.nodeValue = localizedtext;
+                    }
+                });
+            });
+        });
+    }
+
+    exports.get = function(originaltext) {
+        return lang[userlang][originaltext];
+    }
+    exports.force = force;
+
+    var userlang = navigator.language;
+    if (lang[userlang] == undefined) return;
+    force(userlang);
+
+}));
+</script>
+<script>
+	document.querySelector('title').innerHTML = i18N.get('The Takeback Generator ') + i18N.get('TakebackVersion');
 </script>
 <!-- Scroll to top: Framework -->
-<div id="get-top"><abbr title="{.!Back to top.}">&gt;</abbr></div>
+<div id="get-top"><abbr title="Back to top">&gt;</abbr></div>
 <script>
 // Scroll to top: Script
 var prevscroll = 0;
@@ -4594,19 +4655,19 @@ function popup (message, type, callbackfn, defaultvalue) {
 	popupmsg.innerHTML = message;
 	switch (type) {
 		case '?alert':
-			popupctrl.innerHTML = '<div id="popupalert"><button id="popupalertok">OKay</button></div>';
+			popupctrl.innerHTML = '<div id="popupalert"><button id="popupalertok">' + i18N.get('OKay') + '</button></div>';
 			popupalertok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupalertok.onclick(); }); // When press enter, OK
 			popupalertok.onclick = function () { callbackfn(true); popupclose(); return true; };
 			break;
 		case '?confirm':
-			popupctrl.innerHTML = '<div id="popupconfirm"><button id="popupconfirmok">OKay</button> <button id="popupconfirmcancel">Cancel</button></div>';
+			popupctrl.innerHTML = '<div id="popupconfirm"><button id="popupconfirmok">' + i18N.get('OKay') + '</button> <button id="popupconfirmcancel">' + i18N.get('Cancel') + '</button></div>';
 			popupconfirmok.addEventListener("keydown", function(event) { if (event.keyCode == 13) popupconfirmok.onclick(); });
 			popupconfirmok.onclick = function () { callbackfn(true); popupclose(); return true; };
 			popupconfirmcancel.onclick = function() { popupclose(); return false; };
 			break;
 		case '?prompt':
-			popupctrl.innerHTML = '<div id="popupprompt"><input type="text" id="popuppromptinput" placeholder="Input something..." /><br />\
-				<button id="popuppromptok">OKay</button> <button id="popuppromptcancel">Cancel</button></div>';
+			popupctrl.innerHTML = '<div id="popupprompt"><input type="text" id="popuppromptinput" placeholder="' + i18N.get('Input something...') + '" /><br />\
+				<button id="popuppromptok">' + i18N.get('OKay') + '</button> <button id="popuppromptcancel">' + i18N.get('Cancel') + '</button></div>';
 			popuppromptinput.value = defaultvalue==undefined ? '' : defaultvalue;
 			popuppromptinput.addEventListener("keydown", function(event) { if (event.keyCode == 13) popuppromptok.onclick(); });
 			popuppromptok.onclick = function () { callbackfn(popuppromptinput.value); popupclose(); return popuppromptinput.value; };

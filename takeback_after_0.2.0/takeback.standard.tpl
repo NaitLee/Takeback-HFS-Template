@@ -13,9 +13,9 @@
 	Use Takeback Index as your index page? You may customize it as well,
 		just search "MARKER-0" with your editor and you'll see it.
 .}
-UseTakebackIndex=1
-TkbIndex.Title={.!My Personal Site.}
-TkbIndex.TitleShort={.!HTTP File Server.}
+UseTakebackIndex=0
+TkbIndex.Title=My Personal Site
+TkbIndex.TitleShort=HFS
 
 {.comment| Use special date&time format? 0 to disable, other values to enable .}
 UseSpecialDateTimeFormat=1
@@ -61,24 +61,19 @@ StatusTextLink=http://rejetto.com/hfs/
 	You need to install LibreOffice to make this work correctly. (https://libreoffice.org)
 	This sometimes slows down your computer. You can enable if you don't worry about this.
 .}
-EnableDocConvert=1
+EnableDocConvert=0
 
 {.comment| How will Fais looked like? .}
 HowDjFaisLooksLike=\( •̀ ω •́ )✧ ♫
 
-{.comment| Presets:    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵    .}
+{.comment| Presets:    \( •̀ ω •́ )✧ ♫    (*゜▽゜)♪    o(*^▽^*)🎶    o(*^∇^)♪🎤    ♪(*￣︶￣*)o🎵    .}
 
 {.comment| ... and more below .}
 MaxArchiveSizeAllowedToDownloadKb=4096000
 ThresholdConnectionsOfTurningStatusRed=64
 
 [special:import]
-{.if|
-	{.dialog|
-{.!Do you want to overwrite some of your HFS settings to make this template run more efficiently?.}
-{.!After accepting this you may reset(clear) settings if you are going to switch to another/default template..}
-	|yesno question.}
-|{:
+{.if|1|{:
 {.set ini|use-system-icons=no.}
 {.set ini|log-progress=no.}
 {.set ini|log-dump-request=no.}
@@ -138,7 +133,7 @@ var HFS = {
 
 [commonbody.lower]
 <!-- Scroll to top: Framework -->
-<div id="get-top"><abbr title="{.!Back to top.}">&gt;</abbr></div>
+<div id="get-top"><abbr title="{.!Back to top.}">></abbr></div>
 <script>
 // Scroll to top: Script
 var prevscroll = 0;
@@ -228,23 +223,8 @@ if (version < 12 && version != false) {
 }
 </script>
 
-[index.html|public]
+[takebackindex|public]
 <!doctype html>
-
-<!-- MARKER-0: Configure Takeback Index -->
-{.comment|
-	Define some indexes and navs as following:
-	{:{.set|TkbIndex.n| Title[Path]Description .}:}
-	{:{.set|TkbNav.n| Title[Path]Description .}:}
-	Examples are given below.
-.}
-{.set|#TkbIndex.0| {.!My Projects.}[/projects/]{.!Making stuffs makes me happy!.} .}
-{.set|#TkbIndex.1| {.!My Pictures.}[/pictures/]{.!Snap of my memorable times!.} .}
-{.set|#TkbIndex.2| {.!My Videos.}[/videos/]{.!Go across past experiences!.} .}
-{.set|#TkbIndex.3| {.!Music collection.}[/music/]{.!A special form of art!.} .}
-
-{.set|#TkbNav.0| {.!Server root directory.}[/root/]{.!View the server's structure.} .}
-{.set|#TkbNav.1| {.!Administration Login.}[/~login]{.!Get more permissions by logging-in..} .}
 
 <html>
 <head>
@@ -340,9 +320,15 @@ if (version < 12 && version != false) {
 </html>
 
 []
+{.comment|If it is root, load index page.}
+{.if|{.!UseTakebackIndex.}|
+{:{.if|{.=|%folder%|/.}|
+{:{.$takebackindex.}:}|{:{.$filelist.}:}
+.}:}|{:{.$filelist.}:}
+.}
+
+[filelist]
 <!doctype html>
-{.comment|If it is root, go to index page.}
-{.if|{.!UseTakebackIndex.}|{:{.if|{.=|%folder%|/.}|{:{.redirect|/~index.html.}:}.}:}.}
 <html>
 <head>
 {.$commonhead.}
@@ -398,7 +384,7 @@ function searchQuery() {
 {.if|{.!EnableHeader.}| <div id="title">{.!HeaderText.}</div> |.}
 <header><nav>
 	%login-link%%loggedin%
-	<a href="/">&#127968;{.!Homepage.}</a> <span id="swapDir">%folder%</span>
+	<a href="/">🏠{.!Homepage.}</a> <span id="swapDir">%folder%</span>
 	<script> browseAbleFolderTree("%folder%") </script>
 </nav></header>
 <main>%files%</main>
@@ -424,23 +410,23 @@ function searchQuery() {
 <div id="djinfo" style="display: none;"></div>
 <div class="fais">
 	<span id="dj"><a href="javascript:">{.!HowDjFaisLooksLike.}</a></span>
-	<a href="javascript:"><span id="playerstatus">&#9658;&#10073; </span> <!-- Events see onclick() & oncontextmenu() in _fais() -->
+	<a href="javascript:"><span id="playerstatus">►❙ </span> <!-- Events see onclick() & oncontextmenu() in _fais() -->
 	</a><span id="playertitle"></span>
 </div>
 </div>
 <!-- Preview -->
-<div class="preview" id="previewopen"><span class="tiparrow">&nbsp;</span>
-	<a href="javascript: previewfile('?show');">{.!Expand preview frame.}</a>&nbsp;
+<div class="preview" id="previewopen"><span class="tiparrow"> </span>
+	<a href="javascript: previewfile('?show');">{.!Expand preview frame.}</a> 
 </div>
 <div class="preview">
-	<span class="tiparrow">&nbsp;</span><span id="previewtip"></span>
+	<span class="tiparrow"> </span><span id="previewtip"></span>
 	<a class="close" href="javascript: previewfile('?close')">
 		<abbr title="{.!Close preview frame.}">[X]</abbr>
-	</a>&nbsp;
+	</a> 
 	<!-- Actions also contained -->
 	<div id="multiselectactions" style="display: none;">
 		<div style="height: 1px; border-bottom: white 1px solid;"></div>
-		{.!Multi:.} &nbsp;
+		{.!Multi:.}  
 		<a href="javascript: fileactionmulti('?mask')">{.!Mask.}</a>
 		<a href="javascript: fileactionmulti('?invert')">{.!Invert.}</a>
 		<a href="javascript: fileactionmulti('?archive')">{.!Archive.}</a>
@@ -510,23 +496,23 @@ function searchQuery() {
 {.$thumbnail.js.}
 
 [login-link]
-<div class=btn><a href="/~signin">&#128100; {.!Login.}</a></div>
+<div class=btn><a href="/~signin">👤 {.!Login.}</a></div>
 [loggedin]
 <div class=btn>
 	<span id="sid" style="display: none"></span>
-	<a href="/~signin">&#128100; %user%</a>
-	<a href="/~signin" class="inverted">&nbsp;{.!Manage.}&nbsp;</a>
+	<a href="/~signin">👤 %user%</a>
+	<a href="/~signin" class="inverted"> {.!Manage.} </a>
 </div>
 
 [upload-link]
-<a href="%encoded-folder%~upload" class="inverted uploadbutton">&#8679;&nbsp;{.!Upload Files.}</a>
+<a href="%encoded-folder%~upload" class="inverted uploadbutton">⇧ {.!Upload Files.}</a>
 
 [files]
 <!-- Search box -->
 {.if|{.%connections% > 64.}|{:<br />:}|{:<div style="margin-top: 4px; border-bottom: white 1px solid;">
 	<form class="hide" id="searchForm" name="searchForm" method="GET" action="javascript:searchQuery()">
 	<input class="searchbox" placeholder="{.!Search files here....}" type="search" name="query" size="25"
-		maxlength="32" /><button class="searchbutton" onclick="searchForm.submit();" name="searchBtn">&#128269;</button>
+		maxlength="32" /><button class="searchbutton" onclick="searchForm.submit();" name="searchBtn">🔍</button>
 	<input type="hidden" name="choice" value="file" checked="1" />
 	<input type="hidden" name="choice" value="folder" checked="1" />
 	<input type="hidden" name="choice" value="both" checked="1" />
@@ -553,12 +539,12 @@ function searchQuery() {
 <tr class="trhead">
 <td class="l">
 	<a href="%encoded-folder%?sort=e">
-		<abbr title="{.!Click to sort files by extension.}">&#128311;</abbr>&nbsp;
+		<abbr title="{.!Click to sort files by extension.}">🔷</abbr> 
 	</a>
 	<a href="%encoded-folder%?sort=n">
 		<abbr title="{.!Click to sort files by this.}">{.!FileName.}</abbr>
 	</a> (%number-files%)
-	<span id='menu-bar'>&nbsp;</span>
+	<span id='menu-bar'> </span>
 	<span id="showthumb">
 		<a href="javascript: showthumbnail();">📸 {.!Photo Thumbnails.}</a>
 	</span>
@@ -607,7 +593,7 @@ item-edited={.if|{.!UseSpecialDateTimeFormat.}|{.item-modified-datetime-formated
 {:{.if|{.get|can upload.}|
 {:<div style="text-align: center; margin-top: 4px; border-bottom: white 1px solid;">
 <a class="inverted" href="%encoded-folder%~upload" style="font-weight: bold;">
-	&#8679;&nbsp;{.!Upload Files.} </a></div>:}
+	⇧ {.!Upload Files.} </a></div>:}
 .}:}
 .}
 <div class="nofile">{.!{.if|{.length|{.?filter.}.}
@@ -787,13 +773,13 @@ function _previewfile(url) {
 	var previewcontent = '';
 	switch (filetype) {
 		case 'image':
-			previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.}&nbsp;<br />\
+			previewcontent = '{.!Tap photo to start a slideshow; Right-click/Long-press to save.} <br />\
 				<a href="javascript: slideshow(\'?start\')"><img class="previewimg" id="previewobject" src="'+fileurl+'" /></a><br />';
 			break;
 		case 'audio':
 			previewcontent = '<audio controls loop autoplay><source src="'+fileurl+'">\
 				{.!Sorry, previewing this file is not sopported by your browser.}</audio><br />\
-				<a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span>&nbsp;</a>';
+				<a href="javascript: previewfile(\'?fais\', \''+fileurl+'\')"><span style="color: wheat">[{.!Move to mini player.}]</span> </a>';
 			break;
 		case 'video':
 			previewcontent = '<video controls loop autoplay class="previewvid" id="previewobject"><source src="'+fileurl+'">\
@@ -805,11 +791,11 @@ function _previewfile(url) {
 				<a href="javascript: previewobject.contentWindow.location.reload();">[{.!Refresh frame.}]</a>';
 			break;
 		case 'flash':
-			previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.}&nbsp;<br />\
-				{.!Mobile platforms will not support flash anymore.}&nbsp;<br />\
+			previewcontent = '{.!Enable flash plug-in in your browser/site settings to view.} <br />\
+				{.!Mobile platforms will not support flash anymore.} <br />\
 				<embed class="previewflashobject" id="previewobject" src="'+fileurl+'" type="application/x-shockwave-flash" />\
 				<div><a class="previewflashfullscreenexit" href="javascript: previewfile(\'?flashfullscreenexit\');"><abbr title="{.!Exit Fullscreen.}">[X]</abbr></a></div>\
-				<br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}]&nbsp;</a>';
+				<br /><a href="javascript: previewfile(\'?flashfullscreen\')">[{.!Tap here to fullscreen.}] </a>';
 			break;
 		case 'workdocument':
 			previewcontent = '{.if|{.!EnableDocConvert.}|{.!You may convert this document to HTML format and view that directly..}<br />|.}'
@@ -817,13 +803,13 @@ function _previewfile(url) {
 				'{.!You can preview this document with Microsoft Office Online service.}<br />\
 					<a href="https://view.officeapps.live.com/op/view.aspx?src='+url+'" target="_blank"><span style="color: wheat" >[{.!View online.}]</span> </a>' : 
 				'{.!Unable to view online: this site is in LAN.}<br />')
-				+ '{.if|{.!EnableDocConvert.}|<a href="javascript: converttohtml(\''+url.match(HFS.folder+'.*')[0]+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>|.}';
+				+ '{.if|{.!EnableDocConvert.}|<a href="javascript: converttohtml(\''+url.match(encodeURI(HFS.folder)+'.*')[0]+'\')"><span style="color: wheat" >[{.!Convert to HTML.}]</span> </a>|.}';
 			break;
 		default:
-			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try download.}</span>&nbsp;<br />';
+			previewcontent = '<span style="color: yellow">{.!Previewing not supported, please try download.}</span> <br />';
 			break;
 	}
-	previewcontent += '<a href="'+url+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span>&nbsp;</a>'
+	previewcontent += '<a href="'+url+'" onclick="previewfile(\'?download\', \''+filename+'\');"><span style="color: cyan">[{.!Tap here to download.}]</span> </a>'
 	if (filetype=='audio' && givetofais==true) {
 		previewfile('?fais', url);
 	} else {
@@ -1477,7 +1463,7 @@ can comment=and|{.get|can upload.}|{.!option.comment.}
 can rename=and|{.get|can delete.}|{.!option.rename.}
 can change pwd=member of|can change password
 can move=or|1|1
-escape attr=replace|"|&quot;|$1
+escape attr=replace|"|"|$1
 commentNL=if|{.pos|<br|$1.}|$1|{.replace|{.chr|10.}|<br />|$1.}
 add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
 
@@ -1802,7 +1788,7 @@ function beforeRedirect() {
 :}.}
 <br /><br />
 {.$box login.}
-<br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
+<br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;"><< {.!Tap to Back.} </a>
 <!-- Popup: Framework -->
 <div class="popup">
 	<div id="popupbg" style="display: none;"></div>
@@ -1814,7 +1800,7 @@ function beforeRedirect() {
 		</div>
 	</div>
 </div>
-<script src="/~popup.js"></script>
+{.$script.popup.}
 <link rel="stylesheet" href="/~font.css" />
 </body>
 
@@ -1826,8 +1812,8 @@ function beforeRedirect() {
 <body>
 	<h2>{.!Unauthorized.}</h2>
 	{.!Currently you have no right to access this resource. Please login if possible..}
-	<br /><br /><a href="/~signin" style="font-size: 1.2em;">{.!Login.} &gt;&gt;</a>
-	<br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;">&lt;&lt; {.!Tap to Back.} </a>
+	<br /><br /><a href="/~signin" style="font-size: 1.2em;">{.!Login.} >></a>
+	<br /><br /><a href="javascript: history.back()" style="font-size: 1.2em;"><< {.!Tap to Back.} </a>
 </body>
 </html>
 
@@ -1882,10 +1868,10 @@ function addUpload() {
 	<!-- Content: Upload -->
 	<div style="text-align: left; border-bottom: white 1px solid; margin-bottom: 4px;">
 		<b>{.!Upload to.}: </b>%folder%<br />
-		<a href="./">&#8678; {.!Back.}</a>
+		<a href="./">⇦ {.!Back.}</a>
 		<a class="inverted" style="float: right;"
 		href="javascript: shownewfolder();">
-			&#128193; {.!New folder.}
+			📁 {.!New folder.}
 		</a>
 	</div>
 <div>
@@ -1956,7 +1942,7 @@ function addUpload() {
 <div>{.!Upload result.}: %folder%</div>
 <div>%uploaded-files%<br /><br />
 	<a href="%encoded-folder%" target=_parent>
-		&#8678; {.!Go Back.}
+		⇦ {.!Go Back.}
 	</a>
 </div>
 {.$commonbody.lower.}
@@ -3710,4 +3696,5 @@ header .logo {
 }
 /* </style> */
 // </style>
+
 
