@@ -2,8 +2,8 @@
 
 <img src="http://rejetto.com/forum/index.php?action=dlattach;topic=13287.0;attach=9898;image" />
 
-A modern filelist template for <a href="https://www.rejetto.com/hfs/">HTTP File Server</a>, based on the Throwback template.
+A modern file-sharing template for <a href="https://www.rejetto.com/hfs/" target="_blank">HTTP File Server</a>, based on the Throwback template.
 
-Build full file by opening the file takeback*.tpl.fbuilder in folder takeback.stuff with fb.exe in folder UI_Customizer.
+The newest version is in folder takeback_after_0.2.0. For <a href="https://github.com/rejetto/hfs2/releases" target="_blank">HFS 2.4</a> RC7, not compatible to HFS 2.3.
 
-See <a href="http://rejetto.com/forum/index.php?topic=13287.0">this post</a> for further info.
+See <a href="http://rejetto.com/forum/index.php?topic=13287.0" target="_blank">this post</a> for further info.
