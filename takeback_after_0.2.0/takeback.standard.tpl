@@ -235,16 +235,16 @@ if (version < 12 && version != false) {
 <body>
 	{.$commonbody.upper.}
 	<div class="pond">
-        <header>
-            <h1 class="logo">
-                <a href="/" style="text-decoration: none;">
-                    🌎<span>{.!TkbIndex.TitleShort.}</span>
-                </a>
-            </h1>
-            <nav class="nav">
-                <h2 class="hidden">Navigation</h2>
-                <!-- Navigation items, will be inited with JS. -->
-                <ul id="nav">
+		<header>
+			<h1 class="logo">
+				<a href="/" style="text-decoration: none;">
+					🌎<span>{.!TkbIndex.TitleShort.}</span>
+				</a>
+			</h1>
+			<nav class="nav">
+				<h2 class="hidden">Navigation</h2>
+				<!-- Navigation items, will be inited with JS. -->
+				<ul id="nav">
 					{.set|num|0.}
 					{.for each|i|{.var domain|#TkbNav.|get=values.}|{:
 						{.set|nav|{.^i.}.}
@@ -253,9 +253,9 @@ if (version < 12 && version != false) {
 							</a></li>
 						{.inc|num|1.}
 					:}.}
-                </ul>
-            </nav>
-        </header>
+				</ul>
+			</nav>
+		</header>
 		<div class="main">
 			<div id="title">{.!TkbIndex.Title.}</div>
 			<!-- Search box, from a template -->
@@ -2072,7 +2072,7 @@ for (var i = 0; i < engines.length; i++) {
 		thisSearch = search.data[this.num].url;
 		document.querySelector('.search-engine').style.display = 'none';
 		if (document.querySelector('.hitokoto') !== null) document.querySelector('.hitokoto').style.left = '0';
-    	storage.searchEngine = [thisSearch];
+		storage.searchEngine = [thisSearch];
 	}
 }
 // </script>
@@ -2295,14 +2295,22 @@ table#files tr td {
 
 /* Folder */
 table#files a[href$="/"]::before {
-	content: "\1f4c1\FE0E  ";
-	color: #FB0
+	content: "\1f4c1\FE0E";
+	color: #FB0;
+	display: inline-block;
+	position: relative;
+	width: 1.75em;
+	text-align: center;
 }
 
 /* Unknown File */
 td a::before {
-	content: "\1f4c4  ";
-	color: #BCC
+	content: "\1f4c4";
+	color: #BCC;
+	display: inline-block;
+	position: relative;
+	width: 1.75em;
+	text-align: center;
 }
 
 /* Other */
@@ -2319,14 +2327,14 @@ a[href$=".png"]::before,
 a[href$=".PNG"]::before,
 a[href$=".gif"]::before,
 a[href$=".GIF"]::before {
-	content: "\1f4f7  ";
+	content: "\1f4f7";
 	color: black
 }
 
 /* Working Picture (Photoshop & GIMP) */
 a[href$=".psd"]::before,
 a[href$=".xcf"]::before {
-	content: "📸  ";
+	content: "📸";
 	color: #5AE
 }
 
@@ -2337,7 +2345,7 @@ a[href$=".aac"]::before,
 a[href$=".m4a"]::before,
 a[href$=".wav"]::before,
 a[href$=".ogg"]::before {
-	content: "\1f50a\FE0E  ";
+	content: "\1f50a\FE0E";
 	color: green
 }
 
@@ -2350,7 +2358,7 @@ a[href$=".webm"]::before,
 a[href$=".ogv"]::before,
 a[href$=".flv"]::before,
 a[href$=".mkv"]::before {
-	content: "\1f4fa  ";
+	content: "\1f4fa";
 	color: teal
 }
 
@@ -2361,7 +2369,7 @@ a[href$=".xz"]::before,
 a[href$=".rar"]::before,
 a[href$=".7z"]::before,
 a[href$=".zip"]::before {
-	content: "\1f381  ";
+	content: "\1f381";
 	color: brown
 }
 
@@ -2370,7 +2378,7 @@ a[href$=".msi"]::before,
 a[href$=".tar.gz"]::before,
 a[href$=".deb"]::before,
 a[href$=".rpm"]::before {
-	content: "📦  ";
+	content: "📦";
 	color: brown
 }
 
@@ -2383,7 +2391,7 @@ a[href$=".sh"]::before,
 a[href$=".ps1"]::before,
 a[href$=".pyc"]::before,
 a[href$=".apk"]::before {
-	content: "\1f537  ";
+	content: "\1f537";
 	color: #5AE
 }
 
@@ -2395,7 +2403,7 @@ a[href$=".cxx"]::before,
 a[href$=".gcc"]::before,
 a[href$=".py"]::before,
 a[href$=".js"]::before {
-	content: "⌨  ";
+	content: "⌨";
 	color: yellow;
 }
 
@@ -2412,7 +2420,7 @@ a[href$=".ods"]::before,
 a[href$=".ppt"]::before,
 a[href$=".pptx"]::before,
 a[href$=".odp"]::before {
-	content: "📝  ";
+	content: "📝";
 	color: gray;
 }
 
@@ -2420,7 +2428,7 @@ a[href$=".odp"]::before {
 a[href$=".epub"]::before,
 a[href$=".PDF"]::before,
 a[href$=".pdf"]::before {
-	content: "📕  ";
+	content: "📕";
 	color: red;
 }
 
@@ -2434,20 +2442,20 @@ a[href$=".html"]::before,
 a[href$=".cfg"]::before,
 a[href$=".json"]::before,
 a[href$=".lrc"]::before {
-	content: "📑  ";
+	content: "📑";
 	color: thistle;
 }
 
 /* Flash */
 a[href$=".swf"]::before {
-	content: "⚡  ";
+	content: "⚡";
 	color: gold;
 }
 
 /* Icon */
 a[href$=".ICO"]::before,
 a[href$=".ico"]::before {
-	content: "🥚  ";
+	content: "🥚";
 	color: wheat;
 }
 
@@ -2455,7 +2463,7 @@ a[href$=".ico"]::before {
 a[href$=".iso"]::before,
 a[href$=".img"]::before,    /* '.img' is a floppy💾 image💿 */
 a[href$=".dda"]::before {
-	content: "💿  ";
+	content: "💿";
 	color: white;
 }
 
@@ -2467,8 +2475,8 @@ table#files a[href^="udp://"]::before,
 table#files a[href^="rtmp://"]::before,
 table#files a[href^="rtsp://"]::before,
 table#files a[href^="http://"]::before,
-table#files a[href^="https://"]::before  {
-	content: "🌎  ";
+table#files a[href^="https://"]::before {
+	content: "🌎";
 	color: #5AE
 }
 
@@ -3018,253 +3026,253 @@ visibility: visible;
 {.add header|Cache-Control: public, max-age=86400.}
 /* <style> /* */
 body {
-    margin: 0px;
-    border: 0px;
+	margin: 0px;
+	border: 0px;
 	font-size: 1em;
 }
 .pond {
-    text-align: center;
-    color: white;
-    font-family: "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
-        "Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
-        "Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+	text-align: center;
+	color: white;
+	font-family: "Monda", "Bahnschrift", "Noto Sans", "Segoe UI Emoji",
+		"Microsoft YaHei UI", "微软雅黑", "SimHei", "黑体", "Microsoft JhengHei", "Yu Gothic UI",
+		"Malgun Gothic", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
 }
 /* Starry Night by Lea Verou */
 /* https://leaverou.github.io/css3patterns/ */
 h2.hidden {
-    display: none;
+	display: none;
 }
 @keyframes contentslide {
-    from {
-        position: absolute;
-        top: 320px;
-        opacity: 0;
-    }
-    to {
-        position: absolute;
-        top: 64px;
-        opacity: 1;
-    }
+	from {
+		position: absolute;
+		top: 320px;
+		opacity: 0;
+	}
+	to {
+		position: absolute;
+		top: 64px;
+		opacity: 1;
+	}
 }
 .main {
-    width: 100%;
+	width: 100%;
 	position: absolute;
 	top: 64px;
-    opacity: 0;
-    animation: contentslide 0.5s ease-out 1s;
-    animation-fill-mode: forwards;
+	opacity: 0;
+	animation: contentslide 0.5s ease-out 1s;
+	animation-fill-mode: forwards;
 }
 #title {
-    font-size: 2.4em;
-    margin: 0;
-    padding: 0.3em;
+	font-size: 2.4em;
+	margin: 0;
+	padding: 0.3em;
 }
 .browsehappy {
-    background-color: #c54141;
-    color: white;
-    font-weight: bold;
-    font-size: 1.5em;
-    width: 100%;
+	background-color: #c54141;
+	color: white;
+	font-weight: bold;
+	font-size: 1.5em;
+	width: 100%;
 }
 @keyframes crossin {
-    from {
-        width: 100%;
-    }
-    to{
-        width: 75%;
-    }
+	from {
+		width: 100%;
+	}
+	to{
+		width: 75%;
+	}
 }
 #itemlist {
-    width: 100%;
-    margin: auto;
-    animation: crossin 0.5s ease-out 1s;
-    animation-fill-mode: forwards;
+	width: 100%;
+	margin: auto;
+	animation: crossin 0.5s ease-out 1s;
+	animation-fill-mode: forwards;
 }
 .item {
-    font-size: 1.6em;
-    width: 74%;
-    position: inherit;
+	font-size: 1.6em;
+	width: 74%;
+	position: inherit;
 }
 .item a {
-    text-decoration: none;
-    transition: all 0.3s;
+	text-decoration: none;
+	transition: all 0.3s;
 }
 .item a:hover {
-    color: #333333;
-    background-color: white;
+	color: #333333;
+	background-color: white;
 }
 .item.left {
-    text-align: left;
-    left: 0;
-    margin-right: auto;
+	text-align: left;
+	left: 0;
+	margin-right: auto;
 }
 .item.right {
-    text-align: right;
-    right: 0;
-    margin-left: auto;
+	text-align: right;
+	right: 0;
+	margin-left: auto;
 }
 .navicon {
-    vertical-align: middle;
-    height: 32px;
+	vertical-align: middle;
+	height: 32px;
 }
 @keyframes swing {
-    0% {
-        left: 0em;
-    }
-    50% {
-        left: 0.5em;
-    }
-    100% {
-        left: 0em;
-    }
+	0% {
+		left: 0em;
+	}
+	50% {
+		left: 0.5em;
+	}
+	100% {
+		left: 0em;
+	}
 }
 .item.arrow {
-    position: relative;
-    font-style: italic;
-    font-size: 1.4em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    animation: swing 2.4s ease-in 0.1s infinite;
-    animation-fill-mode: forwards;
+	position: relative;
+	font-style: italic;
+	font-size: 1.4em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	animation: swing 2.4s ease-in 0.1s infinite;
+	animation-fill-mode: forwards;
 }
 .item.arrow::after {
-    content: ">>";
+	content: ">>";
 }
 .item.description {
-    font-size: 0.66em;
+	font-size: 0.66em;
 }
 .item.border{
-    height: 1px;
-    border-bottom: 1px white solid;
-    margin-bottom: 1.5em;
-    /* width: 90%; */
+	height: 1px;
+	border-bottom: 1px white solid;
+	margin-bottom: 1.5em;
+	/* width: 90%; */
 }
 @keyframes crossout {
-    from {
-        width: 15%;
-    }
-    to {
-        width: 60%;
-    }
+	from {
+		width: 15%;
+	}
+	to {
+		width: 60%;
+	}
 }
 .hitokoto {
-    position: relative;
-    width: 15%;
-    font-size: 1.6em;
-    /* font-weight: 700; */ /* bold */
-    text-align: left;
-    margin: 0px auto 64px auto;
-    animation: crossout 0.5s ease-out 1s;
-    animation-fill-mode: forwards;
-    transition: all 0.5s;
+	position: relative;
+	width: 15%;
+	font-size: 1.6em;
+	/* font-weight: 700; */ /* bold */
+	text-align: left;
+	margin: 0px auto 64px auto;
+	animation: crossout 0.5s ease-out 1s;
+	animation-fill-mode: forwards;
+	transition: all 0.5s;
 }
 .bracket.left {
-    position: absolute;
-    left: 0;
-    top: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 .bracket.right {
-    position: absolute;
-    right: 0;
-    bottom: 0;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 #hitokoto {
-    /* display: none; */
-    opacity: 0;
-    text-align: center;
-    padding: 15px 64px;
-    min-height: 1.8em;
-    animation: fadein 0.5s ease-out 2s;
-    animation-fill-mode: forwards;
+	/* display: none; */
+	opacity: 0;
+	text-align: center;
+	padding: 15px 64px;
+	min-height: 1.8em;
+	animation: fadein 0.5s ease-out 2s;
+	animation-fill-mode: forwards;
 }
 /* Below two is for printing effected hitokoto usage */
 .hitokotod {
-    display: none;
-    padding: 15px 50px;
-    min-height: 1.8em;
+	display: none;
+	padding: 15px 50px;
+	min-height: 1.8em;
 }
 #hitokotop {
-    min-height: 1.6em;
+	min-height: 1.6em;
 }
 abbr {
-    text-decoration: none;
+	text-decoration: none;
 }
 #get-top {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    font-size: 3em;
-    line-height: 1em;
-    width: 1em;
-    padding: 0.2em 0.2em;
-    margin: 0.6em;
-    background-color: rgba(0, 0, 0, 0.75);
-    transform: rotate(-90deg);
-    cursor: pointer;
-    display: none;
-    z-index: 100;
-    font-family: monospace;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	font-size: 3em;
+	line-height: 1em;
+	width: 1em;
+	padding: 0.2em 0.2em;
+	margin: 0.6em;
+	background-color: rgba(0, 0, 0, 0.75);
+	transform: rotate(-90deg);
+	cursor: pointer;
+	display: none;
+	z-index: 100;
+	font-family: monospace;
 }
 .copyright {
-    font-size: 0.8em;
-    color: #666666;
-    width: 100%;
-    margin: 48px 0px;
-    /* display: none; */
+	font-size: 0.8em;
+	color: #666666;
+	width: 100%;
+	margin: 48px 0px;
+	/* display: none; */
 }
 span.showonhover {
-    opacity: 0.24;
-    transition: all 1s;
+	opacity: 0.24;
+	transition: all 1s;
 }
 span.showonhover:hover {
-    opacity: 1;
+	opacity: 1;
 }
 
 /* Below is for devices that goes with a width < 950px */
 @media (max-width: 950px){
-    #title {
-        font-size: 1.8em;
-    }
-    .item {
-        width: 100%;
-        font-size: 1.2em;
-    }
-    .item.right {
-        text-align: left;
-    }
-    @keyframes crossin {
-        from {
-            width: 80%;
-        }
-        to{
-            width: 95%;
-        }
-    }
-    @keyframes crossout {
-        from {
-            width: 15%;
-        }
-        to {
-            width: 100%;
-        }
-    }
-    .hitokoto {
-        width: 100%;
-        font-size: 1em;
-        margin-bottom: 24px;
-    }
-    #hitokoto {
-        padding: 18px 24px;
-    }
-    #get-top {
-        transform: scale(0.66) rotate(-90deg);
-        margin: 0 0.2em;
-    }
-    .copyright {
-        margin: 8px auto;
-        /* color: #333333; */
-        font-size: 0.6em;
-    }
+	#title {
+		font-size: 1.8em;
+	}
+	.item {
+		width: 100%;
+		font-size: 1.2em;
+	}
+	.item.right {
+		text-align: left;
+	}
+	@keyframes crossin {
+		from {
+			width: 80%;
+		}
+		to{
+			width: 95%;
+		}
+	}
+	@keyframes crossout {
+		from {
+			width: 15%;
+		}
+		to {
+			width: 100%;
+		}
+	}
+	.hitokoto {
+		width: 100%;
+		font-size: 1em;
+		margin-bottom: 24px;
+	}
+	#hitokoto {
+		padding: 18px 24px;
+	}
+	#get-top {
+		transform: scale(0.66) rotate(-90deg);
+		margin: 0 0.2em;
+	}
+	.copyright {
+		margin: 8px auto;
+		/* color: #333333; */
+		font-size: 0.6em;
+	}
 }
 
 /* nav.css */
@@ -3336,7 +3344,7 @@ ul {
 	transition: none;
 }
 .sousuo:hover {
-    transform: none;
+	transform: none;
 }
 .search {
 	position: relative;
@@ -3355,10 +3363,10 @@ ul {
 }
 .search-icon {
 	position: absolute;
-    left: 4px;
-    top: 6px;
-    width: 40px;
-    height: 40px;
+	left: 4px;
+	top: 6px;
+	width: 40px;
+	height: 40px;
 	font-size: 24px;
 	overflow: hidden;
 	background-color: #e6e6e6;
@@ -3696,5 +3704,3 @@ header .logo {
 }
 /* </style> */
 // </style>
-
-
