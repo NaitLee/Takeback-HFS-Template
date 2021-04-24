@@ -1,0 +1,8 @@
+
+{.check session.}
+{.break|if={.not|{.can comment.}.} |result=Forbidden.}
+{.for each|filename|{.replace|:|{.no pipe||.}|{.postvar|files.}.}|{:
+    {.break|if={.is file protected|var=filename.}|result=Forbidden.}
+    {.set item|{.force ansi|{.^filename.}.}|comment={.encode html|{.force ansi|{.postvar|text.}.}.}.}
+:}.}
+{.pipe|OK.}

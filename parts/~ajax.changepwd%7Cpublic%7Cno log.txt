@@ -1,0 +1,7 @@
+
+{.check session.}
+{.break|if={.not|{.can change pwd.}.} |result=Forbidden.}
+{.if|{.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}|
+    {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|OK|Failed.}:}|
+    {:Unauthorized:}
+.}

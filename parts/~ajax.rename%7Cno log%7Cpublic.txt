@@ -1,0 +1,12 @@
+
+{.check session.}
+{.break|if={.not|{.can rename.}.}|result=Forbidden.}
+{.break|if={.is file protected|{.postvar|from.}.}|result=Forbidden.}
+{.break|if={.is file protected|{.postvar|to.}.}|result=Forbidden.}
+{.set|x|{.force ansi|{.postvar|from.}.}.}
+{.set|y|{.force ansi|%folder%{.postvar|to.}.}.}
+{.break|if={.not|{.exists|{.^x.}.}.}|result=Not Found.}
+{.break|if={.exists|{.^y.}.}|result=Duplicate.}
+{.break|if={.not|{.length|{.rename|{.^x.}|{.^y.}.}.}.}|result=Failed.}
+{.add to log|> .. {.!User.} %user% {.!renamed.} "{.^x.}" {.!to.} "{.^y.}".}
+{.pipe|OK.}

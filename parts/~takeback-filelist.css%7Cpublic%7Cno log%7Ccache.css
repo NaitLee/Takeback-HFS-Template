@@ -1,0 +1,449 @@
+
+/* <style> /**/
+.search {
+    display: inline;
+    white-space: nowrap;
+}
+.search input[type="search"] {
+    width: 16em;
+    border-radius: 0;
+    border: 1px solid white;
+    background-color: white;
+    height: 3em;
+}
+.search input[type="submit"] {
+    width: 3em;
+    border-radius: 0;
+    border: 1px solid white;
+    background-color: white;
+    height: 3em;
+    transition: all 0.3s;
+}
+.searchbutton:hover {
+    background-color: transparent;
+}
+.part0 h1 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0;
+}
+.part0 nav {
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid currentColor;
+}
+.part0 nav .right {
+    float: right;
+}
+@keyframes blinkgreen {
+    0% {
+        color: green;
+    }
+    50% {
+        color: #66ee66;
+    }
+    100% {
+        color: green;
+    }
+}
+.part0 p {
+    margin: 0;
+}
+.part0 p a span {
+    color: green;
+    animation: blinkgreen 5s ease-in-out 0s infinite;
+}
+.part1 {
+    width: 100%;
+    overflow-x: auto;
+}
+.part1 table#files {
+    min-width: 75%;
+    margin: auto;
+    white-space: nowrap;
+}
+.part1 table#files td:nth-child(1) {
+    width: 75%;
+    text-align: left;
+}
+.part1 table#files td:nth-child(1) img.thumb {
+    height: 8em;
+    vertical-align: middle;
+}
+.part1 table#files td:nth-child(2) {
+    width: 15%;
+    text-align: center;
+}
+.part1 table#files td:nth-child(3) {
+    width: 10%;
+    text-align: right;
+}
+.part1 table#files thead td:nth-child(3) {
+    text-align: center;
+}
+.part1 table#files thead td {
+    background-color: white;
+    color: #333333;
+    font-weight: bold;
+}
+.part1 table#files thead td a:hover {
+    color: #333333;
+}
+.part1 table#files tbody tr {
+    outline: 1px solid transparent;
+    transition: all 0.3s;
+}
+.part1 table#files tbody tr p {
+    margin: 0;
+    margin-left: 1em;
+    border-left: 1px solid white;
+    padding-left: 1em;
+}
+.part1 table#files tbody tr:hover {
+    outline: 1px solid currentColor;
+}
+.part1 table#files tbody tr.selected {
+    outline: 1px solid yellow;
+}
+.part1 table#files .folder td:nth-child(3),
+.part1 table#files .link td:nth-child(3) {
+    color: gray;
+    font-style: italic;
+    text-align: center;
+}
+.part1 table#files tr td {
+    height: 32px;
+}
+.part2 .blank {
+    height: 20em;
+}
+.part3 .left, .part3 .right {
+    position: fixed;
+    bottom: 0em;
+    display: inline-block;
+}
+.part3 .left #audioplayer, .part3 .right #preview {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.part3 .left {
+    left: 0;
+    text-align: left;
+}
+.part3 .right {
+    right: 0;
+    min-width: 24em;
+}
+.part3 .right #preview .close {
+    float: right;
+}
+.part3 .right #preview .close span {
+    color: #ff6666;
+}
+.part3 .right #preview .title {
+    text-align: left;
+}
+.part3 .right #preview video, .part3 .right #preview img {
+    max-height: 16em;
+}
+.part3 .right #preview iframe {
+    width: 24em;
+    height: 16em;
+    border: none;
+    background-color: white;
+}
+.part3 .right #preview .nopreview {
+    color: yellow;
+}
+.part3 .right #preview a span.menuitem {
+    color: rgb(255, 160, 96);
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+.part3 .right #preview a.download span {
+    color: cyan;
+}
+.slideshow {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: black;
+}
+.slideshow img {
+    height: 100%;
+    display: block;
+    transition: all 1s;
+    position: absolute;
+}
+@keyframes swing {
+    0% {
+        left: -0.5em;
+    }
+    50% {
+        left: 0em;
+    }
+    100% {
+        left: -0.5em;
+    }
+}
+.arrow {
+    position: relative;
+    animation: swing 1s ease-in-out 0s infinite;
+}
+.arrow::after {
+    content: '>>';
+    font-style: italic;
+}
+
+@media (max-width: 950px) {
+    .part3 .left {
+        bottom: 3.6em;
+        overflow-x: visible;
+        white-space: nowrap;
+    }
+    .part3 .right {
+        min-width: unset;
+        width: 100%;
+    }
+}
+
+/* Folder */
+table#files a[href$="/"]::before {
+    content: "📁";
+    color: #FB0;
+    display: inline-block;
+    position: relative;
+    width: 1.75em;
+    text-align: center;
+}
+
+/* Unknown File */
+td a::before {
+    content: "\1f4c4";
+    color: #BCC;
+    display: inline-block;
+    position: relative;
+    width: 1.75em;
+    text-align: center;
+}
+
+/* Other */
+td a[href$=";"i]::before,    /* javascript: ...; */
+td a[href$=":"i]::before,    /* javascript: */
+td a[href*="?"i]::before {
+    content: none;
+}
+
+/* Picture */
+a[href$=".jpg"i]::before,
+a[href$=".webp"i]::before,
+a[href$=".png"i]::before,
+a[href$=".gif"i]::before {
+    content: "\1f4f7";
+    color: black
+}
+
+/* Working Picture (Photoshop & GIMP) */
+a[href$=".psd"i]::before,
+a[href$=".xcf"i]::before {
+    content: "📸";
+    color: #5AE
+}
+
+/* Audio/Music */
+a[href$=".mp3"i]::before,
+a[href$=".aac"i]::before,
+a[href$=".m4a"i]::before,
+a[href$=".wav"i]::before,
+a[href$=".ogg"i]::before {
+    content: "\1f50a\FE0E";
+    color: green
+}
+
+/* Video */
+a[href$=".mp4"i]::before,
+a[href$=".avi"i]::before,
+a[href$=".webm"i]::before,
+a[href$=".ogv"i]::before,
+a[href$=".flv"i]::before,
+a[href$=".mkv"i]::before {
+    content: "\1f4fa";
+    color: teal
+}
+
+/* Compressed/Storage Pack */
+a[href$=".tar"i]::before,
+a[href$=".gz"i]::before,
+a[href$=".xz"i]::before,
+a[href$=".rar"i]::before,
+a[href$=".7z"i]::before,
+a[href$=".zip"i]::before {
+    content: "\1f381";
+    color: brown
+}
+
+/* Installation Pack */
+a[href$=".msi"i]::before,
+a[href$=".tar.gz"i]::before,
+a[href$=".deb"i]::before,
+a[href$=".rpm"i]::before {
+    content: "📦";
+    color: brown
+}
+
+/* Executable/Script */
+a[href$=".exe"i]::before,
+a[href$=".vbs"i]::before,
+a[href$=".bat"i]::before,
+a[href$=".sh"i]::before,
+a[href$=".ps1"i]::before,
+a[href$=".pyc"i]::before,
+a[href$=".apk"i]::before {
+    content: "\1f537";
+    color: #5AE
+}
+
+/* Code */
+a[href$=".c"i]::before,
+a[href$=".cpp"i]::before,
+a[href$=".h"i]::before,
+a[href$=".cxx"i]::before,
+a[href$=".gcc"i]::before,
+a[href$=".py"i]::before,
+a[href$=".js"i]::before {
+    content: "⌨";
+    color: yellow;
+}
+
+/* Working Document */
+a[href$=".rtf"i]::before,
+a[href$=".doc"i]::before,
+a[href$=".docx"i]::before,
+a[href$=".odt"i]::before,
+a[href$=".xls"i]::before,
+a[href$=".xlsx"i]::before,
+a[href$=".ods"i]::before,
+a[href$=".ppt"i]::before,
+a[href$=".pptx"i]::before,
+a[href$=".odp"i]::before {
+    content: "📝";
+    color: gray;
+}
+
+/* E-Books */
+a[href$=".epub"i]::before,
+a[href$=".pdf"i]::before {
+    content: "📕";
+    color: red;
+}
+
+/* Other Text */
+a[href$=".txt"i]::before,
+a[href$=".ini"i]::before,
+a[href$=".htm"i]::before,
+a[href$=".html"i]::before,
+a[href$=".cfg"i]::before,
+a[href$=".json"i]::before,
+a[href$=".m3u"i]::before,
+a[href$=".m3u8"i]::before,
+a[href$=".lrc"i]::before {
+    content: "📑";
+    color: thistle;
+}
+
+/* Flash */
+a[href$=".swf"i]::before {
+    content: "⚡";
+    color: gold;
+}
+
+/* Icon */
+a[href$=".ico"i]::before {
+    content: "🥚";
+    color: wheat;
+}
+
+/* (Data) Image */
+a[href$=".iso"i]::before,
+a[href$=".img"i]::before,    /* '.img' is a floppy💾 image💿 */
+a[href$=".dda"i]::before {
+    content: "💿";
+    color: white;
+}
+
+/* Link */
+table#files a[href^="ftp://"]::before,
+table#files a[href^="file://"]::before,
+table#files a[href^="tcp://"]::before,
+table#files a[href^="udp://"]::before,
+table#files a[href^="rtmp://"]::before,
+table#files a[href^="rtsp://"]::before,
+table#files a[href^="http://"]::before,
+table#files a[href^="https://"]::before {
+    content: "🌎";
+    color: #5AE
+}
+
+@media (min-width:950px) {
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+    }
+    ::-webkit-scrollbar-button:end:increment,::-webkit-scrollbar-button:start:decrement {
+        display: block;
+    }
+    ::-webkit-scrollbar-button:vertical:end:decrement,::-webkit-scrollbar-button:vertical:start:increment {
+        display: none;
+    }
+    ::-webkit-scrollbar-thumb:horizontal,::-webkit-scrollbar-thumb:vertical,::-webkit-scrollbar-track:horizontal,::-webkit-scrollbar-track:vertical {
+        border-color: transparent;
+        border-style: solid;
+    }
+    ::-webkit-scrollbar-track:vertical::-webkit-scrollbar-track:horizontal {
+        /* background-color: rgba(255,255,255,.2); */
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+    }
+    ::-webkit-scrollbar-thumb {
+        min-height: 28px;
+        padding-top: 100;
+        background-color: rgba(255,255,255,.2);
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255,255,255,.24);
+        box-shadow: inset 1px 1px 1px rgba(0,0,0,.25);
+    }
+    ::-webkit-scrollbar-thumb:active {
+        background-color: rgba(255,255,255,.12);
+        box-shadow: inset 1px 1px 3px rgba(0,0,0,.35);
+    }
+    ::-webkit-scrollbar-thumb:horizontal,::-webkit-scrollbar-thumb:vertical,
+    ::-webkit-scrollbar-track:horizontal,::-webkit-scrollbar-track:vertical {
+        border-width: 0;
+    }
+    ::-webkit-scrollbar-track:hover {
+        background-color: rgba(0,0,0,.05);
+        box-shadow: inset 1px 0 0 rgba(0,0,0,.1);
+    }
+    ::-webkit-scrollbar-track:active {
+        background-color: rgba(0,0,0,.05);
+        box-shadow: inset 1px 0 0 rgba(0,0,0,.14), inset -1px -1px 0 rgba(0,0,0,.07);
+    }
+    .scrollbar-hover::-webkit-scrollbar,.scrollbar-hover::-webkit-scrollbar-button,
+    .scrollbar-hover::-webkit-scrollbar-thumb,.scrollbar-hover::-webkit-scrollbar-track {
+        visibility: hidden;
+    }
+    .scrollbar-hover:hover::-webkit-scrollbar,.scrollbar-hover:hover::-webkit-scrollbar-button,.scrollbar-hover:hover::-webkit-scrollbar-thumb,.scrollbar-hover:hover::-webkit-scrollbar-track {
+        visibility: visible;
+    }
+}
+/* </style> */

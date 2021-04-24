@@ -1,0 +1,152 @@
+
+{.add header|Cache-Control: no-cache, max-age=0.}
+{.get-common-html|
+    {.if|%user%|
+    <title>{.!Manage Account.}</title>
+    |
+    <title>{.!Login.}</title>
+    .}
+|
+    {.if|%user%|
+    <section>
+        <h1>{.!Manage Account.}</h1>
+        <noscript>
+            <p>{.!Javascript required.}</p>
+        </noscript>
+        <p>
+            <span>%user%</span><br />
+            <a id="logout" class="invert" href="javascript:">{.!Logout.}</a>
+        </p>
+        <form id="changepwd">
+            <p>{.!Change password.}</p>
+            <input type="password" name="old" placeholder="{.!Old password.}" /><br />
+            <input type="password" name="new" placeholder="{.!New password.}" /><br />
+            <input type="password" name="verify" placeholder="{.!Enter again.}" /><br />
+            <input type="submit" value="{.!OK.}" />
+        </form>
+        <script src='/~sha256.js'></script>
+        <script>
+            class AccountManager {
+                constructor() {
+                    this.formChangepwd = document.getElementById('changepwd');
+                    this.passwords = this.formChangepwd.querySelectorAll('input[type="password"]');
+                    this.formChangepwd.addEventListener('submit', event => {
+                        event.preventDefault();
+                        if (this.passwords[1].value != this.passwords[2].value) {
+                            dialog.alert('{.!New password not match.}');
+                            this.passwords[1].value = '';
+                            this.passwords[2].value = '';
+                            return
+                        }
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', './?mode=section&id=ajax.changepwd');
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        xhr.onload = () => {
+                            let message = xhr.responseText.trim();
+                            switch (message) {
+                                case 'OK':
+                                    dialog.alert('{.!Success.}', () => location.href = location.hash.slice(1));
+                                    if (localStorage.getItem('password') != null) {
+                                        localStorage.setItem('password', btoa(this.passwords[1].value));
+                                    }
+                                    break;
+                                case 'Forbidden':
+                                case 'Failed':
+                                    dialog.alert('{.!Failed.}', () => location.href = location.hash.slice(1));
+                                    break;
+                                case 'Unauthorized':
+                                    dialog.alert('{.!Old password is incorrect.}');
+                                    this.passwords[0].value = '';
+                                    break;
+                            }
+                        }
+                        xhr.send(`token=${HFS.sid}&old=${SHA256.hash(this.passwords[0].value)}&new=${btoa(unescape(encodeURIComponent(this.passwords[1].value)))}`);
+                    });
+                    document.getElementById('logout').addEventListener('click', event => {
+                        fetch('/?mode=logout').then(r => location.href = location.hash.slice(1));
+                    });
+                }
+            }
+            window.addEventListener('DOMContentLoaded', () => window.account_manager = new AccountManager());
+        </script>
+    </section>
+    |
+    <section>
+        <h1>Login</h1>
+        <noscript>
+            <p>{.!Javascript required.}</p>
+        </noscript>
+        <form>
+            <input type="text" name="username" placeholder="{.!Username.}" /><br />
+            <input type="password" name="password" placeholder="{.!Password.}" /><br />
+            <label><input type="checkbox" name="remember" /> {.!Remember credentials.}</label>
+            <input type="submit" value="{.!Login.}" />
+        </form>
+        <script src='/~sha256.js'></script>
+        <script>
+            class LoginManager {
+                constructor() {
+                    this.inputUsername = document.querySelector('input[name="username"]');
+                    this.inputPassword = document.querySelector('input[name="password"]');
+                    this.inputRemember = document.querySelector('input[name="remember"]');
+                    this.form = document.querySelector('form');
+                    this.form.addEventListener('submit', event => {
+                        event.preventDefault();
+                        this.login.bind(this)();
+                    });
+                    if (localStorage.getItem('username') != null && localStorage.getItem('password') != null) {
+                        this.inputRemember.checked = true;
+                        this.inputUsername.value = localStorage.getItem('username');
+                        this.inputPassword.value = atob(localStorage.getItem('password'));
+                    }
+                }
+                login() {
+                    let username = this.inputUsername.value;
+                    let password = this.inputPassword.value;
+                    let token = HFS.sid;
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/?mode=login');
+                    let formdata = new FormData();
+                    formdata.append('user', username);
+                    if (typeof SHA256 == 'undefined') {
+                        formdata.append('password', password);
+                    } else {
+                        let hashed = SHA256.hash(SHA256.hash(password).toLowerCase() + token).toLowerCase();
+                        formdata.append('passwordSHA256', hashed);
+                    }
+                    xhr.onload = () => {
+                        let message = xhr.responseText.trim();
+                        switch (message) {
+                            case 'ok':
+                                if (this.inputRemember.checked) {
+                                    localStorage.setItem('username', username);
+                                    localStorage.setItem('password', btoa(password));
+                                } else {
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('password');
+                                }
+                                dialog.alert('{.!Success.}', () => location.href = location.hash.slice(1));
+                                break;
+                            case 'bad password':
+                                dialog.alert('{.!Incorrect password.}', () => location.reload());
+                                this.inputPassword.value = '';
+                                break;
+                            case 'username not found':
+                                dialog.alert('{.!User not found.}');
+                                this.inputUsername.value = '';
+                                this.inputPassword.value = '';
+                                break;
+                            default:
+                                dialog(`{.!Error:.}${message}`);
+                                break;
+                        }
+                    }
+                    xhr.send(formdata);
+                }
+            }
+            window.addEventListener('DOMContentLoaded', () => window.login_manager = new LoginManager());
+        </script>
+    </section>
+    .}
+.}
+

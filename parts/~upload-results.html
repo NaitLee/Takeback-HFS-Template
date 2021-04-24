@@ -1,0 +1,32 @@
+
+{.add header|Cache-Control: no-cache, max-age=0.}
+{.get-common-html|
+    <title>{.!Upload Result.}</title>
+    <style>
+        body {
+            text-align: left;
+        }
+        .success {
+            color: #66ff66;
+        }
+        .failed {
+            color: #ff6666;
+        }
+    </style>
+|
+    <section class="linebottom">
+        <a href="./">⇦ {.!Back.}</a>
+    </section>
+    <h1>{.!Upload Result.}</h1>
+    <p>%uploaded-files%</p>
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            if (document.querySelector('.failed') != null) {
+                dialog.alert('{.!There are some files failed to upload..}');
+            } else {
+                dialog.alert('{.!All files are uploaded successfully.}', () => location.href = './');
+            }
+        });
+    </script>
+.}
+

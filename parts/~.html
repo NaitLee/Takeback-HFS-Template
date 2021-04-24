@@ -1,0 +1,36 @@
+
+{.get-common-html|
+    <title>{.fallback|{.!_title.}|{.!HFS.}.}::%folder%</title>
+    <link rel="stylesheet" href="/~takeback-filelist.css" defer />
+|
+    <!-- Header, Nav, Notice -->
+    <section class="part0">
+        <h1>{.fallback|{.!_header.}|{.!HTTP File Server.}.}</h1>
+        <nav>
+            <span>
+                {.replace|<a href="/"></a>|<a href="/">🏠 {.!Home.}</a>|{.breadcrumbs|<a href="%bread-url%">%bread-name%</a>/.}.}
+            </span>
+            <span class="right">
+                <span>👤 %user%</span>
+                {.if|%user%|
+                    <a class="invert" href="/~login#%encoded-folder%">{.!Manage.}</a>|
+                    <a href="/~login#%encoded-folder%">{.!Login.}</a>
+                .}
+            </span>
+            <div style="height: 4px;"></div>
+            <form class="search" action="./">
+                <input type="search" name="search" placeholder="{.!Search.}" /><input type="submit" value="🔍" />
+            </form>
+            {.if|{.get|can upload.}|
+                <span class="right">
+                    <a class="invert" href="./~upload" data-tooltip="{.!Upload some files to this folder.}">⇧ {.!Upload.}</a>
+                </span>
+            .}
+        </nav>
+        <p>
+            <a href="http://rejetto.com/hfs/"><span>{.!Files here are available for download..}</span></a>
+        </p>
+    </section>
+    %files%
+.}
+

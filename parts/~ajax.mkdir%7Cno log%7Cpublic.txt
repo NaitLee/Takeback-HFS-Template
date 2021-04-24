@@ -1,0 +1,10 @@
+
+{.check session.}
+{.set|x|{.postvar|name.}.}
+{.break|if={.pos|\|var=x.}{.pos|/|var=x.}|result=Forbidden.}
+{.break|if={.not|{.can mkdir.}.}|result=Forbidden.}
+{.set|x|{.force ansi|%folder%{.^x.}.}.}
+{.break|if={.exists|{.^x.}.}|result=Duplicate.}
+{.break|if={.not|{.length|{.mkdir|{.^x.}.}.}.}|result=Forbidden.}
+{.add to log|> .. {.!User.} %user% {.!created folder.} "{.^x.}".}
+{.pipe|OK.}

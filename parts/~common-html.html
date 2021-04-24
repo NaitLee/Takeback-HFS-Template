@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000"/>
+    <meta name="description" content="{.!This is a file sharing site..}" />
+    <link rel="stylesheet" href="/~takeback-general.css" defer />
+    {.if|{.!_use_font.}|<link rel="stylesheet" href="/~monda-font.css" defer />.}
+    @head@
+    <script>
+        window.HFS = {
+            sid: '{.cookie|HFS_SID_.}',
+            folder: '%folder%',
+            encodedFolder: '%encoded-folder%',
+            can_delete: '{.get|can delete.}',
+            can_mkdir: '{.can mkdir.}',
+            can_comment: '{.can comment.}',
+            can_rename: '{.can rename.}',
+            can_move: '{.can move.}'
+        }
+    </script>
+</head>
+<body>
+    {.if|{.!_background_image.}|
+        <section class="background-image"></section>
+    |
+        <section class="background"></section>
+    .}
+    <section class="background-mask"></section>
+    <section id="dialog" style="opacity: 0;"></section>
+    <section id="tooltip" style="display: none;"></section>
+    <script src="/~takeback-general.js"></script>
+    @body@
+</body>
+</html>
+

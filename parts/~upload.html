@@ -1,0 +1,78 @@
+
+{.add header|Cache-Control: no-cache, max-age=0.}
+{.get-common-html|
+    <title>{.!Upload.}</title>
+|
+    <section class="linebottom" style="text-align: left;">
+        <a href="./">⇦ {.!Back.}</a>
+        {.if|{.can mkdir.}|
+            <a id="newfolder" class="invert" style="float: right;" href="javascript:">📁 {.!New Folder.}</a>
+        .}
+    </section>
+    <section>
+        <p>{.!Upload to:.}%folder%</p>
+        <p>{.!Free space left:.}%diskfree%B</p>
+        <form id="uploadform" action="./" target="_parent" method="POST" enctype="multipart/form-data">
+            <p data-upload="inputs"><input type="file" name="0" multiple /><br /></p>
+            <a class="invert" href="javascript:" data-upload="add">{.!Add.}</a>
+            <input type="submit" value="{.!Upload.}" />
+        </form>
+    </section>
+    <script>
+        class Uploader {
+            constructor() {
+                this.count = 1;
+                document.getElementById('newfolder').addEventListener('click', this.createfolder.bind(this));
+                document.getElementById('uploadform').querySelectorAll('*[data-upload]').forEach(element => {
+                    switch (element.getAttribute('data-upload')) {
+                        case 'inputs':
+                            this.inputs = element;
+                            break;
+                        case 'add':
+                            element.addEventListener('click', this.add.bind(this));
+                            break;
+                    }
+                });
+            }
+            add() {
+                let input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = 'multiple';
+                input.name = this.count++;
+                this.inputs.appendChild(input);
+                let br = document.createElement('br');
+                this.inputs.appendChild(br);
+            }
+            createfolder() {
+                dialog.prompt('{.!Input folder name.}', i => {
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', './?mode=section&id=ajax.mkdir');
+					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                    xhr.onload = () => {
+                        let message = xhr.responseText.trim();
+                        switch (message) {
+                            case 'Bad Token':
+                                dialog.alert('{.!Bad session. Please try again..}', () => location.href = '.');
+                                break;
+                            case 'Forbidden':
+                                dialog.alert('{.!Illegal action.}');
+                                break;
+                            case 'Duplicate':
+                                dialog.alert('{.!Folder already exists.}');
+                                break;
+                            case 'OK':
+                                dialog.alert('{.!Done..}', () => location.href = './');
+                                break;
+                            default:
+                                dialog.alert(`{.!Error:.}${message}`);
+                                break;
+                        }
+                    }
+                    xhr.send(`name=${i}&token=${HFS.sid}`);
+                });
+            }
+        }
+        window.addEventListener('DOMContentLoaded', event => window.uploader = new Uploader());
+    </script>
+.}
+

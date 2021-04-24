@@ -1,0 +1,72 @@
+
+<!-- Filelist -->
+<section class="part1">
+    <table id="files">
+        <thead>
+            <tr>
+                <td>
+                    <a class="invert" href="./?sort=e" data-tooltip="{.!Click to sort files by extension.}">&nbsp;🔷</a>
+                    <a class="invert" href="./?sort=n" data-tooltip="{.!Click to sort files by name.}">
+                        {.!Item.} (%number%)
+                    </a>
+                    <a id="showthumb" class="invert" href="javascript:" data-tooltip="{.!Show thumbnails of photos.}" style="display: none; margin-left: 2em;">
+                        📸 {.!Photo Thumbnails.}
+                    </a>
+                </td>
+                <td>
+                    <a class="invert" href="./?sort=!t" data-tooltip="{.!Click to sort files by time.} [ {.!Format:.}mm/dd/yyyy ]">
+                        {.!Last Modified.}
+                    </a>
+                </td>
+                <td>
+                    <a class="invert" href="./?sort=s" data-tooltip="{.!Click to sort files by size.}">
+                        {.!Size.}
+                    </a>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            %list%
+        </tbody>
+    </table>
+</section>
+<!-- Footer -->
+<section class="part2">
+    <p>
+        <a href="./~folder.tar" data-tooltip="{.!Save files in this folder to an archive.}">[ {.!Archive.} ]</a>
+    </p>
+    <div class="blank"></div>
+</section>
+<!-- Dashboard -->
+<section class="part3">
+    <span class="left">
+        <span id="audioplayer" style="display: none;">
+            <a href="javascript:" data-player="next" data-player-alt="prev">&nbsp;{.fallback|{.!_player.}|\( •̀ ω •́ )✧ ♫.}&nbsp;</a>
+            <a href="javascript:" data-player="pause" data-player-alt="sequence">
+                <span>&nbsp;►❙&nbsp;</span>
+                <span data-player="status"></span>
+            </a>
+            <span data-player="nowplaying"></span>
+        </span>
+    </span>
+    <div class="right">
+        <div id="preview" style="display: none;">
+            <a href="javascript:" data-preview="close" class="close">
+                <span>[X]</span>
+            </a>
+            <div class="title">
+                <span class="arrow"></span>
+                <span data-preview="title"></span>
+            </div>
+            <div data-preview="menu"></div>
+            <hr />
+            <div data-preview="content"></div>
+        </div>
+    </div>
+</section>
+<section class="slideshow" style="display: none;">
+    <img src="" alt="" />
+    <img src="" alt="" />
+</section>
+<script src="/~takeback-filelist.js" defer></script>
+

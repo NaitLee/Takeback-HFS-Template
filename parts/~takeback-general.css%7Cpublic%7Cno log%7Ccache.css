@@ -1,0 +1,129 @@
+
+/* <style> /**/
+body {
+    margin: 0;
+    font-family: 'Takeback-Define-Font', 'Monda', sans-serif;
+    background-color: black;
+    font-size: 1.2em;
+    color: white;
+    text-align: center;
+}
+.animator-show { transform: inherit; }
+.animator-hide { transform: scaleY(0); }
+
+.background {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: center / cover;
+    background-image:
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.08) 3px, transparent 60px),
+        radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 950px 950px, 150px 150px;
+    background-position: 0 0, 40px 60px, 130px 270px, 640px 240px, 70px 100px;
+    z-index: -2;
+}
+.background-image {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: center / cover;
+    background-image: url('{.!_background_image.}');
+    background-size: 550px 550px, 350px 350px, 250px 250px, 950px 950px, 150px 150px;
+    background-position: 0 0, 40px 60px, 130px 270px, 640px 240px, 70px 100px;
+    z-index: -2;
+}
+.background-mask {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+h1 {
+    font-size: 1.8em;
+}
+section#tooltip {
+    position: fixed;
+    bottom: 3.6em;
+    width: 100%;
+    min-height: 2em;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+a:link, a:visited {
+    color: white;
+    background-color: transparent;
+}
+a:hover {
+    color: #333333;
+    background-color: white;
+}
+a:active {
+    color: white;
+    background-color: transparent;
+    text-shadow: 0 0 4px white;
+}
+a {
+    transition: all 0.3s;
+    text-decoration: none;
+}
+a.invert:link, a.invert:visited {
+    color: #333333;
+    background-color: white;
+}
+a.invert:hover {
+    color: white;
+    background-color: transparent;
+    border: 1px solid currentColor;
+}
+a.invert:active {
+    color: white;
+    background-color: transparent;
+    text-shadow: 0 0 4px white;
+}
+a.invert {
+    transition: all 0.3s;
+    text-decoration: none;
+    border: 1px solid transparent;
+    padding: 0 0.1em;
+}
+hr, .linebottom {
+    margin: 0;
+    border-bottom: 1px solid white;
+}
+#dialog {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: opacity 0.6s;
+}
+.dialog {
+    position: fixed;
+    width: 60%;
+    left: 20%;
+    top: 33%;
+    border: 1px solid currentColor;
+}
+.dialog .prompt-input {
+    width: 12em;
+    font-size: 1.2em;
+    height: 1em;
+    border: 1px solid currentColor;
+}
+@media (max-width: 950px) {
+    section#tooltip {
+        bottom: unset;
+        top: 1.8em;
+    }
+}
+/* </style> */

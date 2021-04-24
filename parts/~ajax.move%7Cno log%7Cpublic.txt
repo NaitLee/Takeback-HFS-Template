@@ -1,0 +1,26 @@
+
+{.check session.}
+{.set|to|{.force ansi|{.postvar|to.}.}.}
+{.break|if={.not|{.and|{.can move.}|{.get|can delete.}|{.get|can upload|path={.^to.}.}/and.}.} |result=Forbidden.}
+{.set|log|> .. {.!Moving items to.} {.^to.}.}
+{.for each|filename|{.replace|:|{.no pipe||.}|{.force ansi|{.postvar|from.}.}.}|{:
+    {.break|if={.is file protected|var=filename.}|result=Forbidden.}
+    {.set|x|{.force ansi|{.postvar|path.}.}{.^filename.}.}
+    {.set|y|{.force ansi|{.postvar|path.}.}{.^to.}/{.^filename.}.}
+    {.if not |{.exists|{.^x.}.}|{:{.^x.}: {.!Not found.}:}|{:
+        {.if|{.exists|{.^y.}.}|{:{.^y.}: {.!Duplicate.}:}|{:
+            {.set|comment| {.get item|{.^x.}|comment.} .}
+            {.set item|{.^x.}|comment=.} {.comment| this must be done before moving, or it will fail.}
+            {.if|{.length|{.move|{.^x.}|{.^y.}.}.} |{:
+                {.move|{.^x.}.md5|{.^y.}.md5.}
+                {.set|log|{.chr|13.}> .. {.^filename.} -> {.^y.}|mode=append.}
+                {.set item|{.^y.}|comment={.^comment.}.}
+            :} | {:
+                {.set|log|{.chr|13.}> !! {.^filename.}: {.!Move failed.}|mode=append.}
+                {.maybe utf8|{.^filename.}.}: {.!Not moved.}
+            :}/if.}
+        :}/if.}
+    :}.}
+    {.chr|13.}
+:}.}
+{.add to log|{.^log.}.}

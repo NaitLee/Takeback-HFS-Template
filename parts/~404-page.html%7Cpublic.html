@@ -1,0 +1,17 @@
+
+{.get-common-html|
+    <title>{.!404: Not Found.}</title>
+|
+    <section class="linebottom">
+        {.if|{.=|{.cut|-1||%url%.}|/.}|
+            <a href="../">⇦ {.!Back.}</a>
+        |
+            <a href="./">⇦ {.!Back.}</a>
+        .}
+    </section>
+    <h1>{.!404: Not Found.}</h1>
+    <p>{.!You have found a 404 page..}</p>
+    <script>
+        setTimeout(() => document.querySelector('a').click(), 3000);
+    </script>
+.}

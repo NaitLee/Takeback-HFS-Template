@@ -1,0 +1,13 @@
+fallback={.if|$1|$1|$2.}
+get-common-html={.replace|@head@|$1|@body@|$2|{.$common-html.}.}
+mm-dd-yyyy={.time|format={.fallback|{.!_time_format.}|mm/dd/yyyy.}|when=%item-modified%.}
+check session=if|{.{.cookie|HFS_SID_.} != {.postvar|token.}.}|{:{.cookie|HFS_SID_|value=|expires=-1.} {.break|result={.!Bad session.}.}:}
+can mkdir=and|{.get|can upload.}|{.!option.newfolder.}
+can comment=and|{.get|can upload.}|{.!option.comment.}
+can rename=and|{.get|can delete.}|{.!option.rename.}
+can change pwd=member of|can change password
+can move=or|1|1
+escape attr=replace|"|"|$1
+commentNL=if|{.pos|<br|$1.}|$1|{.replace|{.chr|10.}|<br />|$1.}
+add bytes=switch|{.cut|-1||$1.}|,|0,1,2,3,4,5,6,7,8,9|$1 Bytes|K,M,G,T|$1Bytes
+
