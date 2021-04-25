@@ -3,3 +3,4 @@ _background_image=0
 _title=0
 _player=0
 _time_format=0
+_header=0
