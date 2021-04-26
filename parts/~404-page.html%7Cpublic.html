@@ -1,5 +1,10 @@
 
 {.get-common-html|
+    {.if|{.=|{.cut|-1||%url%.}|/.}|
+        <meta http-equiv="refresh" content="5;url=../" />
+    |
+        <meta http-equiv="refresh" content="5;url=./" />
+    .}
     <title>{.!404: Not Found.}</title>
 |
     <section class="linebottom">
@@ -11,7 +16,4 @@
     </section>
     <h1>{.!404: Not Found.}</h1>
     <p>{.!You have found a 404 page..}</p>
-    <script>
-        setTimeout(() => document.querySelector('a').click(), 3000);
-    </script>
 .}

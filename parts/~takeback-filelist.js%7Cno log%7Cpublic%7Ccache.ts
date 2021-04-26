@@ -21,7 +21,7 @@ interface Window {
 
 class StaticsManager {
     typeMap: { audio: string[]; video: string[]; image: string[]; doc: string[]; };
-    filelist: any[];
+    filelist: string[];
     constructor() {
         this.typeMap = {
             audio: ['.mp3', '.ogg', '.wav', '.m4a'],

@@ -122,7 +122,7 @@ class Dialog {
         this.sectionDialog.style.opacity = '0';
         $(this.elemDialog).hide(undefined, () => this.sectionDialog.style.top = '200%');
     }
-    alert(message: string, callbackfn = () => undefined) {
+    alert(message: string, callbackfn: Function = () => undefined) {
         function done() {
             this.close();
             callbackfn();
@@ -140,7 +140,7 @@ class Dialog {
         this.elemActions.appendChild(ok);
         this.showDialog();
     }
-    confirm(message: string, callbackfn = () => undefined) {
+    confirm(message: string, callbackfn: Function = () => undefined) {
         function done() {
             this.close();
             callbackfn();
@@ -160,7 +160,7 @@ class Dialog {
         cancel.innerText = '{.!Cancel.}';
         cancel.href = 'javascript:';
         cancel.classList.add('invert');
-        cancel.addEventListener('click', event => {
+        cancel.addEventListener('click', () => {
             this.close();
         });
         this.elemActions.appendChild(cancel);
@@ -192,7 +192,7 @@ class Dialog {
         cancel.innerText = '{.!Cancel.}';
         cancel.href = 'javascript:';
         cancel.classList.add('invert');
-        cancel.addEventListener('click', event => {
+        cancel.addEventListener('click', () => {
             this.close();
         });
         this.elemActions.appendChild(cancel);
