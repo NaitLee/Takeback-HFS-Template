@@ -75,8 +75,8 @@ class TooltipManager {
     constructor() {
         this.elemTooltip = document.getElementById('tooltip');
         document.querySelectorAll('*[data-tooltip]').forEach(element => {
-            element.addEventListener('mouseover', event => this.show(element.getAttribute('data-tooltip')));
-            element.addEventListener('mouseout', event => this.hide());
+            element.addEventListener('mouseover', () => this.show(element.getAttribute('data-tooltip')));
+            element.addEventListener('mouseout', () => this.hide());
         });
     }
     show(message: string) {

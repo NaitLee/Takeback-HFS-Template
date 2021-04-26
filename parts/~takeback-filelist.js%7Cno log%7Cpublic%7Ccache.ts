@@ -36,34 +36,26 @@ class StaticsManager {
 window.addEventListener('DOMContentLoaded', () => window.statics = new StaticsManager());
 
 class Player {
-    masterElement: HTMLElement;
     sequence: string;
     playing: boolean;
-    lyricIndex: number;
-    lyricTimeout: number;
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | HTMLVideoElement;
     songlist: string[];
     nowplaying: number;
     songlistShuffled: string[];
     elemStatus: HTMLElement;
     elemNowplaying: HTMLElement;
-    lyricKeys: number[];
-    lyricMap: { 0: string; };
-    // The lyric system made a mess here...
+    lyricsArea: HTMLElement;
     constructor() {
-        this.masterElement = document.getElementById('audioplayer');
-        $(this.masterElement).show();
+        this.lyricsArea = document.querySelector('section.lyrics');
         this.sequence = 'shuffle';
-        this.playing = false;   // For tracking whether the song is playing
-        this.lyricIndex = 0;    // For tracking which line of lyric is playing
-        this.lyricTimeout = 0;  // For tracking when the next line of lyric to show. sometimes needs clearTimeout()
-        this.audio = new Audio();
+        this.playing = false;
+        this.audio = this.lyricsArea.querySelector('video');
         this.audio.pause();
         this.audio.onended = () => this.play(1);
         this.audio.onerror = () => this.play(1);
         this.songlist = window.statics.filelist.filter(filename => window.statics.typeMap['audio'].some(format => filename.toLowerCase().endsWith(format)));
-        if (this.songlist.length == 0) $(this.masterElement).hide();
-        this.nowplaying = 0;    // for tracking current playing song
+        if (this.songlist.length != 0) $('#audioplayer').show();
+        this.nowplaying = 0;
         this.songlistShuffled = this.songlist.sort((a, b) => 0.5 - Math.random());
         document.getElementById('audioplayer').querySelectorAll<HTMLElement>('*[data-player], *[data-player-alt]').forEach(element => {
             switch (element.getAttribute('data-player')) {
@@ -105,21 +97,15 @@ class Player {
         });
     }
     play(offset = 0) {
-        if (offset != 0 || this.audio.src == '') {  // If "play" is just going to continue
+        if (offset != 0 || this.audio.src == '') {
             let count = this.nowplaying + offset;
             if (count < 0) count = this.songlist.length + count;
             else if (count >= this.songlist.length) count = count % this.songlist.length;
             this.nowplaying = count;
-            this.lyricIndex = 0;
-            this.scheduleLyric(-1);
             this.audio.src = this.sequence == 'shuffled' ? this.songlist[count] : this.songlistShuffled[count];
-            this.loadLyric(this.audio.src, () => this.audio.play());
-        } else {    // If "play" is going to switch song
-            if (this.lyricIndex != 0 && this.lyricIndex != -1)  // If this song have lyrics
-                this.audio.currentTime = this.lyricKeys[this.lyricIndex] / 1000;
-            this.scheduleLyric(this.lyricIndex + 1);
-            this.audio.play();
+            this.addLyricsFor(this.audio.src);
         }
+        this.audio.play();
         this.elemStatus.innerText = '{.!Playing:.}';
         this.elemNowplaying.innerText = helper.getFilename(this.audio.src);
         this.playing = true;
@@ -128,77 +114,30 @@ class Player {
         this.audio.pause();
         this.elemStatus.innerText = '{.!Paused:.}';
         this.playing = false;
-        this.scheduleLyric(-1); // clearTimeout() next lyric schedule
     }
-    loadLyric(audiofile, callbackfn = () => undefined) {
-        // Replace .mp3 etc. with .lrc
-        let lyricfile = audiofile.split('.').slice(0, -1).join('.') + '.lrc';
-        if (window.statics.filelist.indexOf(lyricfile) == -1) {
-            // No lyric file. at least in filelist
-            window.tooltip_manager.hide();
-            this.lyricIndex = -1;
-            callbackfn();
+    convertLrcToVtt(lrc: string) {
+        let lines = lrc.split('\n');
+        return 'WEBVTT\n\n' + lines.map((item, index) => {
+            if (/^\[[a-z]{2}:(.*?)\]$/.test(item) || item.trim() == '') return '';   // Delete metadata
+            item += lines[index + 1] || '[59:59.99]';
+            item = item.replace(/^\[(.+?)\](.*?)\[(.+?)\](.*?)$/,'\n$10 --> $30\n$2\n').replace(/ ?\/ ?/g, '\n');
+            return item;
+        }).join('\n');
+    }
+    addLyricsFor(file: string) {
+        let lrcFile = file.split('.').slice(0, -1).join('.') + '.lrc';
+        if (window.statics.filelist.indexOf(lrcFile) == -1) {
+            $(this.lyricsArea).hide();
             return;
         }
-        fetch(lyricfile).then(r => {
-            if (!r.ok) {    // If 404
-                window.tooltip_manager.hide();
-                this.lyricIndex = -1;
-                callbackfn();
-            }
-            else return r.text();
-        }).then(t => {
-            if (!t) {
-                callbackfn();
-                return;
-            }
-            this.lyricIndex = 0;    // init
-            let lines = t.split('\n');
-            // [ti:title]
-            let argRegex = /^\[([a-zA-Z]{2}):(.*)\]$/;
-            // [00:00.00]lyric/translation
-            let lrcRegex = /^\[(\d+):(\d\d?)(\.\d\d?)\](.*)/;
-            this.lyricMap = {
-                0: ''
-            }
-            for (let i of lines) {
-                if (argRegex.test(i)) {
-                    this.lyricMap[0] += i.match(argRegex)[2] + ' - ';
-                } else if (lrcRegex.test(i)) {
-                    let matched = i.match(lrcRegex);
-                    let time = parseInt(matched[1]) * 60 * 1000 + parseInt(matched[2]) * 1000 + parseFloat(matched[3]) * 1000;
-                    this.lyricMap[time] = matched[4].replace('/', '\n');
-                }
-            }
-            this.lyricKeys = [];
-            for (let i in this.lyricMap) this.lyricKeys.push(parseInt(i));
-            this.scheduleLyric(this.lyricIndex);
-            callbackfn();
+        if (window.statics.filelist.indexOf(lrcFile) == -1) return;
+        fetch(lrcFile).then(r => r.text()).then(t => {
+            let commonText = t.replace(/\r?\n/g, '\n');
+            let vtt = this.convertLrcToVtt(commonText);
+            let track = this.lyricsArea.querySelector('track');
+            track.src = URL.createObjectURL(new Blob([vtt], {type: 'text/vtt;charset=utf-8'}));
+            $(this.lyricsArea).show();
         });
-    }
-    scheduleLyric(index: number) {
-        // Controls the schedule of lyric strings
-        if (this.lyricIndex == -1) return;  // If no lyrics
-        if (index == -1) {  // If want clearTimeout()
-            clearTimeout(this.lyricTimeout);
-            return;
-        }
-        let lyricMap = this.lyricMap;
-        let lyricKeys = this.lyricKeys;
-        let delay = lyricKeys[index] - (lyricKeys[index - 1] || 0);
-        this.lyricTimeout = setTimeout(() => {
-            let lyric = lyricMap[lyricKeys[index]];
-            if (lyric === undefined) return;
-            window.tooltip_manager.hide();
-            // For a smooth animation
-            setTimeout(() => {
-                window.tooltip_manager.show(lyric);
-                if (lyricKeys[index] != undefined && this.playing) {
-                    this.lyricIndex = index;
-                    this.scheduleLyric(++index);
-                }
-            }, 200);
-        }, delay - 201);
     }
 }
 window.addEventListener('DOMContentLoaded', () => window.player = new Player());

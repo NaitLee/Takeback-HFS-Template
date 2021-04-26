@@ -196,7 +196,31 @@
     font-style: italic;
 }
 
+section.lyrics {    /* Same as tooltip */
+    position: fixed;
+    bottom: 3.6em;
+    width: 100%;
+    min-height: 2em;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+video::cue {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 1em;
+    font-family: 'Takeback-Define-Font', 'Monda', sans-serif;
+    overflow: visible;
+}
+video.lyrics {
+    width: 100%;
+    height: 4em;
+}
+
 @media (max-width: 950px) {
+    body {
+        font-size: 1em;
+    }
     .part3 .left {
         bottom: 3.6em;
         overflow-x: visible;
@@ -205,6 +229,10 @@
     .part3 .right {
         min-width: unset;
         width: 100%;
+    }
+    section.lyrics {
+        bottom: unset;
+        top: 1.8em;
     }
 }
 
