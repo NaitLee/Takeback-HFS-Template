@@ -133,6 +133,7 @@ class Player {
         fetch(lrcFile).then(r => r.text()).then(t => {
             let commonText = t.replace(/\r?\n/g, '\n');
             let vtt = this.convertLrcToVtt(commonText);
+            console.log(vtt);
             let track = this.lyricsArea.querySelector('track');
             track.src = URL.createObjectURL(new Blob([vtt], {type: 'text/vtt;charset=utf-8'}));
             $(this.lyricsArea).show();

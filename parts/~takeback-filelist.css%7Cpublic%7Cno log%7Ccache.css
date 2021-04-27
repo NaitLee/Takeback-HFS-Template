@@ -200,10 +200,11 @@ section.lyrics {    /* Same as tooltip */
     position: fixed;
     bottom: 3.6em;
     width: 100%;
-    min-height: 2em;
+    height: 3.6em;
     border-top: 1px solid currentColor;
     border-bottom: 1px solid currentColor;
     background-color: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
 }
 video::cue {
     background-color: rgba(0, 0, 0, 0.8);
@@ -214,7 +215,11 @@ video::cue {
 }
 video.lyrics {
     width: 100%;
-    height: 4em;
+    height: 20em;
+    position: absolute;
+    display: block;
+    left: 0;
+    bottom: 0;
 }
 
 @media (max-width: 950px) {

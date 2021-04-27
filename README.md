@@ -22,7 +22,7 @@ Translations are keeped in `generator-template.html`. Feel free to translate thi
 
 And, there's a python3 file `release.py` for quick release to a zip.
 
-====
+--------
 
 My principle is, a template should be learnt by others, just like other open-source projects.
 
