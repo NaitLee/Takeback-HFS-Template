@@ -8,16 +8,36 @@ interface Window {
     previewer: Previewer;
     thumbs_manager: ThumbsManager;
     HFS: {
-        sid: string,
-        folder: string,
-        encodedFolder: string,
-        can_delete: string,
-        can_mkdir: string,
-        can_comment: string,
-        can_rename: string,
-        can_move: string
+        sid: string;
+        folder: string;
+        encodedFolder: string;
+        can_delete: string;
+        can_mkdir: string;
+        can_comment: string;
+        can_rename: string;
+        can_move: string;
     }
 }
+
+interface Navigator {
+    mediaSession: {
+        metadata: Object;
+        setActionHandler: (action: string, handler: Function) => void;
+    };
+}
+
+declare var MediaMetadata: {
+    new(object: {
+        title?: string,
+        artist?: string,
+        album?: string,
+        artwork?: {
+            src?: string,
+            sizes?: string,
+            type?: string,
+        }[]
+    }): Object;
+};
 
 class StaticsManager {
     typeMap: { audio: string[]; video: string[]; image: string[]; doc: string[]; };
@@ -53,6 +73,13 @@ class Player {
         this.audio.pause();
         this.audio.onended = () => this.play(1);
         this.audio.onerror = () => this.play(1);
+        if (navigator.mediaSession) {
+            navigator.mediaSession.setActionHandler('play', () => this.play());
+            navigator.mediaSession.setActionHandler('pause', () => this.pause());
+            navigator.mediaSession.setActionHandler('stop', () => this.pause());
+            navigator.mediaSession.setActionHandler('previoustrack', () => this.play(-1));
+            navigator.mediaSession.setActionHandler('nexttrack', () => this.play(1));
+        }
         this.songlist = window.statics.filelist.filter(filename => window.statics.typeMap['audio'].some(format => filename.toLowerCase().endsWith(format)));
         if (this.songlist.length != 0) $('#audioplayer').show();
         this.nowplaying = 0;
@@ -60,12 +87,12 @@ class Player {
         document.getElementById('audioplayer').querySelectorAll<HTMLElement>('*[data-player], *[data-player-alt]').forEach(element => {
             switch (element.getAttribute('data-player')) {
                 case 'next':
-                    element.addEventListener('click', event => {
+                    element.addEventListener('click', () => {
                         this.play(1);
                     });
                     break;
                 case 'pause':
-                    element.addEventListener('click', event => {
+                    element.addEventListener('click', () => {
                         this.playing ? this.pause() : this.play();
                     });
                     break;
@@ -109,6 +136,21 @@ class Player {
         this.elemStatus.innerText = '{.!Playing:.}';
         this.elemNowplaying.innerText = helper.getFilename(this.audio.src);
         this.playing = true;
+        if (navigator.mediaSession) {
+            let [title, artist] = window.helper.getFilename(this.audio.src).split(' - ').reverse();
+            let filename = this.audio.src.split('.').slice(0, -1).join('.');
+            let possibleArtworks = ['.jpg', '.png'].map(x => filename + x);
+            let foundArtwork = possibleArtworks.filter(x => window.statics.filelist.indexOf(x) != -1)[0];
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: title,
+                artist: artist,
+                artwork: foundArtwork ? [{
+                    src: foundArtwork,
+                    type: 'image/' + foundArtwork.split('.').slice(-1)[0],
+                    sizes: '192x192'
+                }] : []
+            });
+        }
     }
     pause() {
         this.audio.pause();
@@ -133,7 +175,6 @@ class Player {
         fetch(lrcFile).then(r => r.text()).then(t => {
             let commonText = t.replace(/\r?\n/g, '\n');
             let vtt = this.convertLrcToVtt(commonText);
-            console.log(vtt);
             let track = this.lyricsArea.querySelector('track');
             track.src = URL.createObjectURL(new Blob([vtt], {type: 'text/vtt;charset=utf-8'}));
             $(this.lyricsArea).show();

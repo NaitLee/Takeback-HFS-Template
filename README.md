@@ -10,16 +10,17 @@ See its [website](https://naitlee.github.io/Takeback-HFS-Template/) or [topic](h
 
 ## Developers Notes
 
+### Translate
+Translations are keeped in `generator-template.html`. Feel free to translate this template to your language!
+
+### Compile
 This template is parted into several files, inside the "parts" folder.
 
 This is for ease of management. Also, for the use of TypeScript.
 
 Build this template with [Super-Tpl](https://github.com/NaitLee/Super-Tpl), by selecting all files in "parts" folder.
 
-Make a generator by replacing `@template@` with built template in file `generator-template.html`. Be sure don't leave indents before lines!
-
-Translations are keeped in `generator-template.html`. Feel free to translate this template to your language!
-
+### Quick release
 And, there's a python3 file `release.py` for quick release to a zip.
 
 --------
