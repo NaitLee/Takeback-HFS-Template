@@ -20,7 +20,9 @@ Make a generator by replacing `@template@` with built template in file `generato
 
 Translations are keeped in `generator-template.html`. Feel free to translate this template to your language!
 
-===
+And, there's a python3 file `release.py` for quick release to a zip.
+
+====
 
 My principle is, a template should be learnt by others, just like other open-source projects.
 
