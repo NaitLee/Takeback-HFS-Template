@@ -103,7 +103,7 @@ class Player {
             else if (count >= this.songlist.length) count = count % this.songlist.length;
             this.nowplaying = count;
             this.audio.src = this.sequence == 'shuffled' ? this.songlist[count] : this.songlistShuffled[count];
-            this.addLyricsFor(this.audio.src);
+            this.addLyricsFor(decodeURIComponent(this.audio.src));
         }
         this.audio.play();
         this.elemStatus.innerText = '{.!Playing:.}';
