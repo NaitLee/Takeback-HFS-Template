@@ -7,13 +7,13 @@ interface Window {
 
 class Helper {
     getFilename(path: string) {
-        return decodeURIComponent(path.split('/').slice(-1)[0]);
+        return decodeURI(path.split('/').slice(-1)[0]);
     }
     getDirname(path: string) {
-        return decodeURIComponent(path.split('/').slice(0, -1).join('/') + '/');
+        return decodeURI(path.split('/').slice(0, -1).join('/') + '/');
     }
     getPath(url: string) {
-        return decodeURIComponent('/' + url.split('/').slice(3).join('/'));
+        return decodeURI('/' + url.split('/').slice(3).join('/'));
     }
 }
 var helper = new Helper();
