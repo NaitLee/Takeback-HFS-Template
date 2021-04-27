@@ -206,7 +206,7 @@ section.lyrics {    /* Same as tooltip */
     background-color: rgba(0, 0, 0, 0.8);
 }
 video::cue {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
     font-size: 1em;
     font-family: 'Takeback-Define-Font', 'Monda', sans-serif;

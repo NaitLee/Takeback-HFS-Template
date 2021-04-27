@@ -30,7 +30,7 @@ class StaticsManager {
             doc: ['.txt', '.html', '.htm']
         }
         this.filelist = [];
-        document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td:nth-child(1) a').forEach((element) => this.filelist.push(element.href));
+        document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td:nth-child(1) a').forEach((element) => this.filelist.push(decodeURIComponent(element.href)));
     }
 }
 window.addEventListener('DOMContentLoaded', () => window.statics = new StaticsManager());
@@ -130,7 +130,6 @@ class Player {
             $(this.lyricsArea).hide();
             return;
         }
-        if (window.statics.filelist.indexOf(lrcFile) == -1) return;
         fetch(lrcFile).then(r => r.text()).then(t => {
             let commonText = t.replace(/\r?\n/g, '\n');
             let vtt = this.convertLrcToVtt(commonText);
@@ -306,6 +305,18 @@ class Previewer {
                 mark.innerText = '{.!Selections:.}';
                 menu.push(createButton('{.!Select All.}', () => document.querySelectorAll('table#files tbody tr').forEach(e => e.classList.add('selected'))));
                 menu.push(createButton('{.!Invert.}', () => document.querySelectorAll('table#files tbody tr').forEach(e => e.classList.toggle('selected'))));
+                menu.push(createButton('{.!Mask.}', () => window.dialog.prompt('{.!Enter mask to select.}', (mask: string) => {
+                    let isRegex = /^\/.+\/$/.test(mask);
+                    if (isRegex) mask = mask.slice(1, -1);
+                    else mask = mask.replace(/\*/g, '.*').replace(/\?/, '.?');
+                    document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td a').forEach(a => {
+                        if (decodeURIComponent(a.href).match(new RegExp(mask)) !== null) {
+                            a.parentElement.parentElement.classList.add('selected');
+                        } else {
+                            a.parentElement.parentElement.classList.remove('selected');
+                        }
+                    });
+                })));
                 if (window.HFS.can_delete) {
                     menu.push(createButton('{.!Delete.}', () => this.delete(this.selectedFiles)));
                     if (window.HFS.can_move) {
@@ -328,7 +339,10 @@ class Previewer {
         this.elemContent.querySelectorAll('*').forEach(e => e.remove());
         this.elemTitle.innerText = helper.getFilename(window.HFS.folder.slice(0, -1));
     }
-    preview(url) {
+    convertSrtToVtt(srt: string) {
+        return 'WEBVTT\n\n' + srt.replace(/\{\\([ibu])\}/g, '</$1>').replace(/\{\\([ibu])1\}/g, '<$1>').replace(/\{([ibu])\}/g, '<$1>').replace(/\{\/([ibu])\}/g, '</$1>').replace(/(\d\d:\d\d:\d\d),(\d\d\d)/g, '$1.$2').concat('\n\n');
+    }
+    preview(url: string) {
         this.close();
         this.elemTitle.innerText = helper.getFilename(url);
         let type = 'unknown';
@@ -365,6 +379,18 @@ class Previewer {
                 video.src = url;
                 wrapperContent.appendChild(video);
                 video.play();
+                let srtName = video.src.split('.').slice(0, -1).join('.') + '.srt';
+                if (window.statics.filelist.indexOf(srtName) != -1) {
+                    let track = document.createElement('track');
+                    track.default = true;
+                    track.kind = 'captions';
+                    fetch(srtName).then(r => r.text()).then(t => {
+                        let commonText = t.replace(/\r?\n/g, '\n');
+                        let vtt = this.convertSrtToVtt(commonText);
+                        track.src = URL.createObjectURL(new Blob([vtt], {type: 'text/vtt;charset=utf-8'}));
+                    });
+                    video.appendChild(track);
+                }
                 break;
             case 'image':
                 let img = document.createElement('img');
