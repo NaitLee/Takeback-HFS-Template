@@ -380,7 +380,14 @@ class Previewer {
                 wrapperContent.appendChild(video);
                 video.play();
                 let srtName = video.src.split('.').slice(0, -1).join('.') + '.srt';
-                if (window.statics.filelist.indexOf(srtName) != -1) {
+                let vttName = video.src.split('.').slice(0, -1).join('.') + '.vtt';
+                if (window.statics.filelist.indexOf(vttName) != -1) {
+                    let track = document.createElement('track');
+                    track.default = true;
+                    track.kind = 'captions';
+                    track.src = vttName;
+                    video.appendChild(track);
+                } else if (window.statics.filelist.indexOf(srtName) != -1) {
                     let track = document.createElement('track');
                     track.default = true;
                     track.kind = 'captions';
