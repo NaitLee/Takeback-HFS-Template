@@ -520,16 +520,29 @@ class ThumbsManager {
         if (this.shown) return;
         this.shown = true;
         let items = document.querySelectorAll('table#files tbody tr td:nth-child(1)');
+        let imgs: Array<HTMLImageElement> = [];
         items.forEach(element => {
             let a = element.querySelector('a');
-            if (window.statics.typeMap['image'].some(x => a.href.endsWith(x))) {
+            if (window.statics.typeMap['image'].some(x => a.href.toLowerCase().endsWith(x))) {
                 let img = document.createElement('img');
                 img.classList.add('thumb');
                 img.loading = 'lazy';
-                img.src = a.href;
+                img.setAttribute('data-src', a.href);
                 element.prepend(img);
+                imgs.push(img);
             }
         });
+        let count = 0;
+        function showNextThumb() {
+            imgs[count].src = imgs[count].getAttribute('data-src');
+            if (imgs[count + 1]) {
+                imgs[count].addEventListener('load', () => {
+                    showNextThumb();
+                });
+            }
+            count++;
+        }
+        showNextThumb();
     }
 }
 window.addEventListener('DOMContentLoaded', () => window.thumbs_manager = new ThumbsManager());
