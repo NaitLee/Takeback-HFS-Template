@@ -1,4 +1,3 @@
 {.comment| Here you can include other scripts for semantic scripting .}
 
-{.$polyfills.js.}
-{.$takeback-general-main.js.}
+{.$takeback-filelist-main.js.}

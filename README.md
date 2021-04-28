@@ -2,7 +2,7 @@
 
 <img src="http://rejetto.com/forum/index.php?action=dlattach;topic=13287.0;attach=9898;image" />
 
-A modern file-sharing template for [HTTP File Server (HFS)](https://www.rejetto.com/hfs/), with a layout style of Throwback Template.
+A cool file-sharing template for [HTTP File Server (HFS)](https://www.rejetto.com/hfs/), with a layout style of Throwback Template.
 
 Also, use it in [HFS 2.4 RC](https://github.com/rejetto/hfs2/releases)
 
@@ -10,18 +10,29 @@ See its [website](https://naitlee.github.io/Takeback-HFS-Template/) or [topic](h
 
 ## Developers Notes
 
+*Any contributions are welcome~* 🎉
+
+### Intro
+This template have all things what a normal user needs.
+
+All you may do is just to suggest new features, or modify for a new layout by forking this project and creating a new branch.
+
 ### Translate
-Translations are keeped in `generator-template.html`. Feel free to translate this template to your language!
+Translations are keeped in folder `translations/`.
+
+Feel free to translate this template to your language!
 
 ### Compile
 This template is parted into several files, inside the "parts" folder.
 
-This is for ease of management. Also, for the use of TypeScript.
+This is for ease of management. Also, for the use of TypeScript, and its transpile-for-compatibility.
 
-Build this template with [Super-Tpl](https://github.com/NaitLee/Super-Tpl), by selecting all files in "parts" folder.
+Build basic version of this template with [Super-Tpl](https://github.com/NaitLee/Super-Tpl) toolchain.
 
 ### Quick release
-And, there's a python3 file `release.py` for quick release to a zip.
+There's a python3 file `release.py` for quick release to a zip.
+
+This will make as well as add translations to `generator-template.html`, thus it's ready for production use.
 
 --------
 

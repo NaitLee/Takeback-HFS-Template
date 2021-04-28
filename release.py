@@ -13,6 +13,9 @@ def write_file(filename: str, content: str):
     f.write(content)
     f.close()
 
+def remove_ext(filename: str):
+    return '.'.join(filename.split('.')[0:-1])
+
 def release():
     if not os.path.exists('../Super-Tpl/'):
         print('Please include the Super-Tpl toolkit folder as ../Super-Tpl, and convert template to ../Super-Tpl/output.tpl')
@@ -26,12 +29,27 @@ def release():
     tpl_name = 'takeback.standard.tpl'
     gen_name = 'takeback.generator.html'
     zip_name = 'takeback.zip'
+    translations_generator_folder = 'translations/generator/'
+    translations_template_folder = 'translations/template/'
     ver = sys.argv[1]
     time = datetime.datetime.now()
     comment = f'The Takeback template for HFS: {ver} | {time}\n\n(C) 2020-2021 NaitLee Soft'
 
     tpl = read_file('../Super-Tpl/output.tpl')
     gen = read_file('generator-template.html').replace('@template@', tpl)
+
+    tr_gen = []
+    tr_tpl = []
+    for i in os.listdir(translations_generator_folder):
+        lng = remove_ext(i)
+        tr = read_file(translations_generator_folder + i)
+        tr_gen.append(f'[{lng}]\n{tr}\n')
+    for i in os.listdir(translations_template_folder):
+        lng = remove_ext(i)
+        tr = read_file(translations_template_folder + i)
+        tr_tpl.append(f'<textarea id="takeback-translation-{lng}" style="display: none;">\n[^special:strings]\n{tr}\n</textarea>\n')
+    gen = gen.replace('@translations-generator@', '\n'.join(tr_gen)).replace('@translations-template@', '\n'.join(tr_tpl))
+
     write_file(tpl_name, tpl)
     write_file(gen_name, gen)
 
