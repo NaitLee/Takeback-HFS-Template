@@ -8,4 +8,5 @@ Title in browser. '0' to use default.=浏览器标题。“0”使用默认。
 Header. '0' to use default.=页面标题。“0”使用默认。
 Mini-player's appearance. '0' to use default.=迷你播放器表情。“0”使用默认。
 Time format. mm/dd/yyyy hh:MM:ss ampm=时间格式。mm/dd/yyyy hh:MM:ss ampm
+Addons: =插件：
 Get template=获取模板

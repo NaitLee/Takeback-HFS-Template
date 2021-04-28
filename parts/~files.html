@@ -1,34 +1,36 @@
 
 <!-- Filelist -->
 <section class="part1">
-    <table id="files">
-        <thead>
-            <tr>
-                <td>
-                    <a class="invert" href="./?sort=e" data-tooltip="{.!Click to sort files by extension.}">&nbsp;🔷</a>
-                    <a class="invert" href="./?sort=n" data-tooltip="{.!Click to sort files by name.}">
-                        {.!Item.} (%number%)
-                    </a>
-                    <a id="showthumb" class="invert" href="javascript:" data-tooltip="{.!Show thumbnails of photos.}" style="display: none; margin-left: 2em;">
-                        📸 {.!Photo Thumbnails.}
-                    </a>
-                </td>
-                <td>
-                    <a class="invert" href="./?sort=!t" data-tooltip="{.!Click to sort files by time.} [ {.!Format:.}mm/dd/yyyy ]">
-                        {.!Last Modified.}
-                    </a>
-                </td>
-                <td>
-                    <a class="invert" href="./?sort=s" data-tooltip="{.!Click to sort files by size.}">
-                        {.!Size.}
-                    </a>
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            %list%
-        </tbody>
-    </table>
+    <main>
+        <table id="files">
+            <thead>
+                <tr>
+                    <td>
+                        <a class="invert" href="./?sort=e" data-tooltip="{.!Click to sort files by extension.}">&nbsp;🔷</a>
+                        <a class="invert" href="./?sort=n" data-tooltip="{.!Click to sort files by name.}">
+                            {.!Item.} (%number%)
+                        </a>
+                        <a id="showthumb" class="invert" href="javascript:" data-tooltip="{.!Show thumbnails of photos.}" style="display: none; margin-left: 2em;">
+                            📸 {.!Photo Thumbnails.}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="invert" href="./?sort=!t" data-tooltip="{.!Click to sort files by time.} [ {.!Format:.}mm/dd/yyyy ]">
+                            {.!Last Modified.}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="invert" href="./?sort=s" data-tooltip="{.!Click to sort files by size.}">
+                            {.!Size.}
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                %list%
+            </tbody>
+        </table>
+    </main>
 </section>
 <!-- Footer -->
 <section class="part2">

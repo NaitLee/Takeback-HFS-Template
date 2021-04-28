@@ -172,6 +172,7 @@
             <label><input type="text" name="_header" placeholder="Header. '0' to use default." value="" /></label><br />
             <label><input type="text" name="_player" placeholder="Mini-player's appearance. '0' to use default." value="" /></label><br />
             <label><input type="text" name="_time_format" placeholder="Time format. mm/dd/yyyy hh:MM:ss ampm" value="" /></label><br />
+            <label>Addons: <input type="file" name="addons" multiple /></label><br />
             <br />
             <a class="invert" href="javascript:">Get template</a>
         </form>
@@ -189,14 +190,24 @@
             let template = document.getElementById('takeback-template').textContent;
             template = translation + '\n' + template;
             let customize = [... forms].map(x => `${x.getAttribute('name')}=${getValue(x)}`).join('\n');
-            let result = `\n[^special:strings]\n${customize}\n${template}`;
-            let blob = new Blob([result], {type: 'application/octet-stream'});
-            let url = URL.createObjectURL(blob);
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = 'takeback.customized.tpl';
-            a.click();
-        })
+            let addons = [];
+            let addonFiles = document.querySelector('input[name="addons"]').files;
+            for (let i = 0; i < addonFiles.length; i++) {
+                let reader = new FileReader();
+                reader.onload = event0 => {
+                    addons.push(event0.target.result);
+                    if (i < addonFiles.length - 1) return;
+                    let result = `\n[^special:strings]\n${customize}\n${template}\n${addons.join('\n')}`;
+                    let blob = new Blob([result], {type: 'application/octet-stream'});
+                    let url = URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'takeback.customized.tpl';
+                    a.click();
+                }
+                reader.readAsText(addonFiles[i]);
+            }
+        });
     </script>
     <script>
         (function (root, factory) {

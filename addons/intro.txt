@@ -1,0 +1,5 @@
+colorful.tpl
+- Makes template text colorful, attractive
+
+star-wars.tpl
+- The filelist will be in a 3D view

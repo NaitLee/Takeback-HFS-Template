@@ -28,6 +28,7 @@ def release():
     # Edit as you want
     tpl_name = 'takeback.standard.tpl'
     gen_name = 'takeback.generator.html'
+    addons_folder = 'addons/'
     zip_name = 'takeback.zip'
     translations_generator_folder = 'translations/generator/'
     translations_template_folder = 'translations/template/'
@@ -56,6 +57,8 @@ def release():
     z = zipfile.ZipFile(zip_name, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
     z.write(tpl_name)
     z.write(gen_name)
+    for i in os.listdir(addons_folder):
+        z.write(addons_folder + i)
     z.comment = comment.encode('utf-8')
     z.close()
 
