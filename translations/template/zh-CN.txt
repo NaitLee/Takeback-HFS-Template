@@ -94,3 +94,4 @@ Please try again later.=请稍后重试。
 You have found a 404 page.=您发现了一个 404 页面。
 Folder=文件夹
 Enter mask to select=输入通配符以选择
+Last Added=添加日期

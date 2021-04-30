@@ -4,3 +4,5 @@ _title=0
 _player=0
 _time_format=0
 _header=0
+_use_item_added=0
+_optimize_performance=1

@@ -1,0 +1,15 @@
+{.if|{.!_optimize_performance.}|{:
+    {.set item|/|not as download=*.htm;*.html;*.css;*.mp3;*.png;*.jpg;*.jpeg;*.gif.;*.js.}
+    {.set ini|use-system-icons=no.}
+    {.set ini|tray-icon-for-each-download=no.}
+    {.set ini|enable-fingerprints=no.}
+    {.set ini|flash-on= .}
+    {.comment|
+        New version needs comment feature
+        {.set ini|support-descript.ion=no.}
+        {.set ini|load-single-comment-files=no.}
+    .}
+    {.set ini|send-hfs-identifier=no.}
+    {.set ini|max-connections=-1.}
+    {.set ini|use-iso-date-format=yes.}
+:}.}

@@ -526,7 +526,7 @@ class ThumbsManager {
             if (window.statics.typeMap['image'].some(x => a.href.toLowerCase().endsWith(x))) {
                 let img = document.createElement('img');
                 img.classList.add('thumb');
-                img.loading = 'lazy';
+                // img.loading = 'lazy';    // Breaks our purpose
                 img.setAttribute('data-src', a.href);
                 element.prepend(img);
                 imgs.push(img);
@@ -537,7 +537,7 @@ class ThumbsManager {
             imgs[count].src = imgs[count].getAttribute('data-src');
             if (imgs[count + 1]) {
                 imgs[count].addEventListener('load', () => {
-                    showNextThumb();
+                    setTimeout(showNextThumb, 181);
                 });
             }
             count++;

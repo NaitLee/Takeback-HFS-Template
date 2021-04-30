@@ -167,6 +167,8 @@
                 <label><input type="radio" name="language" data-value="zh-CN" />Simplified Chinese (简体中文)</label>
             </fieldset>
             <label><input type="checkbox" checked name="_use_font" />Use additional font</label><br />
+            <label><input type="checkbox" checked name="_optimize_performance" />Apply performance optimization</label><br />
+            <label><input type="checkbox" name="_use_item_added" />Use "Item added" rather than modified</label><br />
             <label><input type="text" name="_background_image" placeholder="Background image location. '0' to disable." value="" /></label><br />
             <label><input type="text" name="_title" placeholder="Title in browser. '0' to use default." value="" /></label><br />
             <label><input type="text" name="_header" placeholder="Header. '0' to use default." value="" /></label><br />
@@ -186,24 +188,27 @@
         document.querySelector('a').addEventListener('click', event => {
             let language = [... document.querySelectorAll('input[name="language"]')].filter(x => x.checked)[0].getAttribute('data-value');
             let translation = document.getElementById(`takeback-translation-${language}`).textContent;
-            let forms = document.querySelectorAll('input[type="text"], input[type="checkbox"]');
+            let forms = [... document.querySelectorAll('input')].filter(x => x.getAttribute('name').startsWith('_'));
             let template = document.getElementById('takeback-template').textContent;
             template = translation + '\n' + template;
-            let customize = [... forms].map(x => `${x.getAttribute('name')}=${getValue(x)}`).join('\n');
+            let customize = forms.map(x => `${x.getAttribute('name')}=${getValue(x)}`).join('\n');
             let addons = [];
             let addonFiles = document.querySelector('input[name="addons"]').files;
+            function getTemplate() {
+                let result = `\n[^special:strings]\n${customize}\n${template}\n${addons.join('\n')}`;
+                let blob = new Blob([result], {type: 'application/octet-stream'});
+                let url = URL.createObjectURL(blob);
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = 'takeback.customized.tpl';
+                a.click();
+            }
+            if (addonFiles.length == 0) getTemplate();  // not selected addon files
             for (let i = 0; i < addonFiles.length; i++) {
                 let reader = new FileReader();
                 reader.onload = event0 => {
                     addons.push(event0.target.result);
-                    if (i < addonFiles.length - 1) return;
-                    let result = `\n[^special:strings]\n${customize}\n${template}\n${addons.join('\n')}`;
-                    let blob = new Blob([result], {type: 'application/octet-stream'});
-                    let url = URL.createObjectURL(blob);
-                    let a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'takeback.customized.tpl';
-                    a.click();
+                    if (i == addonFiles.length - 1) getTemplate();
                 }
                 reader.readAsText(addonFiles[i]);
             }
