@@ -15,7 +15,7 @@
                         </a>
                     </td>
                     <td>
-                        <a class="invert" href="./?sort=!t" data-tooltip="{.!Click to sort files by time.} [ {.!Format:.}mm/dd/yyyy ]">
+                        <a class="invert" href="./?sort=!t" data-tooltip="{.!Click to sort files by time.} [ {.!Format:.}{.fallback|{.!_time_format.}|mm/dd/yyyy.} ]">
                             {.if|{.!_use_item_added.}|{.!Last Added.}|{.!Last Modified.}.}
                         </a>
                     </td>

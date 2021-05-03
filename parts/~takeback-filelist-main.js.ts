@@ -40,14 +40,15 @@ declare var MediaMetadata: {
 };
 
 class StaticsManager {
-    typeMap: { audio: string[]; video: string[]; image: string[]; doc: string[]; };
+    typeMap: Object;
     filelist: string[];
     constructor() {
         this.typeMap = {
             audio: ['.mp3', '.ogg', '.wav', '.m4a'],
             video: ['.mp4', '.ogv', '.mpv', '.webm'],
             image: ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-            doc: ['.txt', '.html', '.htm']
+            doc: ['.txt', '.html', '.htm'],
+            playlist: ['.m3u', '.m3u8']
         }
         this.filelist = [];
         document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td:nth-child(1) a').forEach((element) => this.filelist.push(element.href));
@@ -129,7 +130,7 @@ class Player {
             if (count < 0) count = this.songlist.length + count;
             else if (count >= this.songlist.length) count = count % this.songlist.length;
             this.nowplaying = count;
-            this.audio.src = this.sequence == 'shuffled' ? this.songlist[count] : this.songlistShuffled[count];
+            this.audio.src = this.sequence == 'shuffle' ? this.songlistShuffled[count] : this.songlist[count];
             this.addLyricsFor(this.audio.src);
         }
         this.audio.play();
@@ -184,7 +185,7 @@ class Player {
 window.addEventListener('DOMContentLoaded', () => window.player = new Player());
 
 class Previewer {
-    selectedFiles: any[];
+    selectedFiles: string[];
     elemTitle: HTMLElement;
     elemMenu: HTMLElement;
     elemContent: HTMLElement;
@@ -203,10 +204,8 @@ class Previewer {
             });
         });
         document.querySelectorAll('table#files tbody tr').forEach(element => {
-            element.addEventListener('click', event => {
+            element.addEventListener('click', () => {
                 element.classList.toggle('selected');
-                let path = helper.getPath(element.querySelector<HTMLAnchorElement>('td:nth-child(1) a').href);
-                // if (!path.endsWith('/')) this.preview(path);
                 this.selectedFiles = [... document.querySelectorAll('table#files tbody tr.selected')].map(x => helper.getPath(x.querySelector<HTMLAnchorElement>('td:nth-child(1) a').href));
                 this.initMenu('selections');
             });
@@ -215,7 +214,7 @@ class Previewer {
         document.getElementById('preview').querySelectorAll<HTMLElement>('*[data-preview]').forEach(element => {
             switch (element.getAttribute('data-preview')) {
                 case 'close':
-                    element.addEventListener('click', event => {
+                    element.addEventListener('click', () => {
                         this.close();
                         this.initMenu();
                     });
@@ -406,7 +405,7 @@ class Previewer {
                 let a0 = document.createElement('a');
                 a0.href = 'javascript:';
                 a0.innerText = '[ {.!Move to mini player.} ]';
-                a0.addEventListener('click', event => {
+                a0.addEventListener('click', () => {
                     this.close.bind(this)();
                     window.player.sequence = 'shuffle';
                     window.player.nowplaying = 0;
@@ -448,7 +447,7 @@ class Previewer {
                 let a1 = document.createElement('a');
                 a1.href = 'javascript:';
                 a1.innerText = '[ {.!Start Slideshow.} ]';
-                a1.addEventListener('click', event => {
+                a1.addEventListener('click', () => {
                     this.close.bind(this)();
                     this.slideshow();
                 });
@@ -459,11 +458,31 @@ class Previewer {
                 iframe.src = url;
                 wrapperContent.appendChild(iframe);
                 break;
+            case 'playlist':
+                let span1 = document.createElement('span');
+                span1.innerText = '{.!This is a playlist..}';
+                wrapperContent.appendChild(span1);
+                let a2 = document.createElement('a');
+                a2.href = 'javascript:';
+                a2.innerText = '[ {.!Play.} ]';
+                a2.addEventListener('click', () => {
+                    window.player.sequence = 'sequence';
+                    window.player.nowplaying = -1;
+                    fetch(url).then(r => r.text()).then(t => {
+                        window.player.songlist = t.split('\n').map(x => {
+                            return encodeURIComponent(((x[0] == '\'' && x.slice(-1) == '\'') || (x[0] == '"' && x.slice(-1) == '"')) ? x.slice(1, -1) : x);
+                        }).filter(x => x.trim() != '');
+                        window.player.play(1);
+                        this.close.bind(this)();
+                    });
+                });
+                wrapperActions.appendChild(a2);
+                break;
             default:
-                let span = document.createElement('span');
-                span.classList.add('nopreview');
-                span.innerText = '{.!No preview available.}';
-                wrapperContent.appendChild(span);
+                let span0 = document.createElement('span');
+                span0.classList.add('nopreview');
+                span0.innerText = '{.!No preview available.}';
+                wrapperContent.appendChild(span0);
                 break;
         }
         this.elemContent.appendChild(wrapperContent);
