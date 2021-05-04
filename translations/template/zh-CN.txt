@@ -95,3 +95,5 @@ You have found a 404 page.=您发现了一个 404 页面。
 Folder=文件夹
 Enter mask to select=输入通配符以选择
 Last Added=添加日期
+Warning: It's insecure to change password here=警告：在此处更改密码不安全
+You cannot change your password=您不可以更改您的密码

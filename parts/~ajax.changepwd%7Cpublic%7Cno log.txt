@@ -1,7 +1,15 @@
 
 {.check session.}
 {.break|if={.not|{.can change pwd.}.} |result=Forbidden.}
-{.if|{.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}|
-    {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|OK|Failed.}:}|
-    {:Unauthorized:}
-.}
+{.if|{.=|{.cut|0|4|%version%.}|2.3.}|{:
+    {.if|{.=|{.get account||password.}|{.force ansi|{.postvar|old.}.}.}|
+        {:{.if|{.length|{.set account||password={.force ansi|{.postvar|new.}.}.}/length.}|OK|Failed.}:}|
+        {:Unauthorized:}
+    .}
+:}.}
+{.if|{.=|{.cut|0|4|%version%.}|2.4.}|{:
+    {.if|{.=|{.sha256|{.get account||password.}.}|{.force ansi|{.postvar|old.}.}.}|
+        {:{.if|{.length|{.set account||password={.force ansi|{.base64decode|{.postvar|new.}.}.}.}/length.}|OK|Failed.}:}|
+        {:Unauthorized:}
+    .}
+:}.}

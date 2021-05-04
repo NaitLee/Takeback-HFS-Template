@@ -19,12 +19,13 @@
         </p>
         <form id="changepwd">
             <p>{.!Change password.}</p>
+            <p>{.!Warning: It's insecure to change password here.}</p>
             <input type="password" name="old" placeholder="{.!Old password.}" /><br />
             <input type="password" name="new" placeholder="{.!New password.}" /><br />
             <input type="password" name="verify" placeholder="{.!Enter again.}" /><br />
             <input type="submit" value="{.!OK.}" />
         </form>
-        <script src='/~sha256.js'></script>
+        <script src="/~sha256.js"></script>
         <script>
             class AccountManager {
                 constructor() {
@@ -51,6 +52,8 @@
                                     }
                                     break;
                                 case 'Forbidden':
+                                    dialog.alert('{.!You cannot change your password.}', () => location.href = location.hash.slice(1));
+                                    break;
                                 case 'Failed':
                                     dialog.alert('{.!Failed.}', () => location.href = location.hash.slice(1));
                                     break;
@@ -60,7 +63,16 @@
                                     break;
                             }
                         }
-                        xhr.send(`token=${HFS.sid}&old=${SHA256.hash(this.passwords[0].value)}&new=${btoa(unescape(encodeURIComponent(this.passwords[1].value)))}`);
+                        let submitString = '';
+                        switch (window.HFS.version.slice(0, 3)) {
+                            case '2.3':
+                                submitString = `token=${HFS.sid}&old=${this.passwords[0].value}&new=${unescape(encodeURIComponent(this.passwords[1].value))}`;
+                                break;
+                            case '2.4':
+                                submitString = `token=${HFS.sid}&old=${SHA256.hash(this.passwords[0].value)}&new=${btoa(unescape(encodeURIComponent(this.passwords[1].value)))}`;
+                                break;
+                        }
+                        xhr.send(submitString);
                     });
                     document.getElementById('logout').addEventListener('click', event => {
                         fetch('/?mode=logout').then(r => location.href = location.hash.slice(1));
@@ -82,10 +94,22 @@
             <label><input type="checkbox" name="remember" /> {.!Remember credentials.}</label>
             <input type="submit" value="{.!Login.}" />
         </form>
-        <script src='/~sha256.js'></script>
         <script>
             class LoginManager {
                 constructor() {
+                    let hashScript = document.createElement('script');
+                    this.hashMethod = 'plain';
+                    switch (window.HFS.version.slice(0, 3)) {
+                        case '2.3':
+                            hashScript.src = '/~md5.js';
+                            this.hashMethod = 'md5';
+                            break;
+                        case '2.4':
+                            hashScript.src = '/~sha256.js';
+                            this.hashMethod = 'sha256';
+                            break;
+                    }
+                    document.head.appendChild(hashScript);
                     this.inputUsername = document.querySelector('input[name="username"]');
                     this.inputPassword = document.querySelector('input[name="password"]');
                     this.inputRemember = document.querySelector('input[name="remember"]');
@@ -107,12 +131,29 @@
                     let xhr = new XMLHttpRequest();
                     xhr.open('POST', '/?mode=login');
                     let formdata = new FormData();
-                    formdata.append('user', username);
-                    if (typeof SHA256 == 'undefined') {
-                        formdata.append('password', password);
-                    } else {
-                        let hashed = SHA256.hash(SHA256.hash(password).toLowerCase() + token).toLowerCase();
-                        formdata.append('passwordSHA256', hashed);
+                    switch (this.hashMethod) {
+                        case 'plain':
+                            formdata.append('user', username);
+                            formdata.append('password', password);
+                            break;
+                        case 'md5':
+                            formdata.append('__USER', username);
+                            if (typeof MD5 == 'undefined') {
+                                formdata.append('__PASSWORD', password);
+                            } else {
+                                let hashed = MD5(MD5(password).toUpperCase()+token).toUpperCase();
+                                formdata.append('__PASSWORD_MD5', hashed);
+                            }
+                            break;
+                        case 'sha256':
+                            formdata.append('user', username);
+                            if (typeof SHA256 == 'undefined') {
+                                formdata.append('password', password);
+                            } else {
+                                let hashed = SHA256.hash(SHA256.hash(password).toLowerCase() + token).toLowerCase();
+                                formdata.append('passwordSHA256', hashed);
+                            }
+                            break;
                     }
                     xhr.onload = () => {
                         let message = xhr.responseText.trim();
@@ -137,7 +178,8 @@
                                 this.inputPassword.value = '';
                                 break;
                             default:
-                                dialog(`{.!Error:.}${message}`);
+                                // 2.3 OK redirects to previous page
+                                location.href = location.hash.slice(1);
                                 break;
                         }
                     }

@@ -16,6 +16,7 @@ interface Window {
         can_comment: string;
         can_rename: string;
         can_move: string;
+        version: string;
     }
 }
 
@@ -470,7 +471,7 @@ class Previewer {
                     window.player.nowplaying = -1;
                     fetch(url).then(r => r.text()).then(t => {
                         window.player.songlist = t.split('\n').map(x => {
-                            return encodeURIComponent(((x[0] == '\'' && x.slice(-1) == '\'') || (x[0] == '"' && x.slice(-1) == '"')) ? x.slice(1, -1) : x);
+                            return encodeURI(((x[0] == '\'' && x.slice(-1) == '\'') || (x[0] == '"' && x.slice(-1) == '"')) ? x.slice(1, -1) : x);
                         }).filter(x => x.trim() != '');
                         window.player.play(1);
                         this.close.bind(this)();
