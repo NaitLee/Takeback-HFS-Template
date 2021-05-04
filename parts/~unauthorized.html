@@ -1,2 +1,10 @@
-
-{.redirect|/~login.}
+{.if|%user%|{:
+    {.get-common-html|
+        <title>{.!Session broken.}</title>
+    |
+        <h1>{.!Session broken.}</h1>
+        <p>{.!Please restart browser or HFS.}</p>
+    .}
+:}|{:
+    {.redirect|/~signin.}
+:}.}
