@@ -6,14 +6,18 @@ interface Window {
 }
 
 class Helper {
+    uniformURI(str: string) {
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+        return decodeURIComponent(str).replace(/#/g, '%23');
+    }
     getFilename(path: string) {
-        return decodeURI(path.split('/').slice(-1)[0]);
+        return this.uniformURI(path.split('/').slice(-1)[0]);
     }
     getDirname(path: string) {
-        return decodeURI(path.split('/').slice(0, -1).join('/') + '/');
+        return this.uniformURI(path.split('/').slice(0, -1).join('/') + '/');
     }
     getPath(url: string) {
-        return decodeURI('/' + url.split('/').slice(3).join('/'));
+        return this.uniformURI('/' + url.split('/').slice(3).join('/'));
     }
 }
 var helper = new Helper();

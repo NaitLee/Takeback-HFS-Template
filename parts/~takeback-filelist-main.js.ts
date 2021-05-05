@@ -52,7 +52,7 @@ class StaticsManager {
             playlist: ['.m3u', '.m3u8']
         }
         this.filelist = [];
-        document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td:nth-child(1) a').forEach((element) => this.filelist.push(element.href));
+        document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td:nth-child(1) a').forEach((element) => this.filelist.push(helper.uniformURI(element.href)));
     }
 }
 window.addEventListener('DOMContentLoaded', () => window.statics = new StaticsManager());
@@ -169,7 +169,7 @@ class Player {
         }).join('\n');
     }
     addLyricsFor(file: string) {
-        let lrcFile = file.split('.').slice(0, -1).join('.') + '.lrc';
+        let lrcFile = helper.uniformURI(file.split('.').slice(0, -1).join('.') + '.lrc');
         if (window.statics.filelist.indexOf(lrcFile) == -1) {
             $(this.lyricsArea).hide();
             return;
@@ -240,7 +240,7 @@ class Previewer {
             xhr.open('POST', window.HFS.folder);
 	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
             xhr.onload = () => {
-                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.encodedFolder ? '../' : './'));
+                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.folder ? '../' : './'));
             }
             xhr.send(`action=delete&selection=${items.join('&selection=')}`);
         });
@@ -251,7 +251,7 @@ class Previewer {
             xhr.open('POST', './?mode=section&id=ajax.move');
 	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
             xhr.onload = () => {
-                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.encodedFolder ? '../' : './'));
+                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.folder ? '../' : './'));
             }
             xhr.send(`path=${helper.getDirname(items[0])}&from=${items.map(x => helper.getFilename(x)).join(':')}&to=${target}&token=${window.HFS.sid}`);
         });
@@ -266,7 +266,7 @@ class Previewer {
             xhr.open('POST', './?mode=section&id=ajax.rename');
 	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
             xhr.onload = () => {
-                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.encodedFolder ? '../' : './'));
+                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.folder ? '../' : './'));
             }
             xhr.send(`from=${items.join(':')}&to=${target}&token=${window.HFS.sid}`);
         });
@@ -277,7 +277,7 @@ class Previewer {
             xhr.open('POST', './?mode=section&id=ajax.comment');
 	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
             xhr.onload = () => {
-                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.encodedFolder ? '../' : './'));
+                window.dialog.alert('{.!Success.}', () => location.href = (items[0] == window.HFS.folder ? '../' : './'));
             }
             xhr.send(`files=${items.join(':')}&text=${comment}&token=${window.HFS.sid}`);
         });
@@ -316,15 +316,15 @@ class Previewer {
             case 'folder':
                 mark.innerText = '{.!Folder:.}';
                 if (window.HFS.can_delete) {
-                    menu.push(createButton('{.!Delete.}', () => this.delete([window.HFS.encodedFolder])));
+                    menu.push(createButton('{.!Delete.}', () => this.delete([window.HFS.folder])));
                     if (window.HFS.can_move) {
-                        menu.push(createButton('{.!Move.}', () => this.move([window.HFS.encodedFolder])));
+                        menu.push(createButton('{.!Move.}', () => this.move([window.HFS.folder])));
                     }
                     if (window.HFS.can_rename) {
-                        menu.push(createButton('{.!Rename.}', () => this.rename([window.HFS.encodedFolder])));
+                        menu.push(createButton('{.!Rename.}', () => this.rename([window.HFS.folder])));
                     }
                     if (window.HFS.can_comment) {
-                        menu.push(createButton('{.!Comment.}', () => this.comment([window.HFS.encodedFolder])));
+                        menu.push(createButton('{.!Comment.}', () => this.comment([window.HFS.folder])));
                     }
                 }
                 break;
@@ -352,7 +352,7 @@ class Previewer {
                     if (isRegex) mask = mask.slice(1, -1);
                     else mask = mask.replace(/\*/g, '.*').replace(/\?/, '.?');
                     document.querySelectorAll<HTMLAnchorElement>('table#files tbody tr td a').forEach(a => {
-                        if (decodeURIComponent(a.href).match(new RegExp(mask)) !== null) {
+                        if (helper.uniformURI(a.href).match(new RegExp(mask)) !== null) {
                             a.parentElement.parentElement.classList.add('selected');
                         } else {
                             a.parentElement.parentElement.classList.remove('selected');
@@ -471,7 +471,7 @@ class Previewer {
                     window.player.nowplaying = -1;
                     fetch(url).then(r => r.text()).then(t => {
                         window.player.songlist = t.split('\n').map(x => {
-                            return encodeURI(((x[0] == '\'' && x.slice(-1) == '\'') || (x[0] == '"' && x.slice(-1) == '"')) ? x.slice(1, -1) : x);
+                            return helper.uniformURI(((x[0] == '\'' && x.slice(-1) == '\'') || (x[0] == '"' && x.slice(-1) == '"')) ? x.slice(1, -1) : x);
                         }).filter(x => x.trim() != '');
                         window.player.play(1);
                         this.close.bind(this)();

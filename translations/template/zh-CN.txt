@@ -99,3 +99,4 @@ Warning: It's insecure to change password here=警告：在此处更改密码不
 You cannot change your password=您不可以更改您的密码
 Session broken=会话已损坏
 Please restart browser or HFS=请重启浏览器或 HFS
+This is a playlist.=这是一个播放列表。
