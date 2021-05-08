@@ -1,5 +1,5 @@
 
-[+]
+[+common-html]
 <style>
     .animator-show { opacity: unset; transform: unset; }
     .animator-hide { opacity: 0; transform: unset; }
@@ -86,6 +86,9 @@
     }
     .part3 .right #preview .nopreview {
         color: #777;
+    }
+    .part3 .right #preview a.download span {
+        color: #444;
     }
     @media (max-width: 950px) {
         .part0, .part1, .part2 {
