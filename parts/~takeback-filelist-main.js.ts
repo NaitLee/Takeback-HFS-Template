@@ -71,10 +71,6 @@ class Player {
         this.lyricsArea = document.querySelector('section.lyrics');
         this.sequence = 'shuffle';
         this.playing = false;
-        this.audio = this.lyricsArea.querySelector('video');
-        this.audio.pause();
-        this.audio.onended = () => this.play(1);
-        this.audio.onerror = () => this.play(1);
         if (navigator.mediaSession) {
             navigator.mediaSession.setActionHandler('play', () => this.play());
             navigator.mediaSession.setActionHandler('pause', () => this.pause());
@@ -131,6 +127,14 @@ class Player {
             if (count < 0) count = this.songlist.length + count;
             else if (count >= this.songlist.length) count = count % this.songlist.length;
             this.nowplaying = count;
+            // Webkit browsers cannot handle <video> <track> src change properly
+            // So create a new <video> everytime play
+            this.audio = document.createElement('video');
+            this.audio.classList.add('lyrics');
+            this.lyricsArea.querySelectorAll('video').forEach(e => e.remove());
+            this.lyricsArea.appendChild(this.audio);
+            this.audio.onended = () => this.play(1);
+            this.audio.onerror = () => this.play(1);
             this.audio.src = this.sequence == 'shuffle' ? this.songlistShuffled[count] : this.songlist[count];
             this.addLyricsFor(this.audio.src);
         }
@@ -177,7 +181,11 @@ class Player {
         fetch(lrcFile).then(r => r.text()).then(t => {
             let commonText = t.replace(/\r?\n/g, '\n');
             let vtt = this.convertLrcToVtt(commonText);
-            let track = this.lyricsArea.querySelector('track');
+            // let track = this.lyricsArea.querySelector('track');
+            let track = document.createElement('track');
+            track.kind = 'captions';
+            track.default = true;
+            this.audio.appendChild(track);
             track.src = URL.createObjectURL(new Blob([vtt], {type: 'text/vtt;charset=utf-8'}));
             $(this.lyricsArea).show();
         });
