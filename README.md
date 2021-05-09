@@ -2,7 +2,13 @@
 
 <img src="https://camo.githubusercontent.com/687218ac1d4ad59dafea8da6b06ca05a358712d6faa1723bcdfc96f427f69236/687474703a2f2f72656a6574746f2e636f6d2f666f72756d2f696e6465782e7068703f616374696f6e3d646c6174746163683b746f7069633d31333238372e303b6174746163683d393839383b696d616765" />
 
-🌈 A cool file-sharing template for [HTTP File Server (HFS)](https://www.rejetto.com/hfs/), with a layout style of Throwback Template. Some skins are supported as addons.
+🌈 A cool file-sharing template for [HTTP File Server (HFS)](https://www.rejetto.com/hfs/), with a layout style of Throwback Template.
+
+Some skins are supported as addons:
+- HFS 2.4 Default template
+- Throwback (Retro)
+- White (FTP)
+- ... You can make one too!
 
 Also, for better power use it in [HFS 2.4 RC](https://github.com/rejetto/hfs2/releases)
 

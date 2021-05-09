@@ -9,3 +9,6 @@ hfs-2.4.tpl
 
 throwback.tpl
 - Skin: back to classic Throwback style
+
+white.tpl
+- Skin: FTP like page
