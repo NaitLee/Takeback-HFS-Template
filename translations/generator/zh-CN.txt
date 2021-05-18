@@ -13,3 +13,5 @@ Mini-player's appearance. '0' to use default.=迷你播放器表情。“0”使
 Time format. mm/dd/yyyy hh:MM:ss ampm=时间格式。mm/dd/yyyy hh:MM:ss ampm
 Addons: =插件：
 Get template=获取模板
+Target version:=目标版本：
+Custom font:=自定义字体：
