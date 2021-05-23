@@ -4,6 +4,9 @@ colorful.tpl
 star-wars.tpl
 - The filelist will be in a 3D view
 
+pulsing.tpl
+- Links will pulse when hover
+
 hfs-2.4.tpl
 - Skin: make the template look like HFS 2.4 default template
 
