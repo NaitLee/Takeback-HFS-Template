@@ -169,25 +169,58 @@
                 <label><input type="radio" name="version" data-value="2.3" />2.3</label>
                 <label><input type="radio" name="version" data-value="2.4" checked />2.4</label>
             </p>
-            <label><input type="checkbox" checked name="_use_font" />Use additional font</label><br />
-            <label>Custom font:<input type="file" name="custom-font" /></label><br />
-            <label><input type="checkbox" checked name="_optimize_performance" />Apply performance optimization</label><br />
-            <label><input type="checkbox" name="_use_item_added" />Use "Item added" rather than modified</label><br />
-            <label><input type="text" name="_background_image" placeholder="Background image location. '0' to disable." value="" /></label><br />
-            <label><input type="text" name="_title" placeholder="Title in browser. '0' to use default." value="" /></label><br />
-            <label><input type="text" name="_header" placeholder="Header. '0' to use default." value="" /></label><br />
-            <label><input type="text" name="_player" placeholder="Mini-player's appearance. '0' to use default." value="" /></label><br />
-            <label><input type="text" name="_time_format" placeholder="Time format. mm/dd/yyyy hh:MM:ss ampm" value="" /></label><br />
-            <label>Addons: <input type="file" name="addons" multiple /></label><br />
+            <p>
+                <label><input type="checkbox" checked name="_use_font" />Use additional font</label><br /><br />
+                <label><input type="checkbox" name="_use_index" onclick="document.getElementById('index_config').style.display = 'block';" />Use customized index page</label><br />
+            </p>
+            <fieldset style="width: 33%; margin: auto; display: none;" id="index_config">
+                <legend>Index page config</legend>
+                <p>Step 1</p>
+                <label><input type="text" placeholder="Enter tab title..." data-index-cfg="Title" /></label><br />
+                <label><input type="text" placeholder="Enter nav title..." data-index-cfg="Header0" /></label><br />
+                <label><input type="text" placeholder="Enter header..." data-index-cfg="Header1" /></label><br />
+                <label><input type="text" placeholder="Enter footer..." data-index-cfg="Footer" /></label><br />
+                <br />
+                <a class="invert" href="javascript:" data-index-cfg="done-step1">Done</a>
+                <br /><br /><hr />
+                <p>Step 2</p>
+                <label><input type="text" placeholder="Enter item name..." data-index-cfg="ItemName" /></label><br />
+                <label><input type="text" placeholder="Enter item link..." data-index-cfg="ItemLink" /></label><br />
+                <label><input type="text" placeholder="Enter item description..." data-index-cfg="ItemDesc" /></label><br />
+                <br />
+                <a class="invert" href="javascript:" data-index-cfg="input-nav">Input as nav item</a>
+                <a class="invert" href="javascript:" data-index-cfg="input-index">Input as index item</a>
+                <br />
+                <p>Please, first input all nav items, then input all index items. Do not mix them up.</p>
+                <br /><hr /><br />
+                <textarea placeholder="Result..." name="_index_data" style="width: 100%; height: 3em;"></textarea><br />
+                <!-- <a class="invert" href="javascript:" data-index-cfg="input-clear">Clear</a> -->
+            </fieldset>
+            <p>
+                <label>Custom font:<input type="file" name="custom-font" /></label><br /><br />
+                <label><input type="checkbox" checked name="_optimize_performance" />Apply performance optimization</label><br /><br />
+                <label><input type="checkbox" name="_use_item_added" />Use "Item added" rather than modified</label><br />
+            </p>
+            <p>
+                <label><input type="text" name="_background_image" placeholder="Background image location. '0' to disable." value="" /></label><br />
+                <label><input type="text" name="_title" placeholder="Title in browser. '0' to use default." value="" /></label><br />
+                <label><input type="text" name="_header" placeholder="Header. '0' to use default." value="" /></label><br />
+                <label><input type="text" name="_player" placeholder="Mini-player's appearance. '0' to use default." value="" /></label><br />
+                <label><input type="text" name="_time_format" placeholder="Time format. mm/dd/yyyy hh:MM:ss ampm" value="" /></label><br />
+            </p>
+            <p>
+                <label>Addons: <input type="file" name="addons" multiple /></label><br />
+            </p>
             <br />
-            <a class="invert" href="javascript:">Get template</a>
+            <a class="invert" href="javascript:" id="GET">Get template</a>
         </form>
     </section>
     <section class="blank"></section>
     <script>
         function getValue(input) {
             if (input.type == 'checkbox') return input.checked ? '1' : '0';
-            else if (input.type == 'text') return input.value ? input.value : '0'
+            // else if (input.type == 'text') return input.value ? input.value : '0';
+            else return input.value ? input.value : '0';
         }
         function getFontType(mime) {
             switch (mime) {
@@ -205,11 +238,74 @@
                     return 'truetype';
             }
         }
-        document.querySelector('a').addEventListener('click', event => {
+        class IndexPageManager {
+            constructor() {
+                this.IndexData = document.querySelector('textarea[name="_index_data"]');
+                let elements = document.querySelectorAll('*[data-index-cfg]');
+                elements.forEach(e => {
+                    switch (e.getAttribute('data-index-cfg')) {
+                        case 'done-step1':
+                            this.buttonDoneStep1 = e;
+                            break;
+                        case 'input-nav':
+                            this.inputAsNav = e;
+                            break;
+                        case 'input-index':
+                            this.inputAsIndex = e;
+                            break;
+                        case 'Title':
+                            this.Title = e;
+                            break;
+                        case 'Header0':
+                            this.Header0 = e;
+                            break;
+                        case 'Header1':
+                            this.Header1 = e;
+                            break;
+                        case 'Footer':
+                            this.Footer = e;
+                            break;
+                        case 'ItemName':
+                            this.ItemName = e;
+                            break;
+                        case 'ItemLink':
+                            this.ItemLink = e;
+                            break;
+                        case 'ItemDesc':
+                            this.ItemDesc = e;
+                            break;
+                    }
+                });
+                this.step1Finished = false;
+                this.buttonDoneStep1.onclick = event => {
+                    if (this.step1Finished) return;
+                    this.IndexData.value = `${this.Title.value}|${this.Header0.value}|${this.Header1.value}|${this.Footer.value}`;
+                    this.step1Finished = true
+                }
+                this.navItemsAdded = false;
+                this.indexItemsAdded = false;
+                this.inputAsNav.onclick = event => {
+                    if (!this.navItemsAdded) {
+                        this.IndexData.value += '|';
+                        this.navItemsAdded = true;
+                    }
+                    this.IndexData.value += `${this.ItemName.value};${this.ItemLink.value}\\`;
+                }
+                this.inputAsIndex.onclick = event => {
+                    if (!this.indexItemsAdded) {
+                        this.IndexData.value += '|';
+                        this.indexItemsAdded = true;
+                    }
+                    this.IndexData.value += `${this.ItemName.value}[${this.ItemLink.value}]${this.ItemDesc.value}\\`;
+                }
+            }
+        }
+        var index_page_manager = new IndexPageManager();
+        document.querySelector('a#GET').addEventListener('click', event => {
             let language = [... document.querySelectorAll('input[name="language"]')].filter(x => x.checked)[0].getAttribute('data-value');
             let version = [... document.querySelectorAll('input[name="version"]')].filter(x => x.checked)[0].getAttribute('data-value');
             let translation = document.getElementById(`takeback-translation-${language}`).textContent;
-            let forms = [... document.querySelectorAll('input')].filter(x => x.getAttribute('name').startsWith('_'));
+            let forms = [... document.querySelectorAll('input, textarea')].filter(x => (x.getAttribute('name') || '').startsWith('_'));
             let template = document.getElementById('takeback-template').textContent;
             template = translation + '\n' + template;
             let customize = forms.map(x => `${x.getAttribute('name')}=${getValue(x)}`).join('\n');

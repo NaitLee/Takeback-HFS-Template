@@ -1,0 +1,83 @@
+body {
+    font-size: 1.2em;
+}
+
+header.index {
+    width: 100%;
+    border-bottom: 1px solid white;
+    text-align: left;
+}
+
+header.index .logo {
+    display: inline-block;
+}
+
+header.index nav a {
+    display: inline-block;
+    padding: 0.4em 0.5em;
+}
+main.index {
+    width: 80%;
+    margin: auto;
+}
+main.index h1 {
+    font-weight: normal;
+    font-size: 1.4em;
+    margin: 1em 0;
+}
+.item {
+    margin: 0 0 2em 0;
+    padding: 0 0.5em;
+}
+.item a {
+    font-size: 1.08em;
+}
+.item.left, .item.left .description, .item.left .border {
+    text-align: left;
+    margin-right: auto;
+}
+.item.right, .item.right .description, .item.right .border {
+    text-align: right;
+    margin-left: auto;
+}
+.item .description {
+    font-size: 0.9em;
+}
+@keyframes swing {
+    0% {
+        left: 0em;
+    }
+    50% {
+        left: 0.5em;
+    }
+    100% {
+        left: 0em;
+    }
+}
+.item a {
+    font-size: 1.2em;
+}
+.item a .arrow {
+    position: relative;
+    transition: all 0.3s;
+    animation: swing 1s ease-out 0s infinite;
+}
+.item a .arrow::after {
+    content: '>>';
+    font-style: italic;
+}
+.border {
+    border-bottom: 1px solid white;
+    width: 60%;
+}
+footer.index {
+    font-size: small;
+    color: gray;
+    margin-top: 10em;
+}
+@media (max-width: 950px) {
+    main.index {
+        margin: 0;
+        width: 100%;
+    }
+}
