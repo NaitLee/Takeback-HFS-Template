@@ -300,7 +300,7 @@ class Previewer {
             form.append(input);
             input.type = 'hidden';
             input.name = 'selection';
-            input.value = helper.getFilename(path);
+            input.value = helper.getFilename(path.endsWith('/') ? path.slice(0, -1) : path);
         });
         document.body.appendChild(form);
         form.submit();
